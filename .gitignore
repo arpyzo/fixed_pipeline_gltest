@@ -1,0 +1,11 @@
+Debug
+Release
+IPCH
+Wireshark
+
+*.opensdf
+*.sdf
+*.suo
+*.TMP
+
+GLUT
