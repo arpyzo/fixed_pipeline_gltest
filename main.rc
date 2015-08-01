@@ -1,4 +1,4 @@
-PROGRAM_ICON 		    ICON 	"gltest.ico"
+GLTEST_ICON 		    ICON 	"gltest.ico"
 
 NO_ACTION_CURSOR	    CURSOR	"Cursors/no_action.cur"
 OPEN_HAND_CURSOR 	    CURSOR  "Cursors/open_hand.cur"

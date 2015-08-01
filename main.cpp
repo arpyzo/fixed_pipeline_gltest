@@ -5,13 +5,13 @@ IMPLEMENT_APP(App)
 /***************************** Canvas ******************************/
 
 BEGIN_EVENT_TABLE(Canvas, wxGLCanvas)
-  EVT_SIZE             (Canvas::Event_Resize)
-  EVT_PAINT            (Canvas::Event_Paint)
-  EVT_ERASE_BACKGROUND (Canvas::Event_Erase_Background)
-  EVT_MOUSE_EVENTS     (Canvas::Event_Mouse)
-  EVT_TIMER            (TIMER_TEST, Canvas::Event_Test_Timer)
-  EVT_TIMER            (TIMER_ANIM, Canvas::Event_Anim_Timer)
-  EVT_TIMER            (TIMER_CON,  Canvas::Event_Control_Timer)
+    EVT_SIZE             (Canvas::Event_Resize)
+    EVT_PAINT            (Canvas::Event_Paint)
+    EVT_ERASE_BACKGROUND (Canvas::Event_Erase_Background)
+    EVT_MOUSE_EVENTS     (Canvas::Event_Mouse)
+    EVT_TIMER            (TIMER_TEST,      Canvas::Event_Test_Timer)
+    EVT_TIMER            (TIMER_ANIMATION, Canvas::Event_Anim_Timer)
+    EVT_TIMER            (TIMER_CONTROL,   Canvas::Event_Control_Timer)
 END_EVENT_TABLE()
 
 Canvas::Canvas(wxWindow *parent)
@@ -22,15 +22,15 @@ Canvas::Canvas(wxWindow *parent)
   rgb_win = new RGB_Frame(this);
 
   test_timer = new wxTimer(this, TIMER_TEST);
-  anim_timer = new wxTimer(this, TIMER_ANIM);
-  control_timer = new wxTimer(this, TIMER_CON);
+  anim_timer = new wxTimer(this, TIMER_ANIMATION);
+  control_timer = new wxTimer(this, TIMER_CONTROL);
 
   camera = new Camera();
   mouse_enabled = false;
 
   glClearColor(0.0, 0.0, 0.0, 0.0);
 
-  Display(CUBE);
+  Display(CUBE_STATIC);
 }
 
 /***********/
@@ -76,25 +76,25 @@ void Canvas::Event_Paint(wxPaintEvent &WXUNUSED(event))
       break;
     case POINTS_LINES: Points_Lines_Test();
       break;
-    case CUBE: Cube_Test();
+    case CUBE_STATIC: Cube_Test();
       break;
-    case CUBE_ROT: Cube_Rotate();
+    case CUBE_ROTATE: Cube_Rotate();
       break;
-    case PYR_ROT: Pyramid_Rotate();
+    case PYRAMID_ROTATE: Pyramid_Rotate();
       break;
-    case MULTI_ROT: Multi_Rotate();
+    case MULTI_ROTATE: Multi_Rotate();
       break;
-    case CUBE_CON: Cube_Control();
+    case CUBE_CONTROL: Cube_Control();
       break;
-    case AMB_LIGHT_ROT: Ambient_Light_Rotate();
+    case AMBIENT_LIGHT_ROTATE: Ambient_Light_Rotate();
       break;
-    case ROT_LIGHT_CON: Simple_Light_Control(false);
+    case ROTATE_LIGHT_CONTROL: Simple_Light_Control(false);
       break;
-    case FIX_LIGHT_CON: Simple_Light_Control(true);
+    case FIXED_LIGHT_CONTROL: Simple_Light_Control(true);
       break;
-    case MATERIAL_CON: Materials_Control();
+    case MATERIALS_CONTROL: Materials_Control();
       break;
-    case BLEND_CON: Blending_Control();
+    case BLEND_CONTROL: Blending_Control();
       break;
     default: Cube_Test();
   }
@@ -312,33 +312,33 @@ void Canvas::Init_Display(display_enum new_display)
     case POINTS_LINES: Set_State(STATE_2D);
       glEnable(GL_LINE_STIPPLE);
       break;
-    case CUBE: Set_State(STATE_3D);
+    case CUBE_STATIC: Set_State(STATE_3D);
       break;
-    case CUBE_ROT: Set_State(STATE_3D);
+    case CUBE_ROTATE: Set_State(STATE_3D);
       break;
-    case PYR_ROT: Set_State(STATE_3D);
+    case PYRAMID_ROTATE: Set_State(STATE_3D);
       break;
-    case MULTI_ROT: Set_State(STATE_3D);
+    case MULTI_ROTATE: Set_State(STATE_3D);
       break;
-    case CUBE_CON: Set_State(STATE_3D);
+    case CUBE_CONTROL: Set_State(STATE_3D);
       break;
-    case AMB_LIGHT_ROT: Set_State(STATE_3D);
+    case AMBIENT_LIGHT_ROTATE: Set_State(STATE_3D);
       Set_State(STATE_LIT);
       rgb_win->Show(TRUE);
       break;
-    case ROT_LIGHT_CON: Set_State(STATE_3D);
+    case ROTATE_LIGHT_CONTROL: Set_State(STATE_3D);
       Set_State(STATE_LIT);
       Prep_Spheres(&spheres_list);
       break;
-    case FIX_LIGHT_CON: Set_State(STATE_3D);
+    case FIXED_LIGHT_CONTROL: Set_State(STATE_3D);
       Set_State(STATE_LIT);
       Prep_Spheres(&spheres_list);
       break;
-    case MATERIAL_CON: Set_State(STATE_3D);
+    case MATERIALS_CONTROL: Set_State(STATE_3D);
       Set_State(STATE_LIT);
       Prep_Spheres(&spheres_list);
       break;
-    case BLEND_CON: Set_State(STATE_3D);
+    case BLEND_CONTROL: Set_State(STATE_3D);
       Set_State(STATE_BLEND);
       break;
   }
@@ -353,32 +353,32 @@ void Canvas::Clean_Display(display_enum old_display)
       break;
     case POINTS_LINES: glDisable(GL_LINE_STIPPLE);
       break;
-    case CUBE:
+    case CUBE_STATIC:
       break;
-    case CUBE_ROT:
+    case CUBE_ROTATE:
       break;
-    case PYR_ROT:
+    case PYRAMID_ROTATE:
       break;
-    case MULTI_ROT:
+    case MULTI_ROTATE:
       break;
-    case CUBE_CON: Set_State(STATE_NO_ACTION);
+    case CUBE_CONTROL: Set_State(STATE_NO_ACTION);
       break;
-    case AMB_LIGHT_ROT: glDisable(GL_LIGHTING);
+    case AMBIENT_LIGHT_ROTATE: glDisable(GL_LIGHTING);
       rgb_win->Show(FALSE);
       break;
-    case ROT_LIGHT_CON: Set_State(STATE_NO_ACTION);
+    case ROTATE_LIGHT_CONTROL: Set_State(STATE_NO_ACTION);
       glDisable(GL_LIGHTING);
       glDeleteLists(spheres_list, 1);
       break;
-    case FIX_LIGHT_CON: Set_State(STATE_NO_ACTION);
+    case FIXED_LIGHT_CONTROL: Set_State(STATE_NO_ACTION);
       glDisable(GL_LIGHTING);
       glDeleteLists(spheres_list, 1);
       break;
-    case MATERIAL_CON: Set_State(STATE_NO_ACTION);
+    case MATERIALS_CONTROL: Set_State(STATE_NO_ACTION);
       glDisable(GL_LIGHTING);
       glDeleteLists(spheres_list, 1);
       break;
-    case BLEND_CON: Set_State(STATE_NO_ACTION);
+    case BLEND_CONTROL: Set_State(STATE_NO_ACTION);
       glDisable(GL_BLEND);
       break;
   }
@@ -751,193 +751,143 @@ void Canvas::Blending_Control()
 
 
 /***************************** Frame ******************************/
-
 BEGIN_EVENT_TABLE(Frame,wxFrame)
-  EVT_MENU    (MENU_QUIT,      Frame::Menu_Quit)
-  EVT_MENU    (MENU_STATE,     Frame::Menu_State)
-  EVT_MENU    (MENU_VERT,      Frame::Menu_Vertices)
-  EVT_MENU    (MENU_POINTS,    Frame::Menu_Points_Lines)
-  EVT_MENU    (MENU_CUBE,      Frame::Menu_Cube)
-  EVT_MENU    (MENU_CUBE_ROT,  Frame::Menu_Cube_Rotate)
-  EVT_MENU    (MENU_PYR_ROT,   Frame::Menu_Pyramid_Rotate)
-  EVT_MENU    (MENU_MULTI_ROT, Frame::Menu_Multi_Rotate)
-  EVT_MENU    (MENU_CUBE_CON,  Frame::Menu_Cube_Control)
-  EVT_MENU    (MENU_AMB_LIGHT, Frame::Menu_Ambient_Light)
-  EVT_MENU    (MENU_ROT_LIGHT, Frame::Menu_Rotating_Light)
-  EVT_MENU    (MENU_FIX_LIGHT, Frame::Menu_Fixed_Light)
-  EVT_MENU    (MENU_MAT,       Frame::Menu_Materials)
-  EVT_MENU    (MENU_BLEND,     Frame::Menu_Blending)
-  EVT_MENU    (MENU_ABOUT,     Frame::Menu_About)
+    EVT_MENU    (MENU_QUIT,             Frame::Menu_Quit)
+    EVT_MENU    (MENU_STATE,            Frame::Menu_State)
+    EVT_MENU    (MENU_VERTICIES,        Frame::Menu_Vertices)
+    EVT_MENU    (MENU_POINTS,           Frame::Menu_Points_Lines)
+    EVT_MENU    (MENU_CUBE_STATIC,      Frame::Menu_Cube_Static)
+    EVT_MENU    (MENU_CUBE_ROTATE,      Frame::Menu_Cube_Rotate)
+    EVT_MENU    (MENU_PYRAMID_ROTATE,   Frame::Menu_Pyramid_Rotate)
+    EVT_MENU    (MENU_MULTI_ROTATE,     Frame::Menu_Multi_Rotate)
+    EVT_MENU    (MENU_CUBE_CONTROL,     Frame::Menu_Cube_Control)
+    EVT_MENU    (MENU_AMBIENT_LIGHT,    Frame::Menu_Ambient_Light)
+    EVT_MENU    (MENU_ROTATE_LIGHT,     Frame::Menu_Rotating_Light)
+    EVT_MENU    (MENU_FIXED_LIGHT,      Frame::Menu_Fixed_Light)
+    EVT_MENU    (MENU_MATERIALS,        Frame::Menu_Materials)
+    EVT_MENU    (MENU_BLEND,            Frame::Menu_Blending)
+    EVT_MENU    (MENU_ABOUT,            Frame::Menu_About)
 END_EVENT_TABLE()
-
+        
 Frame::Frame() 
-: wxFrame((wxFrame *)NULL, -1, "GLTest", wxPoint(50,50), wxSize(808,654))
-{ SetIcon(wxIcon("PROGRAM_ICON"));
-  Setup_Menu();
+: wxFrame((wxFrame *)NULL, -1, "GLTest", wxPoint(50, 50), wxSize(808, 654)) {
+    SetIcon(wxIcon("GLTEST_ICON"));
+    Setup_Menu();
 
-  gl_canvas = new Canvas(this);
+    gl_canvas = new Canvas(this);
 }
 
-/**************/
-/* Setup_Menu */
-/**************/
-void Frame::Setup_Menu()
-{ wxMenuBar *menu_bar = new wxMenuBar();
-  wxMenu *file_menu = new wxMenu();
-  wxMenu *util_menu = new wxMenu();
-  wxMenu *basic_2d_menu = new wxMenu();
-  wxMenu *basic_3d_menu = new wxMenu();
-  wxMenu *light_menu = new wxMenu();
-  wxMenu *effects_menu = new wxMenu();
-  wxMenu *help_menu = new wxMenu();
-    
-  file_menu->Append(MENU_QUIT, "E&xit");
-  menu_bar->Append(file_menu, "&File");
+/****************/
+/* Menu Methods */
+/****************/
+void Frame::Setup_Menu() {
+    wxMenuBar *menu_bar = new wxMenuBar();
+    wxMenu *file_menu = new wxMenu();
+    wxMenu *util_menu = new wxMenu();
+    wxMenu *basic_2d_menu = new wxMenu();
+    wxMenu *basic_3d_menu = new wxMenu();
+    wxMenu *light_menu = new wxMenu();
+    wxMenu *effects_menu = new wxMenu();
+    wxMenu *help_menu = new wxMenu();
+      
+    file_menu->Append(MENU_QUIT, "E&xit");
+    menu_bar->Append(file_menu, "&File");
 
-  util_menu->Append(MENU_STATE, "GL &State");
-  menu_bar->Append(util_menu, "&Utility");
+    util_menu->Append(MENU_STATE, "GL &State");
+    menu_bar->Append(util_menu, "&Utility");
 
-  basic_2d_menu->Append(MENU_VERT, "Vertices");
-  basic_2d_menu->Append(MENU_POINTS, "Points and Lines");
-  menu_bar->Append(basic_2d_menu, "Basic &2D");
+    basic_2d_menu->Append(MENU_VERTICIES, "Vertices");
+    basic_2d_menu->Append(MENU_POINTS, "Points and Lines");
+    menu_bar->Append(basic_2d_menu, "Basic &2D");
 
-  basic_3d_menu->Append(MENU_CUBE, "Cube");
-  basic_3d_menu->Append(MENU_CUBE_ROT, "Cube Rotate");
-  basic_3d_menu->Append(MENU_PYR_ROT, "Pyramid Rotate");
-  basic_3d_menu->Append(MENU_MULTI_ROT, "Multiple Rotate");
-  basic_3d_menu->Append(MENU_CUBE_CON, "Cube Control");
-  menu_bar->Append(basic_3d_menu, "Basic &3D");
+    basic_3d_menu->Append(MENU_CUBE_STATIC, "Static Cube");
+    basic_3d_menu->Append(MENU_CUBE_ROTATE, "Rotate Cube");
+    basic_3d_menu->Append(MENU_PYRAMID_ROTATE, "Rotate Pyramid");
+    basic_3d_menu->Append(MENU_MULTI_ROTATE, "Rotate Multiple");
+    basic_3d_menu->Append(MENU_CUBE_CONTROL, "Control Cube");
+    menu_bar->Append(basic_3d_menu, "Basic &3D");
 
-  light_menu->Append(MENU_AMB_LIGHT, "Ambient Light");
-  light_menu->Append(MENU_ROT_LIGHT, "Rotating Light");
-  light_menu->Append(MENU_FIX_LIGHT, "Fixed Light");
-  light_menu->Append(MENU_MAT, "Object Materials");
-  menu_bar->Append(light_menu, "&Lighting");
+    light_menu->Append(MENU_AMBIENT_LIGHT, "Ambient Light");
+    light_menu->Append(MENU_ROTATE_LIGHT, "Rotating Light");
+    light_menu->Append(MENU_FIXED_LIGHT, "Fixed Light");
+    light_menu->Append(MENU_MATERIALS, "Object Materials");
+    menu_bar->Append(light_menu, "&Lighting");
 
-  effects_menu->Append(MENU_BLEND, "Blending");
-  menu_bar->Append(effects_menu, "&Effects");
+    effects_menu->Append(MENU_BLEND, "Blending");
+    menu_bar->Append(effects_menu, "&Effects");
 
-  help_menu->Append(MENU_ABOUT, "&About..");
-  menu_bar->Append(help_menu, "&Help");
+    help_menu->Append(MENU_ABOUT, "&About..");
+    menu_bar->Append(help_menu, "&Help");
 
-  SetMenuBar(menu_bar);
+    SetMenuBar(menu_bar);
 }
 
-/**************/
-/* Menu_State */
-/**************/
-void Frame::Menu_State(wxCommandEvent &WXUNUSED(event))
-{ gl_canvas->Display_GL_State();
+void Frame::Menu_State(wxCommandEvent &WXUNUSED(event)) {
+    gl_canvas->Display_GL_State();
 }
 
-/*****************/
-/* Menu_Vertices */
-/*****************/
-void Frame::Menu_Vertices(wxCommandEvent &WXUNUSED(event))
-{ gl_canvas->Display(VERTICES);
-  gl_canvas->Refresh();
+void Frame::Menu_Vertices(wxCommandEvent &WXUNUSED(event)) {
+    gl_canvas->Display(VERTICES);
+    gl_canvas->Refresh();
 }
 
-/*********************/
-/* Menu_Points_Lines */
-/*********************/
-void Frame::Menu_Points_Lines(wxCommandEvent &WXUNUSED(event))
-{ gl_canvas->Display(POINTS_LINES);
+void Frame::Menu_Points_Lines(wxCommandEvent &WXUNUSED(event)) {
+    gl_canvas->Display(POINTS_LINES);
 }
 
-/*************/
-/* Menu_Cube */
-/*************/
-void Frame::Menu_Cube(wxCommandEvent &WXUNUSED(event))
-{ gl_canvas->Display(CUBE);
+void Frame::Menu_Cube_Static(wxCommandEvent &WXUNUSED(event)) {
+    gl_canvas->Display(CUBE_STATIC);
 }
 
-/********************/
-/* Menu_Cube_Rotate */
-/********************/
-void Frame::Menu_Cube_Rotate(wxCommandEvent &WXUNUSED(event))
-{ gl_canvas->Animate(CUBE_ROT);
+void Frame::Menu_Cube_Rotate(wxCommandEvent &WXUNUSED(event)) {
+    gl_canvas->Animate(CUBE_ROTATE);
 }
 
-/***********************/
-/* Menu_Pyramid_Rotate */
-/***********************/
-void Frame::Menu_Pyramid_Rotate(wxCommandEvent &WXUNUSED(event))
-{ gl_canvas->Animate(PYR_ROT);
+void Frame::Menu_Pyramid_Rotate(wxCommandEvent &WXUNUSED(event)) {
+    gl_canvas->Animate(PYRAMID_ROTATE);
 }
 
-/*********************/
-/* Menu_Multi_Rotate */
-/*********************/
-void Frame::Menu_Multi_Rotate(wxCommandEvent &WXUNUSED(event))
-{ gl_canvas->Animate(MULTI_ROT);
+void Frame::Menu_Multi_Rotate(wxCommandEvent &WXUNUSED(event)) {
+    gl_canvas->Animate(MULTI_ROTATE);
 }
 
-/*********************/
-/* Menu_Cube_Control */
-/*********************/
-void Frame::Menu_Cube_Control(wxCommandEvent &WXUNUSED(event))
-{ gl_canvas->Control(CUBE_CON);
+void Frame::Menu_Cube_Control(wxCommandEvent &WXUNUSED(event)) {
+    gl_canvas->Control(CUBE_CONTROL);
 }
 
-/**********************/
-/* Menu_Ambient_Light */
-/**********************/
-void Frame::Menu_Ambient_Light(wxCommandEvent &WXUNUSED(event))
-{ gl_canvas->Animate(AMB_LIGHT_ROT);
+void Frame::Menu_Ambient_Light(wxCommandEvent &WXUNUSED(event)) {
+    gl_canvas->Animate(AMBIENT_LIGHT_ROTATE);
 }
 
-/***********************/
-/* Menu_Rotating_Light */
-/***********************/
-void Frame::Menu_Rotating_Light(wxCommandEvent &WXUNUSED(event))
-{ gl_canvas->Control(ROT_LIGHT_CON);
+void Frame::Menu_Rotating_Light(wxCommandEvent &WXUNUSED(event)) {
+    gl_canvas->Control(ROTATE_LIGHT_CONTROL);
 }
 
-/********************/
-/* Menu_Fixed_Light */
-/********************/
-void Frame::Menu_Fixed_Light(wxCommandEvent &WXUNUSED(event))
-{ gl_canvas->Control(FIX_LIGHT_CON);
+void Frame::Menu_Fixed_Light(wxCommandEvent &WXUNUSED(event)) {
+    gl_canvas->Control(FIXED_LIGHT_CONTROL);
 }
 
-/******************/
-/* Menu_Materials */
-/******************/
-void Frame::Menu_Materials(wxCommandEvent &WXUNUSED(event))
-{ gl_canvas->Control(MATERIAL_CON);
+void Frame::Menu_Materials(wxCommandEvent &WXUNUSED(event)) {
+    gl_canvas->Control(MATERIALS_CONTROL);
 }
 
-/**********************/
-/* Menu_Blending */
-/**********************/
-void Frame::Menu_Blending(wxCommandEvent &WXUNUSED(event))
-{ gl_canvas->Control(BLEND_CON);
+void Frame::Menu_Blending(wxCommandEvent &WXUNUSED(event)) {
+    gl_canvas->Control(BLEND_CONTROL);
 }
 
-/**************/
-/* Menu_About */
-/**************/
-void Frame::Menu_About(wxCommandEvent &WXUNUSED(event))
-{ wxMessageBox("GLTest\nOpenGL Demonstration Program\nRobert E. Pyzalski 2007", "About..", wxICON_INFORMATION);
+void Frame::Menu_About(wxCommandEvent &WXUNUSED(event)) {
+    wxMessageBox("GLTest\nOpenGL Demonstration Program\nRobert E. Pyzalski 2007", "About..", wxICON_INFORMATION);
 }
 
-/*************/
-/* Menu_Quit */
-/*************/
-void Frame::Menu_Quit(wxCommandEvent &WXUNUSED(event))
-{ Close(TRUE);
+void Frame::Menu_Quit(wxCommandEvent &WXUNUSED(event)) {
+    Close(TRUE);
 }
 
-/*************************** App_Class ****************************/
+/****************************** App *******************************/
+bool App::OnInit() {
+    Frame *main_frame = new Frame();
 
-/**********/
-/* OnInit */
-/**********/
-bool App::OnInit()
-{ Frame *main_frame = new Frame();
+    main_frame->Show(TRUE);
 
-  main_frame->Show(TRUE);
-
-  return TRUE;
+    return TRUE;
 }
