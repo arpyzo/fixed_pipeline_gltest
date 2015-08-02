@@ -8,11 +8,11 @@ BEGIN_EVENT_TABLE(Frame,wxFrame)
     EVT_MENU    (MENU_STATE,            Frame::Menu_State)
     EVT_MENU    (MENU_VERTICIES,        Frame::Menu_Vertices)
     EVT_MENU    (MENU_POINTS,           Frame::Menu_Points_Lines)
-    EVT_MENU    (MENU_CUBE_STATIC,      Frame::Menu_Cube_Static)
-    EVT_MENU    (MENU_CUBE_ROTATE,      Frame::Menu_Cube_Rotate)
-    EVT_MENU    (MENU_PYRAMID_ROTATE,   Frame::Menu_Pyramid_Rotate)
-    EVT_MENU    (MENU_MULTI_ROTATE,     Frame::Menu_Multi_Rotate)
-    EVT_MENU    (MENU_CUBE_CONTROL,     Frame::Menu_Cube_Control)
+    EVT_MENU    (MENU_STATIC_CUBE,      Frame::Menu_Static_Cube)
+    EVT_MENU    (MENU_ROTATE_CUBE,      Frame::Menu_Rotate_Cube)
+    EVT_MENU    (MENU_ROTATE_PYRAMID,   Frame::Menu_Rotate_Pyramid)
+    EVT_MENU    (MENU_ROTATE_MULTI,     Frame::Menu_Rotate_Multi)
+    EVT_MENU    (MENU_CONTROL_CUBE,     Frame::Menu_Control_Cube)
     EVT_MENU    (MENU_AMBIENT_LIGHT,    Frame::Menu_Ambient_Light)
     EVT_MENU    (MENU_ROTATE_LIGHT,     Frame::Menu_Rotating_Light)
     EVT_MENU    (MENU_FIXED_LIGHT,      Frame::Menu_Fixed_Light)
@@ -52,11 +52,11 @@ void Frame::Setup_Menu() {
     basic_2d_menu->Append(MENU_POINTS, "Points and Lines");
     menu_bar->Append(basic_2d_menu, "Basic &2D");
 
-    basic_3d_menu->Append(MENU_CUBE_STATIC, "Static Cube");
-    basic_3d_menu->Append(MENU_CUBE_ROTATE, "Rotate Cube");
-    basic_3d_menu->Append(MENU_PYRAMID_ROTATE, "Rotate Pyramid");
-    basic_3d_menu->Append(MENU_MULTI_ROTATE, "Rotate Multiple");
-    basic_3d_menu->Append(MENU_CUBE_CONTROL, "Control Cube");
+    basic_3d_menu->Append(MENU_STATIC_CUBE, "Static Cube");
+    basic_3d_menu->Append(MENU_ROTATE_CUBE, "Rotate Cube");
+    basic_3d_menu->Append(MENU_ROTATE_PYRAMID, "Rotate Pyramid");
+    basic_3d_menu->Append(MENU_ROTATE_MULTI, "Rotate Multiple");
+    basic_3d_menu->Append(MENU_CONTROL_CUBE, "Control Cube");
     menu_bar->Append(basic_3d_menu, "Basic &3D");
 
     light_menu->Append(MENU_AMBIENT_LIGHT, "Ambient Light");
@@ -87,23 +87,23 @@ void Frame::Menu_Points_Lines(wxCommandEvent &WXUNUSED(event)) {
     gl_canvas->Display(POINTS_LINES);
 }
 
-void Frame::Menu_Cube_Static(wxCommandEvent &WXUNUSED(event)) {
+void Frame::Menu_Static_Cube(wxCommandEvent &WXUNUSED(event)) {
     gl_canvas->Display(CUBE_STATIC);
 }
 
-void Frame::Menu_Cube_Rotate(wxCommandEvent &WXUNUSED(event)) {
+void Frame::Menu_Rotate_Cube(wxCommandEvent &WXUNUSED(event)) {
     gl_canvas->Animate(CUBE_ROTATE);
 }
 
-void Frame::Menu_Pyramid_Rotate(wxCommandEvent &WXUNUSED(event)) {
+void Frame::Menu_Rotate_Pyramid(wxCommandEvent &WXUNUSED(event)) {
     gl_canvas->Animate(PYRAMID_ROTATE);
 }
 
-void Frame::Menu_Multi_Rotate(wxCommandEvent &WXUNUSED(event)) {
+void Frame::Menu_Rotate_Multi(wxCommandEvent &WXUNUSED(event)) {
     gl_canvas->Animate(MULTI_ROTATE);
 }
 
-void Frame::Menu_Cube_Control(wxCommandEvent &WXUNUSED(event)) {
+void Frame::Menu_Control_Cube(wxCommandEvent &WXUNUSED(event)) {
     gl_canvas->Control(CUBE_CONTROL);
 }
 

@@ -139,6 +139,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\canvas.cpp" />
+    <ClCompile Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\shapes.cpp" />
     <ClCompile Include="3d.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"> /EHsc   /EHsc </AdditionalOptions>
     </ClCompile>
@@ -154,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\canvas.h" />
+    <ClInclude Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\shapes.h" />
     <ClInclude Include="3d.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="tools.h" />

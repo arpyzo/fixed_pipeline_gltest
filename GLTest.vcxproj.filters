@@ -30,6 +30,9 @@
     <ClCompile Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\canvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\shapes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\canvas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\shapes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

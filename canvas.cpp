@@ -8,7 +8,7 @@ BEGIN_EVENT_TABLE(Canvas, wxGLCanvas)
     EVT_ERASE_BACKGROUND (Canvas::Event_Erase_Background)
     EVT_MOUSE_EVENTS     (Canvas::Event_Mouse)
     EVT_TIMER            (TIMER_TEST,      Canvas::Event_Test_Timer)
-    EVT_TIMER            (TIMER_ANIMATION, Canvas::Event_Anim_Timer)
+    EVT_TIMER            (TIMER_ANIMATION, Canvas::Event_Animation_Timer)
     EVT_TIMER            (TIMER_CONTROL,   Canvas::Event_Control_Timer)
 END_EVENT_TABLE()
 
@@ -20,7 +20,7 @@ Canvas::Canvas(wxWindow *parent)
     rgb_win = new RGB_Frame(this);
 
     test_timer = new wxTimer(this, TIMER_TEST);
-    anim_timer = new wxTimer(this, TIMER_ANIMATION);
+    animation_timer = new wxTimer(this, TIMER_ANIMATION);
     control_timer = new wxTimer(this, TIMER_CONTROL);
 
     camera = new Camera();
@@ -32,7 +32,7 @@ Canvas::Canvas(wxWindow *parent)
 }
 
 /***********/
-/* Display */
+/* Actions */
 /***********/
 void Canvas::Display(display_enum new_display)
 { Init_Display(new_display);
@@ -40,20 +40,14 @@ void Canvas::Display(display_enum new_display)
   Refresh();
 }
 
-/***********/
-/* Animate */
-/***********/
 void Canvas::Animate(display_enum new_display)
 { Init_Display(new_display);
 
-  anim_angle = 0;
+  animation_angle = 0;
   Refresh();
-  anim_timer->Start(50);
+  animation_timer->Start(50);
 }
 
-/***********/
-/* Control */
-/***********/
 void Canvas::Control(display_enum new_display)
 { Init_Display(new_display);
 
@@ -63,18 +57,18 @@ void Canvas::Control(display_enum new_display)
   Set_State(STATE_ACTION);
 }
 
-/***************/
-/* Event_Paint */
-/***************/
+/*****************/
+/* Canvas Events */
+/*****************/
 void Canvas::Event_Paint(wxPaintEvent &WXUNUSED(event))
 { switch(current_display)
   { case TRANSITION: Clear_Screen();
       break;
     case VERTICES: Vertices_Test();
       break;
-    case POINTS_LINES: Points_Lines_Test();
+    case POINTS_LINES: Points_Lines();
       break;
-    case CUBE_STATIC: Cube_Test();
+    case CUBE_STATIC: Cube_Static();
       break;
     case CUBE_ROTATE: Cube_Rotate();
       break;
@@ -94,13 +88,10 @@ void Canvas::Event_Paint(wxPaintEvent &WXUNUSED(event))
       break;
     case BLEND_CONTROL: Blending_Control();
       break;
-    default: Cube_Test();
+    default: Cube_Static();
   }
 }
 
-/****************/
-/* Event_Resize */
-/****************/
 void Canvas::Event_Resize(wxSizeEvent &WXUNUSED(event))
 { int width, height;
     
@@ -111,15 +102,8 @@ void Canvas::Event_Resize(wxSizeEvent &WXUNUSED(event))
   // TODO: This needs further work
 }
 
-/**************************/
-/* Event_Erase_Background */
-/**************************/
-void Canvas::Event_Erase_Background(wxEraseEvent &WXUNUSED(event))
-{ }
+void Canvas::Event_Erase_Background(wxEraseEvent &WXUNUSED(event)) { }
 
-/***************/
-/* Event_Mouse */
-/***************/
 void Canvas::Event_Mouse(wxMouseEvent &event)
 { static long prev_x, prev_y;
 
@@ -137,9 +121,9 @@ void Canvas::Event_Mouse(wxMouseEvent &event)
   else if (event.LeftUp() && !right_drag)
   { SetCursor(wxCursor("OPEN_HAND_CURSOR"));
     left_drag = false;
-    anim_x = event.GetX();
-    anim_y = event.GetY();
-    anim_angle = 0;
+    animation_x = event.GetX();
+    animation_y = event.GetY();
+    animation_angle = 0;
     test_timer->Start(25, true);
   }
 
@@ -154,9 +138,9 @@ void Canvas::Event_Mouse(wxMouseEvent &event)
   else if (event.RightUp() && !left_drag)
   { SetCursor(wxCursor("OPEN_HAND_CURSOR"));
     right_drag = false;
-    anim_x = event.GetX();
-    anim_y = event.GetY();
-    anim_angle = 1;
+    animation_x = event.GetX();
+    animation_y = event.GetY();
+    animation_angle = 1;
     test_timer->Start(25, true);
   }
 
@@ -201,27 +185,24 @@ void Canvas::Event_Mouse(wxMouseEvent &event)
     
 }
 
-/********************/
-/* Event_Test_Timer */
-/********************/
 void Canvas::Event_Test_Timer(wxTimerEvent &WXUNUSED(event))
 { float mouse_x = (float)(wxGetMousePosition().x - this->GetScreenPosition().x);
   float mouse_y = (float)(wxGetMousePosition().y - this->GetScreenPosition().y);
-  float move_x = anim_x - mouse_x;
-  float move_y = mouse_y - anim_y;
+  float move_x = animation_x - mouse_x;
+  float move_y = mouse_y - animation_y;
 
   if (fabs(move_x) > 2 || fabs(move_y) > 2)         // Has mouse moved enough to trigger animation
-  { if (anim_angle)       // Twist animation
-    { anim_angle = -camera->Calc_Twist_Angle((int)anim_x, (int)anim_y, (int)mouse_x, (int)mouse_y);
-      if (anim_angle == 0)
+  { if (animation_angle)       // Twist animation
+    { animation_angle = -camera->Calc_Twist_Angle((int)animation_x, (int)animation_y, (int)mouse_x, (int)mouse_y);
+      if (animation_angle == 0)
         return;
-      camera->Twist(anim_angle);
+      camera->Twist(animation_angle);
     }
     else                  // Rotation animation
-    { anim_x = move_x / 5;
-      anim_y = move_y / 5;
-      anim_angle = 0;
-      camera->Transform(anim_x, anim_y);
+    { animation_x = move_x / 5;
+      animation_y = move_y / 5;
+      animation_angle = 0;
+      camera->Transform(animation_x, animation_y);
     }
 
     Refresh();
@@ -229,25 +210,19 @@ void Canvas::Event_Test_Timer(wxTimerEvent &WXUNUSED(event))
   }
 }
 
-/********************/
-/* Event_Anim_Timer */
-/********************/
-void Canvas::Event_Anim_Timer(wxTimerEvent &WXUNUSED(event))
-{ anim_angle++;
-  if (anim_angle > 360)
-    anim_angle = 0;
+void Canvas::Event_Animation_Timer(wxTimerEvent &WXUNUSED(event))
+{ animation_angle++;
+  if (animation_angle > 360)
+    animation_angle = 0;
 
   Refresh();
 }
 
-/***********************/
-/* Event_Control_Timer */
-/***********************/
 void Canvas::Event_Control_Timer(wxTimerEvent &WXUNUSED(event))
-{ if (anim_angle)
-    camera->Twist(anim_angle);
+{ if (animation_angle)
+    camera->Twist(animation_angle);
   else
-    camera->Transform(anim_x, anim_y);
+    camera->Transform(animation_x, animation_y);
 
   Refresh();
 }
@@ -408,7 +383,7 @@ void Canvas::Set_State(state_enum new_state)
       break;
     case STATE_ACTION:
       test_timer->Stop();
-      anim_timer->Stop();
+      animation_timer->Stop();
       control_timer->Stop();
       SetCursor(wxCursor("OPEN_HAND_CURSOR"));
       left_drag = false;
@@ -417,7 +392,7 @@ void Canvas::Set_State(state_enum new_state)
       break;
     case STATE_NO_ACTION:
       test_timer->Stop();
-      anim_timer->Stop();
+      animation_timer->Stop();
       control_timer->Stop();
       SetCursor(wxCursor("NO_ACTION_CURSOR"));
       mouse_enabled = false;
@@ -425,8 +400,8 @@ void Canvas::Set_State(state_enum new_state)
 /*    case STATE_NO_MOTION:
       test_timer->Stop();
       control_timer->Stop();
-      anim_x = 0;
-      anim_y = 0;*/
+      animation_x = 0;
+      animation_y = 0;*/
   }
 }
 
@@ -461,7 +436,7 @@ void Canvas::Vertices_Test()
 /*********************/
 /* Points_Lines_Test */
 /*********************/
-void Canvas::Points_Lines_Test()
+void Canvas::Points_Lines()
 { wxPaintDC dc(this);
 
   glMatrixMode(GL_MODELVIEW);
@@ -479,7 +454,7 @@ void Canvas::Points_Lines_Test()
 /*************/
 /* Cube_Test */
 /*************/
-void Canvas::Cube_Test()
+void Canvas::Cube_Static()
 { wxPaintDC dc(this);
 
   glMatrixMode(GL_MODELVIEW);
@@ -507,7 +482,7 @@ void Canvas::Cube_Rotate()
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   glTranslatef(0, 0, -300);
-  glRotatef(anim_angle, 1, 1, 1);
+  glRotatef(animation_angle, 1, 1, 1);
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -526,7 +501,7 @@ void Canvas::Pyramid_Rotate()
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   glTranslatef(0, 0, -300);
-  glRotatef(anim_angle, 1, 1, 1);
+  glRotatef(animation_angle, 1, 1, 1);
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -545,7 +520,7 @@ void Canvas::Multi_Rotate()
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   glTranslatef(0, 0, -300);
-  glRotatef(anim_angle, 1, 1, 1);
+  glRotatef(animation_angle, 1, 1, 1);
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -604,7 +579,7 @@ void Canvas::Ambient_Light_Rotate()
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   glTranslatef(0, 0, -300);
-  glRotatef(anim_angle, 1, 1, 1);
+  glRotatef(animation_angle, 1, 1, 1);
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

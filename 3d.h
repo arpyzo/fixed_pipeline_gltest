@@ -30,14 +30,6 @@ float Dot_Product(float vec_a[3], float vec_b[3]);
 void Cross_Product(float vec_a[3], float vec_b[3], float result[3]);
 void Rotate_Vec(float vec[3], float rot_vec[3], float rot_angle, float result[3]);
 
-void Primitive_Vertices();
-void Various_Points();
-void Various_Lines();
-void Primitive_Cube();
-void Array_Cube();
-void Interleaved_Cube(float side);
-void Interleaved_Pyramid();
-
 void Prep_Spheres(GLuint *spheres_list);
 
 /************************** Camera **********************************/

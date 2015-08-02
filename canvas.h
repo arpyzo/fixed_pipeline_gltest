@@ -7,6 +7,7 @@
 #include "GLUT/glut.h"
 
 #include "3d.h"
+#include "shapes.h"
 #include "tools.h"
 #include "utility.h"
 
@@ -54,7 +55,7 @@ class Canvas : public wxGLCanvas {
 		void Event_Erase_Background(wxEraseEvent &event);
 		void Event_Mouse(wxMouseEvent &event);
 		void Event_Test_Timer(wxTimerEvent &event);
-		void Event_Anim_Timer(wxTimerEvent &event);
+		void Event_Animation_Timer(wxTimerEvent &event);
 		void Event_Control_Timer(wxTimerEvent &event);
 
 		void Display_GL_State();
@@ -64,8 +65,8 @@ class Canvas : public wxGLCanvas {
 
 		void Clear_Screen();
 		void Vertices_Test();
-		void Points_Lines_Test();
-		void Cube_Test();
+		void Points_Lines();
+		void Cube_Static();
 		void Cube_Rotate();
 		void Pyramid_Rotate();
 		void Multi_Rotate();
@@ -82,9 +83,9 @@ class Canvas : public wxGLCanvas {
 		RGB_Frame *rgb_win;
 
 		wxTimer *test_timer;
-		wxTimer *anim_timer;
+		wxTimer *animation_timer;
 		wxTimer *control_timer;
-		float anim_x, anim_y, anim_angle;
+		float animation_x, animation_y, animation_angle;
 
 		Camera *camera;
 		bool mouse_enabled;

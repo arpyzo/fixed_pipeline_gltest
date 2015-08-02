@@ -9,11 +9,11 @@ enum {
 	MENU_STATE,
 	MENU_VERTICIES,
 	MENU_POINTS,
-	MENU_CUBE_STATIC,
-	MENU_CUBE_ROTATE,
-	MENU_PYRAMID_ROTATE,
-	MENU_MULTI_ROTATE,
-	MENU_CUBE_CONTROL,
+	MENU_STATIC_CUBE,
+    MENU_ROTATE_CUBE,
+    MENU_ROTATE_PYRAMID,
+    MENU_ROTATE_MULTI,
+	MENU_CONTROL_CUBE,
 	MENU_AMBIENT_LIGHT,
 	MENU_ROTATE_LIGHT,
 	MENU_FIXED_LIGHT,
@@ -29,11 +29,11 @@ class Frame : public wxFrame {
 		void Setup_Menu();
 		void Menu_Vertices(wxCommandEvent &event);
 		void Menu_Points_Lines(wxCommandEvent &event);
-		void Menu_Cube_Static(wxCommandEvent &event);
-		void Menu_Cube_Rotate(wxCommandEvent &event);
-		void Menu_Pyramid_Rotate(wxCommandEvent &event);
-		void Menu_Multi_Rotate(wxCommandEvent &event);
-		void Menu_Cube_Control(wxCommandEvent &event);
+		void Menu_Static_Cube(wxCommandEvent &event);
+		void Menu_Rotate_Cube(wxCommandEvent &event);
+		void Menu_Rotate_Pyramid(wxCommandEvent &event);
+		void Menu_Rotate_Multi(wxCommandEvent &event);
+		void Menu_Control_Cube(wxCommandEvent &event);
 		void Menu_Ambient_Light(wxCommandEvent &event);
 		void Menu_Rotating_Light(wxCommandEvent &event);
 		void Menu_Fixed_Light(wxCommandEvent &event);
