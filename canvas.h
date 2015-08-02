@@ -8,6 +8,7 @@
 
 #include "3d.h"
 #include "shapes.h"
+#include "camera.h"
 #include "tools.h"
 #include "utility.h"
 

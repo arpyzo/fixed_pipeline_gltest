@@ -389,3 +389,20 @@ void Interleaved_Pyramid() {
     glInterleavedArrays(GL_C3F_V3F, 0, pyramid);
     glDrawArrays(GL_TRIANGLES, 0, 12);
 }
+
+void Prep_Spheres(GLuint *spheres_list) {
+    if (glIsList(*spheres_list)) {
+        glDeleteLists(*spheres_list, 1);
+    }
+
+    *spheres_list = glGenLists(1);
+    glNewList(*spheres_list, GL_COMPILE);
+    glPushMatrix();
+    glTranslatef(-100, 0, 0);
+    glutSolidSphere(50, 20, 20);
+    glPopMatrix();
+
+    glTranslatef(100, 0, 0);
+    glutSolidSphere(50, 20, 20);
+    glEndList();
+}
