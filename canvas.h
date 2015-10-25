@@ -6,8 +6,8 @@
 
 #include "GLUT/glut.h"
 
-#include "3d.h"
-#include "shapes.h"
+#include "vector.h"
+#include "scenes.h"
 #include "camera.h"
 #include "tools.h"
 #include "utility.h"
@@ -65,7 +65,7 @@ class Canvas : public wxGLCanvas {
 		void Set_State(state_enum new_state);  
 
 		void Clear_Screen();
-		void Vertices_Test();
+		//void Vertices_Test();
 		void Points_Lines();
 		void Cube_Static();
 		void Cube_Rotate();
@@ -89,6 +89,7 @@ class Canvas : public wxGLCanvas {
 		float animation_x, animation_y, animation_angle;
 
 		Camera *camera;
+        Scene *scene;
 		bool mouse_enabled;
 		bool left_drag, right_drag;
 		int scale_factor;

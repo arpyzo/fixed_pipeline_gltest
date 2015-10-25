@@ -60,13 +60,21 @@ void Canvas::Control(display_enum new_display)
 /*****************/
 /* Canvas Events */
 /*****************/
-void Canvas::Event_Paint(wxPaintEvent &WXUNUSED(event))
-{ switch(current_display)
+void Canvas::Event_Paint(wxPaintEvent &WXUNUSED(event)) {
+    //Scene *my_scene;// = Scene::Create_Scene(Scene::PRIMITIVE_VERTICES);
+    //my_scene->WhoAmI();
+
+    switch(current_display)
   { case TRANSITION: Clear_Screen();
       break;
-    case VERTICES: Vertices_Test();
+    case VERTICES: //Vertices_Test();
+        //my_scene = Scene::Create_Scene(Scene::PRIMITIVE_VERTICES);
+        scene->Generate_Polygons();
+        SwapBuffers();
       break;
-    case POINTS_LINES: Points_Lines();
+    case POINTS_LINES: //Points_Lines();
+        scene->Generate_Polygons();
+        SwapBuffers();
       break;
     case CUBE_STATIC: Cube_Static();
       break;
@@ -272,19 +280,25 @@ void Canvas::Display_GL_State()
 /****************/
 /* Init_Display */
 /****************/
-void Canvas::Init_Display(display_enum new_display)
-{ display_enum old_display = current_display;
+void Canvas::Init_Display(display_enum new_display) {
+    display_enum old_display = current_display;
   
-  current_display = TRANSITION;
-  Clean_Display(old_display);
-  current_display = new_display;
+    current_display = TRANSITION;
+    Clean_Display(old_display);
+    current_display = new_display;
   
-  switch(current_display)
-  { case VERTICES: Set_State(STATE_2D);
-      break;
-    case POINTS_LINES: Set_State(STATE_2D);
-      glEnable(GL_LINE_STIPPLE);
-      break;
+    switch (current_display) {
+        case VERTICES: 
+            scene = Scene::Create_Scene(Scene::PRIMITIVE_VERTICES);
+            scene->Set_State();
+            //Set_State(STATE_2D);
+            break;
+        case POINTS_LINES: 
+            scene = Scene::Create_Scene(Scene::POINTS_LINES);
+            scene->Set_State();
+            //Set_State(STATE_2D);
+            //glEnable(GL_LINE_STIPPLE);
+            break;
     case CUBE_STATIC: Set_State(STATE_3D);
       break;
     case CUBE_ROTATE: Set_State(STATE_3D);
@@ -419,7 +433,7 @@ void Canvas::Clear_Screen()
 /*****************/
 /* Vertices_Test */
 /*****************/
-void Canvas::Vertices_Test()
+/*void Canvas::Vertices_Test()
 { wxPaintDC dc(this);
 
   glMatrixMode(GL_MODELVIEW);
@@ -431,12 +445,12 @@ void Canvas::Vertices_Test()
 
   glFlush();
   SwapBuffers();
-}
+}*/
 
 /*********************/
 /* Points_Lines_Test */
 /*********************/
-void Canvas::Points_Lines()
+/*void Canvas::Points_Lines()
 { wxPaintDC dc(this);
 
   glMatrixMode(GL_MODELVIEW);
@@ -449,7 +463,7 @@ void Canvas::Points_Lines()
 
   glFlush();
   SwapBuffers();
-}
+}*/
 
 /*************/
 /* Cube_Test */

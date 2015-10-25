@@ -27,13 +27,13 @@
     <ClCompile Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\canvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\shapes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scenes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,13 +50,13 @@
     <ClInclude Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\canvas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\shapes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scenes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

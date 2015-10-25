@@ -1,5 +1,81 @@
-#include "shapes.h"
+#include "scenes.h"
 
+/***************************** Scene ******************************/
+Scene *Scene::Create_Scene(Scene_Type scene_type) {
+    switch (scene_type) {
+        case PRIMITIVE_VERTICES: return new Primitive_Vertices_Scene();
+        case POINTS_LINES: return new Points_Lines_Scene();
+    }
+    return NULL;
+}
+
+/*void Scene::WhoAmI() {
+    wxMessageBox("i am generic\n");
+}*/
+
+void Scene::Set_State_2D() {
+    glDisable(GL_DEPTH_TEST);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, 800, 0, 600);
+}
+
+void Scene::Set_State_3D() {
+
+}
+
+void Scene::Init_Matrix() {
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+}
+
+/***************************** Primitive_Vertices_Scene ******************************/
+/*void Primitive_Vertices_Scene::WhoAmI() {
+wxMessageBox("primitive vertices\n");
+}*/
+
+void Primitive_Vertices_Scene::Set_State() {
+    Set_State_2D();
+}
+
+void Primitive_Vertices_Scene::Generate_Polygons() {
+    Init_Matrix();
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    Create_Shapes();
+
+    glFlush();
+}
+
+void Primitive_Vertices_Scene::Create_Shapes() {
+    Primitive_Vertices();
+}
+
+/***************************** Points_Lines_Scene ******************************/
+/*void Primitive_Vertices_Scene::WhoAmI() {
+    wxMessageBox("primitive vertices\n");
+}*/
+
+void Points_Lines_Scene::Set_State() {
+    Set_State_2D();
+    glEnable(GL_LINE_STIPPLE);
+}
+
+void Points_Lines_Scene::Generate_Polygons() {
+    Init_Matrix();
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    Create_Shapes();
+
+    glFlush();
+}
+
+void Points_Lines_Scene::Create_Shapes() {
+    Various_Points();
+    Various_Lines();
+}
+
+/***************************** Deprecated Code ******************************/
 void Primitive_Vertices() {
     glColor3f(1, 1, 1);
 
