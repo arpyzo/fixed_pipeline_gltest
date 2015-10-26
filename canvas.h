@@ -66,8 +66,8 @@ class Canvas : public wxGLCanvas {
 
 		void Clear_Screen();
 		//void Vertices_Test();
-		void Points_Lines();
-		void Cube_Static();
+		//void Points_Lines();
+		//void Cube_Static();
 		void Cube_Rotate();
 		void Pyramid_Rotate();
 		void Multi_Rotate();

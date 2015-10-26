@@ -2,8 +2,7 @@
 
 // TODO: Enhance camera rotation performance
 
-Camera::Camera()
-{
+Camera::Camera() {
     orig_pos[0] = 0;
     orig_pos[1] = 0;
     orig_pos[2] = 300;
@@ -21,10 +20,8 @@ Camera::Camera()
 /*********/
 /* Reset */
 /*********/
-void Camera::Reset()
-{
-    for (int count = 0; count < 3; count++)
-    {
+void Camera::Reset() {
+    for (int count = 0; count < 3; count++) {
         cur_pos[count] = orig_pos[count];
         cur_top[count] = orig_top[count];
     }
@@ -40,8 +37,7 @@ void Camera::Reset()
     cur_twist_vec[2] = 0;
 }
 
-void Camera::Set_Viewport(int viewsize_x, int viewsize_y)
-{
+void Camera::Set_Viewport(int viewsize_x, int viewsize_y) {
     viewcenter_x = ((float)viewsize_x - 1) / 2;
     viewcenter_y = ((float)viewsize_y - 1) / 2;
 }
@@ -49,8 +45,7 @@ void Camera::Set_Viewport(int viewsize_x, int viewsize_y)
 /****************/
 /* Get_Rotation */
 /****************/
-void Camera::Get_Rotation(float *rot_angle, float rot_vec[3])
-{
+void Camera::Get_Rotation(float *rot_angle, float rot_vec[3]) {
     *rot_angle = cur_angle;
     rot_vec[0] = cur_rot_vec[0];
     rot_vec[1] = cur_rot_vec[1];
@@ -60,8 +55,7 @@ void Camera::Get_Rotation(float *rot_angle, float rot_vec[3])
 /*************/
 /* Get_Twist */
 /*************/
-void Camera::Get_Twist(float *rot_angle)
-{
+void Camera::Get_Twist(float *rot_angle) {
     *rot_angle = cur_twist;
 
     if (!Vec_Opposite(cur_twist_vec, cur_pos))
@@ -71,10 +65,8 @@ void Camera::Get_Twist(float *rot_angle)
 /****************/
 /* Get_Location */
 /****************/
-void Camera::Get_Location(float pos[3], float top[3])
-{
-    for (int count = 0; count < 3; count++)
-    {
+void Camera::Get_Location(float pos[3], float top[3]) {
+    for (int count = 0; count < 3; count++) {
         pos[count] = cur_pos[count];
         top[count] = cur_top[count];
     }
@@ -83,8 +75,7 @@ void Camera::Get_Location(float pos[3], float top[3])
 /*******************/
 /* Calc_Rot_Angles */
 /*******************/
-void Camera::Calc_Rot_Angles()
-{
+void Camera::Calc_Rot_Angles() {
     float camera_top_vec[3], untwist_top_vec[3], full_rot_dir[3];
     int count;
 
@@ -97,8 +88,7 @@ void Camera::Calc_Rot_Angles()
     Normalize_Vec(cur_rot_vec);
     //  Debug_Vec("Unreversed full rotation", cur_rot_vec);
 
-    for (count = 0; count < 3; count++)
-    {
+    for (count = 0; count < 3; count++) {
         untwist_top_vec[count] = orig_top[count];
         camera_top_vec[count] = cur_top[count] - cur_pos[count];
     }
@@ -122,8 +112,7 @@ void Camera::Calc_Rot_Angles()
 /********************/
 /* Calc_Twist_Angle */
 /********************/
-float Camera::Calc_Twist_Angle(int start_x, int start_y, int end_x, int end_y)
-{
+float Camera::Calc_Twist_Angle(int start_x, int start_y, int end_x, int end_y) {
     float start_vec[2], end_vec[2];
 
     start_vec[0] = viewcenter_x - (float)start_x;
@@ -137,51 +126,44 @@ float Camera::Calc_Twist_Angle(int start_x, int start_y, int end_x, int end_y)
 /*************/
 /* Transform */
 /*************/
-void Camera::Transform(float flat_x, float flat_y)
-{
+void Camera::Transform(float flat_x, float flat_y) {
     float camera_top_vec[3], camera_right_vec[3];
     float inc_rot_vec[3], inc_rot_dir[3], inc_rot_angle;
     int count;
 
     // 1st obtain new positions
-    if (flat_x == 0)
-    {
-        if (flat_y == 0)  // Nothing to be done
+    if (flat_x == 0) {
+        if (flat_y == 0) {  // Nothing to be done
             return;
-        else if (flat_y > 0)
-        {
-            for (count = 0; count < 3; count++)
+        } else if (flat_y > 0) {
+            for (count = 0; count < 3; count++) {
                 inc_rot_dir[count] = cur_top[count] - cur_pos[count];
-        }
-        else
-        {
-            for (count = 0; count < 3; count++)
+            }
+        } else {
+            for (count = 0; count < 3; count++) {
                 inc_rot_dir[count] = cur_pos[count] - cur_top[count];
+            }
         }
         //  Debug_Vec("Up or down only rotation direction", camera_top_vec);
-    }
-    else if (flat_y == 0)
-    {
-        if (flat_x > 0)
-        {
-            for (count = 0; count < 3; count++)
+    } else if (flat_y == 0) {
+        if (flat_x > 0) {
+            for (count = 0; count < 3; count++) {
                 camera_top_vec[count] = cur_top[count] - cur_pos[count];
+            }
             //    Debug_Vec("Pre normalized camera top", camera_top_vec);
-        }
-        else
-        {
-            for (count = 0; count < 3; count++)
+        } else {
+            for (count = 0; count < 3; count++) {
                 camera_top_vec[count] = cur_pos[count] - cur_top[count];
+            }
             //    Debug_Vec("Pre normalized reverse camera top", camera_top_vec);
         }
 
         Cross_Product(camera_top_vec, cur_pos, inc_rot_dir);
         //  Debug_Vec("Left or right only rotation direction", inc_rot_dir);
-    }
-    else
-    {
-        for (count = 0; count < 3; count++)
+    } else {
+        for (count = 0; count < 3; count++) {
             camera_top_vec[count] = cur_top[count] - cur_pos[count];
+        }
         //  Debug_Vec("Pre normalized camera top", camera_top_vec);
 
         Cross_Product(camera_top_vec, cur_pos, camera_right_vec);
@@ -221,12 +203,12 @@ void Camera::Transform(float flat_x, float flat_y)
 /*********/
 /* Twist */
 /*********/
-void Camera::Twist(float twist_angle)
-{
+void Camera::Twist(float twist_angle) {
     float twist_vec[3];
 
-    if (!twist_angle)
+    if (!twist_angle) {
         return;
+    }
 
     twist_vec[0] = cur_pos[0];
     twist_vec[1] = cur_pos[1];

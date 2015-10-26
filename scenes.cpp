@@ -5,13 +5,19 @@ Scene *Scene::Create_Scene(Scene_Type scene_type) {
     switch (scene_type) {
         case PRIMITIVE_VERTICES: return new Primitive_Vertices_Scene();
         case POINTS_LINES: return new Points_Lines_Scene();
+        case CUBE_STATIC: return new Cube_Static_Scene();
+        case CUBE_ROTATE: return new Cube_Rotate_Scene();
+        case PYRAMID_ROTATE: return new Pyramid_Rotate_Scene();
+        case MULTI_ROTATE: return new Multi_Rotate_Scene();
+        case CUBE_CONTROL: return new Cube_Control_Scene();
+        case AMBIENT_LIGHT_ROTATE: return new Ambient_Light_Rotate_Scene();
+        case ROTATE_LIGHT_CONTROL: return new Rotate_Light_Control_Scene();
+        case FIXED_LIGHT_CONTROL: return new Fixed_Light_Control_Scene();
+        case MATERIALS_CONTROL: return new Materials_Control_Scene();
+        case BLEND_CONTROL: return new Blend_Control_Scene();
     }
     return NULL;
 }
-
-/*void Scene::WhoAmI() {
-    wxMessageBox("i am generic\n");
-}*/
 
 void Scene::Set_State_2D() {
     glDisable(GL_DEPTH_TEST);
@@ -21,7 +27,23 @@ void Scene::Set_State_2D() {
 }
 
 void Scene::Set_State_3D() {
+    glEnable(GL_DEPTH_TEST);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-400, 400, -300, 300, 100, 900);
+}
 
+void Scene::Set_State_Lit() {
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+
+    GLfloat ambient_light[] = { 0.4, 0.4, 0.4, 1 };
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient_light);
+}
+
+void Scene::Set_State_Blend() {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Scene::Init_Matrix() {
@@ -30,10 +52,6 @@ void Scene::Init_Matrix() {
 }
 
 /***************************** Primitive_Vertices_Scene ******************************/
-/*void Primitive_Vertices_Scene::WhoAmI() {
-wxMessageBox("primitive vertices\n");
-}*/
-
 void Primitive_Vertices_Scene::Set_State() {
     Set_State_2D();
 }
@@ -52,10 +70,6 @@ void Primitive_Vertices_Scene::Create_Shapes() {
 }
 
 /***************************** Points_Lines_Scene ******************************/
-/*void Primitive_Vertices_Scene::WhoAmI() {
-    wxMessageBox("primitive vertices\n");
-}*/
-
 void Points_Lines_Scene::Set_State() {
     Set_State_2D();
     glEnable(GL_LINE_STIPPLE);
@@ -73,6 +87,368 @@ void Points_Lines_Scene::Generate_Polygons() {
 void Points_Lines_Scene::Create_Shapes() {
     Various_Points();
     Various_Lines();
+}
+
+/***************************** Cube_Static_Scene ******************************/
+void Cube_Static_Scene::Set_State() {
+    Set_State_3D();
+}
+
+void Cube_Static_Scene::Generate_Polygons() {
+    Init_Matrix();
+    glTranslatef(0, 0, -300);
+    glRotatef(45, 1, 0, 0);
+    glRotatef(45, 0, -1, 0);
+
+    //  gluLookAt(300, 300, 300, 0, 0, 0, -1, 1, -1);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    Create_Shapes();
+
+    glFlush();
+}
+
+void Cube_Static_Scene::Create_Shapes() {
+    Primitive_Cube();
+}
+
+/***************************** Cube_Rotate_Scene ******************************/
+float Cube_Rotate_Scene::Get_Animation_Angle() {
+    return animation_angle;
+}
+
+void Cube_Rotate_Scene::Set_Animation_Angle(float animation_angle) {
+    this->animation_angle = animation_angle;
+}
+
+void Cube_Rotate_Scene::Set_State() {
+    Set_State_3D();
+}
+
+void Cube_Rotate_Scene::Generate_Polygons() {
+    Init_Matrix();
+    glTranslatef(0, 0, -300);
+    glRotatef(animation_angle, 1, 1, 1);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    Create_Shapes();
+
+    glFlush();
+}
+
+void Cube_Rotate_Scene::Create_Shapes() {
+    Primitive_Cube();
+}
+
+/***************************** Pyramid_Rotate_Scene ******************************/
+float Pyramid_Rotate_Scene::Get_Animation_Angle() {
+    return animation_angle;
+}
+
+void Pyramid_Rotate_Scene::Set_Animation_Angle(float animation_angle) {
+    this->animation_angle = animation_angle;
+}
+
+void Pyramid_Rotate_Scene::Set_State() {
+    Set_State_3D();
+}
+
+void Pyramid_Rotate_Scene::Generate_Polygons() {
+    Init_Matrix();
+    glTranslatef(0, 0, -300);
+    glRotatef(animation_angle, 1, 1, 1);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    Create_Shapes();
+
+    glFlush();
+}
+
+void Pyramid_Rotate_Scene::Create_Shapes() {
+    Interleaved_Pyramid();
+}
+
+/***************************** Multi_Rotate_Scene ******************************/
+float Multi_Rotate_Scene::Get_Animation_Angle() {
+    return animation_angle;
+}
+
+void Multi_Rotate_Scene::Set_Animation_Angle(float animation_angle) {
+    this->animation_angle = animation_angle;
+}
+
+void Multi_Rotate_Scene::Set_State() {
+    Set_State_3D();
+}
+
+void Multi_Rotate_Scene::Generate_Polygons() {
+    Init_Matrix();
+    glTranslatef(0, 0, -300);
+    glRotatef(animation_angle, 1, 1, 1);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    Create_Shapes();
+
+    glFlush();
+}
+
+void Multi_Rotate_Scene::Create_Shapes() {
+    glPushMatrix();
+    glTranslatef(-150, 0, 0);
+    Interleaved_Cube(100);
+
+    glPopMatrix();
+    glTranslatef(150, 0, 0);
+    Interleaved_Pyramid();
+}
+
+/***************************** Cube_Control_Scene ******************************/
+void Cube_Control_Scene::Set_Camera(Camera *camera) {
+    this->camera = camera;
+}
+
+void Cube_Control_Scene::Set_State() {
+    Set_State_3D();
+}
+
+void Cube_Control_Scene::Generate_Polygons() {
+    Init_Matrix();
+    glTranslatef(0, 0, -300);
+
+    float pos[3], top[3];
+    camera->Get_Location(pos, top);
+    gluLookAt(pos[0], pos[1], pos[2], 0, 0, 0, top[0] - pos[0], top[1] - pos[1], top[2] - pos[2]);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    Create_Shapes();
+
+    glFlush();
+}
+
+void Cube_Control_Scene::Create_Shapes() {
+    Primitive_Cube();
+}
+
+/***************************** Ambient_Light_Rotate_Scene ******************************/
+void Ambient_Light_Rotate_Scene::Set_RGB_Frame(RGB_Frame *rgb_win) {
+    this->rgb_win = rgb_win;
+}
+
+float Ambient_Light_Rotate_Scene::Get_Animation_Angle() {
+    return animation_angle;
+}
+
+void Ambient_Light_Rotate_Scene::Set_Animation_Angle(float animation_angle) {
+    this->animation_angle = animation_angle;
+}
+
+void Ambient_Light_Rotate_Scene::Set_State() {
+    Set_State_3D();
+    Set_State_Lit();
+}
+
+void Ambient_Light_Rotate_Scene::Generate_Polygons() {
+    Init_Matrix();
+    glTranslatef(0, 0, -300);
+    glRotatef(animation_angle, 1, 1, 1);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    float ambient_light[4];
+    rgb_win->Get_Values(ambient_light);
+    //  wxMessageBox(wxString::Format("R - %.2f\nG - %.2f\nB - %.2f\nA - %.2f\n", ambient_light[0], ambient_light[1], ambient_light[2], ambient_light[3]));
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, (GLfloat *)ambient_light);
+
+    GLfloat light_pos[] = { 200, -200, 200, 0 };
+    glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
+
+    Create_Shapes();
+
+    glFlush();
+}
+
+void Ambient_Light_Rotate_Scene::Create_Shapes() {
+    glutSolidSphere(100, 50, 50);
+}
+
+/***************************** Rotate_Light_Control_Scene ******************************/
+void Rotate_Light_Control_Scene::Set_Camera(Camera *camera) {
+    this->camera = camera;
+}
+
+void Rotate_Light_Control_Scene::Set_State() {
+    Set_State_3D();
+    Set_State_Lit();
+
+    Prep_Spheres(&spheres_list);
+}
+
+void Rotate_Light_Control_Scene::Generate_Polygons() {
+    Init_Matrix();
+    glTranslatef(0, 0, -300);
+
+    float pos[3], top[3];
+    camera->Get_Location(pos, top);
+    gluLookAt(pos[0], pos[1], pos[2], 0, 0, 0, top[0] - pos[0], top[1] - pos[1], top[2] - pos[2]);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    GLfloat light_pos[] = { 200, 200, 200, 0 };
+    glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
+
+    Create_Shapes();
+
+    glFlush();
+}
+
+void Rotate_Light_Control_Scene::Create_Shapes() {
+    glCallList(spheres_list);
+}
+
+/***************************** Fixed_Light_Control_Scene ******************************/
+void Fixed_Light_Control_Scene::Set_Camera(Camera *camera) {
+    this->camera = camera;
+}
+
+void Fixed_Light_Control_Scene::Set_State() {
+    Set_State_3D();
+    Set_State_Lit();
+
+    Prep_Spheres(&spheres_list);
+}
+
+void Fixed_Light_Control_Scene::Generate_Polygons() {
+    Init_Matrix();
+    glTranslatef(0, 0, -300);
+
+    float pos[3], top[3];
+    camera->Get_Location(pos, top);
+    gluLookAt(pos[0], pos[1], pos[2], 0, 0, 0, top[0] - pos[0], top[1] - pos[1], top[2] - pos[2]);
+
+    GLfloat light_pos[] = { 200, 200, 200, 0 };
+    glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    Create_Shapes();
+
+    glFlush();
+}
+
+void Fixed_Light_Control_Scene::Create_Shapes() {
+    glCallList(spheres_list);
+}
+
+/***************************** Materials_Control_Scene ******************************/
+void Materials_Control_Scene::Set_Camera(Camera *camera) {
+    this->camera = camera;
+}
+
+void Materials_Control_Scene::Set_State() {
+    Set_State_3D();
+    Set_State_Lit();
+
+    Prep_Spheres(&spheres_list);
+}
+
+void Materials_Control_Scene::Generate_Polygons() {
+    Init_Matrix();
+    glTranslatef(0, 0, -300);
+
+    float pos[3], top[3];
+    camera->Get_Location(pos, top);
+    gluLookAt(pos[0], pos[1], pos[2], 0, 0, 0, top[0] - pos[0], top[1] - pos[1], top[2] - pos[2]);
+
+    GLfloat light_pos[] = { 200, 200, 200, 0 };
+    glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    Create_Shapes();
+
+    // TODO: Implement materials
+
+    glFlush();
+}
+
+void Materials_Control_Scene::Create_Shapes() {
+    glCallList(spheres_list);
+}
+
+/***************************** Blend_Control_Scene ******************************/
+void Blend_Control_Scene::Set_Camera(Camera *camera) {
+    this->camera = camera;
+}
+
+void Blend_Control_Scene::Set_State() {
+    Set_State_3D();
+    Set_State_Blend();
+
+    Prep_Spheres(&spheres_list);
+}
+
+void Blend_Control_Scene::Generate_Polygons() {
+    Init_Matrix();
+    glTranslatef(0, 0, -300);
+
+    float pos[3], top[3];
+    camera->Get_Location(pos, top);
+    gluLookAt(pos[0], pos[1], pos[2], 0, 0, 0, top[0] - pos[0], top[1] - pos[1], top[2] - pos[2]);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    Create_Shapes();
+
+    glFlush();
+}
+
+void Blend_Control_Scene::Create_Shapes() {
+    Interleaved_Cube(200);
+
+    glDepthMask(GL_FALSE);
+
+    glPushMatrix();
+    glTranslatef(250, 0, 0);
+    glColor4f(1, 0, 0, 0.25);
+    glutSolidSphere(100, 30, 30);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0, 250, 0);
+    glColor4f(0, 1, 0, 0.25);
+    glutSolidSphere(100, 30, 30);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0, 0, 250);
+    glColor4f(0, 0, 1, 0.25);
+    glutSolidSphere(100, 30, 30);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-250, 0, 0);
+    glColor4f(1, 1, 0, 0.25);
+    glutSolidSphere(100, 30, 30);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0, -250, 0);
+    glColor4f(0, 1, 1, 0.25);
+    glutSolidSphere(100, 30, 30);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0, 0, -250);
+    glColor4f(1, 0, 1, 0.25);
+    glutSolidSphere(100, 30, 30);
+    glPopMatrix();
+
+    glDepthMask(GL_TRUE);
 }
 
 /***************************** Deprecated Code ******************************/

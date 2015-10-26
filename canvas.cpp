@@ -61,42 +61,59 @@ void Canvas::Control(display_enum new_display)
 /* Canvas Events */
 /*****************/
 void Canvas::Event_Paint(wxPaintEvent &WXUNUSED(event)) {
-    //Scene *my_scene;// = Scene::Create_Scene(Scene::PRIMITIVE_VERTICES);
-    //my_scene->WhoAmI();
-
-    switch(current_display)
-  { case TRANSITION: Clear_Screen();
-      break;
-    case VERTICES: //Vertices_Test();
-        //my_scene = Scene::Create_Scene(Scene::PRIMITIVE_VERTICES);
-        scene->Generate_Polygons();
-        SwapBuffers();
-      break;
-    case POINTS_LINES: //Points_Lines();
-        scene->Generate_Polygons();
-        SwapBuffers();
-      break;
-    case CUBE_STATIC: Cube_Static();
-      break;
-    case CUBE_ROTATE: Cube_Rotate();
-      break;
-    case PYRAMID_ROTATE: Pyramid_Rotate();
-      break;
-    case MULTI_ROTATE: Multi_Rotate();
-      break;
-    case CUBE_CONTROL: Cube_Control();
-      break;
-    case AMBIENT_LIGHT_ROTATE: Ambient_Light_Rotate();
-      break;
-    case ROTATE_LIGHT_CONTROL: Simple_Light_Control(false);
-      break;
-    case FIXED_LIGHT_CONTROL: Simple_Light_Control(true);
-      break;
-    case MATERIALS_CONTROL: Materials_Control();
-      break;
-    case BLEND_CONTROL: Blending_Control();
-      break;
-    default: Cube_Static();
+    switch (current_display) {
+        case TRANSITION: 
+            Clear_Screen();
+            break;
+        case VERTICES: //Vertices_Test();
+            scene->Generate_Polygons();
+            SwapBuffers();
+            break;
+        case POINTS_LINES: //Points_Lines();
+            scene->Generate_Polygons();
+            SwapBuffers();
+            break;
+        case CUBE_STATIC: //Cube_Static();
+            scene->Generate_Polygons();
+            SwapBuffers();
+            break;
+        case CUBE_ROTATE: //Cube_Rotate();
+            scene->Generate_Polygons();
+            SwapBuffers();
+            break;
+        case PYRAMID_ROTATE: //Pyramid_Rotate();
+            scene->Generate_Polygons();
+            SwapBuffers();
+            break;
+        case MULTI_ROTATE: //Multi_Rotate();
+            scene->Generate_Polygons();
+            SwapBuffers();
+            break;
+        case CUBE_CONTROL: //Cube_Control();
+            scene->Generate_Polygons();
+            SwapBuffers();
+            break;
+        case AMBIENT_LIGHT_ROTATE: //Ambient_Light_Rotate();
+            scene->Generate_Polygons();
+            SwapBuffers();
+            break;
+        case ROTATE_LIGHT_CONTROL: //Simple_Light_Control(false);
+            scene->Generate_Polygons();
+            SwapBuffers();
+            break;
+        case FIXED_LIGHT_CONTROL: //Simple_Light_Control(true);
+            scene->Generate_Polygons();
+            SwapBuffers();
+            break;
+        case MATERIALS_CONTROL: //Materials_Control();
+            scene->Generate_Polygons();
+            SwapBuffers();
+            break;
+        case BLEND_CONTROL: //Blending_Control();
+            scene->Generate_Polygons();
+            SwapBuffers();
+            break;
+        //default: Cube_Static();
   }
 }
 
@@ -218,12 +235,17 @@ void Canvas::Event_Test_Timer(wxTimerEvent &WXUNUSED(event))
   }
 }
 
-void Canvas::Event_Animation_Timer(wxTimerEvent &WXUNUSED(event))
-{ animation_angle++;
-  if (animation_angle > 360)
-    animation_angle = 0;
+void Canvas::Event_Animation_Timer(wxTimerEvent &WXUNUSED(event)) {
+    //float anim_angle = scene->Get_Animation_Angle();
+    
+    animation_angle++;
+    if (animation_angle > 360) {
+        animation_angle = 0;
+    }
 
-  Refresh();
+    scene->Set_Animation_Angle(animation_angle);
+
+    Refresh();
 }
 
 void Canvas::Event_Control_Timer(wxTimerEvent &WXUNUSED(event))
@@ -291,44 +313,59 @@ void Canvas::Init_Display(display_enum new_display) {
         case VERTICES: 
             scene = Scene::Create_Scene(Scene::PRIMITIVE_VERTICES);
             scene->Set_State();
-            //Set_State(STATE_2D);
             break;
         case POINTS_LINES: 
             scene = Scene::Create_Scene(Scene::POINTS_LINES);
             scene->Set_State();
-            //Set_State(STATE_2D);
-            //glEnable(GL_LINE_STIPPLE);
             break;
-    case CUBE_STATIC: Set_State(STATE_3D);
-      break;
-    case CUBE_ROTATE: Set_State(STATE_3D);
-      break;
-    case PYRAMID_ROTATE: Set_State(STATE_3D);
-      break;
-    case MULTI_ROTATE: Set_State(STATE_3D);
-      break;
-    case CUBE_CONTROL: Set_State(STATE_3D);
-      break;
-    case AMBIENT_LIGHT_ROTATE: Set_State(STATE_3D);
-      Set_State(STATE_LIT);
-      rgb_win->Show(TRUE);
-      break;
-    case ROTATE_LIGHT_CONTROL: Set_State(STATE_3D);
-      Set_State(STATE_LIT);
-      Prep_Spheres(&spheres_list);
-      break;
-    case FIXED_LIGHT_CONTROL: Set_State(STATE_3D);
-      Set_State(STATE_LIT);
-      Prep_Spheres(&spheres_list);
-      break;
-    case MATERIALS_CONTROL: Set_State(STATE_3D);
-      Set_State(STATE_LIT);
-      Prep_Spheres(&spheres_list);
-      break;
-    case BLEND_CONTROL: Set_State(STATE_3D);
-      Set_State(STATE_BLEND);
-      break;
-  }
+        case CUBE_STATIC:
+            scene = Scene::Create_Scene(Scene::CUBE_STATIC);
+            scene->Set_State();
+            break;
+        case CUBE_ROTATE:
+            scene = Scene::Create_Scene(Scene::CUBE_ROTATE);
+            scene->Set_State();
+            break;
+        case PYRAMID_ROTATE:
+            scene = Scene::Create_Scene(Scene::PYRAMID_ROTATE);
+            scene->Set_State();
+            break;
+        case MULTI_ROTATE:
+            scene = Scene::Create_Scene(Scene::MULTI_ROTATE);
+            scene->Set_State();
+            break;
+        case CUBE_CONTROL:
+            scene = Scene::Create_Scene(Scene::CUBE_CONTROL);
+            scene->Set_State();
+            scene->Set_Camera(camera);
+            break;
+        case AMBIENT_LIGHT_ROTATE: 
+            scene = Scene::Create_Scene(Scene::AMBIENT_LIGHT_ROTATE);
+            scene->Set_State();
+            scene->Set_RGB_Frame(rgb_win);
+            rgb_win->Show(TRUE);
+            break;
+        case ROTATE_LIGHT_CONTROL:
+            scene = Scene::Create_Scene(Scene::ROTATE_LIGHT_CONTROL);
+            scene->Set_State();
+            scene->Set_Camera(camera);
+            break;
+        case FIXED_LIGHT_CONTROL:
+            scene = Scene::Create_Scene(Scene::FIXED_LIGHT_CONTROL);
+            scene->Set_State();
+            scene->Set_Camera(camera);
+            break;
+        case MATERIALS_CONTROL:
+            scene = Scene::Create_Scene(Scene::MATERIALS_CONTROL);
+            scene->Set_State();
+            scene->Set_Camera(camera);
+            break;
+        case BLEND_CONTROL:
+            scene = Scene::Create_Scene(Scene::BLEND_CONTROL);
+            scene->Set_State();
+            scene->Set_Camera(camera);
+            break;
+    }
 }
 
 /*****************/
@@ -466,9 +503,9 @@ void Canvas::Clear_Screen()
 }*/
 
 /*************/
-/* Cube_Test */
+/* Cube_Static */
 /*************/
-void Canvas::Cube_Static()
+/*void Canvas::Cube_Static()
 { wxPaintDC dc(this);
 
   glMatrixMode(GL_MODELVIEW);
@@ -485,12 +522,12 @@ void Canvas::Cube_Static()
 
   glFlush();
   SwapBuffers();
-}
+}*/
 
 /***************/
 /* Cube_Rotate */
 /***************/
-void Canvas::Cube_Rotate()
+/*void Canvas::Cube_Rotate()
 { wxPaintDC dc(this);
 
   glMatrixMode(GL_MODELVIEW);
@@ -504,12 +541,12 @@ void Canvas::Cube_Rotate()
 
   glFlush();
   SwapBuffers();
-}
+}*/
 
 /******************/
 /* Pyramid_Rotate */
 /******************/
-void Canvas::Pyramid_Rotate()
+/*void Canvas::Pyramid_Rotate()
 { wxPaintDC dc(this);
 
   glMatrixMode(GL_MODELVIEW);
@@ -523,12 +560,12 @@ void Canvas::Pyramid_Rotate()
 
   glFlush();
   SwapBuffers();
-}
+}*/
 
 /****************/
 /* Multi_Rotate */
 /****************/
-void Canvas::Multi_Rotate()
+/*void Canvas::Multi_Rotate()
 { wxPaintDC dc(this);
 
   glMatrixMode(GL_MODELVIEW);
@@ -548,12 +585,12 @@ void Canvas::Multi_Rotate()
 
   glFlush();
   SwapBuffers();
-}
+}*/
 
 /****************/
 /* Cube_Control */
 /****************/
-void Canvas::Cube_Control()
+/*void Canvas::Cube_Control()
 { wxPaintDC dc(this);
 //  float rot_vec[3], rot_angle;
   float pos[3], top[3];
@@ -561,16 +598,16 @@ void Canvas::Cube_Control()
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   glTranslatef(0, 0, -300);
-/*
-  camera->Get_Twist(&rot_angle);
-//Debug_Angle("Main.cpp twist", rot_angle);
-  glRotatef(rot_angle, 0, 0, 1);
 
-  camera->Get_Rotation(&rot_angle, rot_vec);
+//camera->Get_Twist(&rot_angle);
+//Debug_Angle("Main.cpp twist", rot_angle);
+//glRotatef(rot_angle, 0, 0, 1);
+
+//camera->Get_Rotation(&rot_angle, rot_vec);
 //Debug_Angle("Main.cpp rotation", rot_angle);
 //Debug_Vec("Main.cpp rotation", rot_vec);
-  glRotatef(rot_angle, rot_vec[0], rot_vec[1], rot_vec[2]);
-*/
+//glRotatef(rot_angle, rot_vec[0], rot_vec[1], rot_vec[2]);
+
   camera->Get_Location(pos, top);
   gluLookAt(pos[0], pos[1], pos[2], 0, 0, 0, top[0]-pos[0], top[1]-pos[1], top[2]-pos[2]);
 
@@ -580,12 +617,12 @@ void Canvas::Cube_Control()
 
   glFlush();
   SwapBuffers();
-}
+}*/
 
 /************************/
 /* Ambient_Light_Rotate */
 /************************/
-void Canvas::Ambient_Light_Rotate()
+/*void Canvas::Ambient_Light_Rotate()
 { wxPaintDC dc(this);
   GLfloat light_pos[] = {200, -200, 200, 0};
   float ambient_light[4];
@@ -605,13 +642,13 @@ void Canvas::Ambient_Light_Rotate()
 
   glFlush();
   SwapBuffers();
-}
+}*/
 
 
 /************************/
 /* Simple_Light_Control */
 /************************/
-void Canvas::Simple_Light_Control(bool fixed_light)
+/*void Canvas::Simple_Light_Control(bool fixed_light)
 { wxPaintDC dc(this);
   GLfloat light_pos[] = {200, 200, 200, 0};
   float pos[3], top[3];
@@ -632,24 +669,24 @@ void Canvas::Simple_Light_Control(bool fixed_light)
     glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
 
 // Replace this section with a display list
-/*  glPushMatrix();
-  glTranslatef(-100, 0, 0);
-  glutSolidSphere(50, 20, 20); 
-  glPopMatrix();
+  //glPushMatrix();
+  //glTranslatef(-100, 0, 0);
+  //glutSolidSphere(50, 20, 20); 
+  //glPopMatrix();
 
-  glTranslatef(100, 0, 0);
-  glutSolidSphere(50, 20, 20);*/
+  //glTranslatef(100, 0, 0);
+  //glutSolidSphere(50, 20, 20);
 
   glCallList(spheres_list);
 
   glFlush();
   SwapBuffers();
-}
+}*/
 
 /*********************/
 /* Materials_Control */
 /*********************/
-void Canvas::Materials_Control()
+/*void Canvas::Materials_Control()
 { wxPaintDC dc(this);
   GLfloat light_pos[] = {200, 200, 200, 0};
   float pos[3], top[3];
@@ -671,12 +708,12 @@ void Canvas::Materials_Control()
   SwapBuffers();
 
   // TODO: Make this work
-}
+}*/
 
 /********************/
 /* Blending_Control */
 /********************/
-void Canvas::Blending_Control()
+/*void Canvas::Blending_Control()
 { wxPaintDC dc(this);
   float pos[3], top[3];
 
@@ -734,4 +771,4 @@ void Canvas::Blending_Control()
 
   glFlush();
   SwapBuffers();
-}
+}*/
