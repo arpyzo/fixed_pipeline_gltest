@@ -7,7 +7,7 @@ BEGIN_EVENT_TABLE(Canvas, wxGLCanvas)
     EVT_PAINT            (Canvas::Event_Paint)
     EVT_ERASE_BACKGROUND (Canvas::Event_Erase_Background)
     EVT_MOUSE_EVENTS     (Canvas::Event_Mouse)
-    EVT_TIMER            (TIMER_TEST,      Canvas::Event_Test_Timer)
+    //EVT_TIMER            (TIMER_TEST,      Canvas::Event_Test_Timer)
     EVT_TIMER            (TIMER_ANIMATION, Canvas::Event_Animation_Timer)
     EVT_TIMER            (TIMER_CONTROL,   Canvas::Event_Control_Timer)
 END_EVENT_TABLE()
@@ -19,7 +19,7 @@ Canvas::Canvas(wxWindow *parent)
 
     rgb_win = new RGB_Frame(this);
 
-    test_timer = new wxTimer(this, TIMER_TEST);
+    //test_timer = new wxTimer(this, TIMER_TEST);
     animation_timer = new wxTimer(this, TIMER_ANIMATION);
     control_timer = new wxTimer(this, TIMER_CONTROL);
 
@@ -136,37 +136,43 @@ void Canvas::Event_Mouse(wxMouseEvent &event)
     return;
 
   if(event.LeftDown() && !right_drag)
-  { test_timer->Stop();
+  { //test_timer->Stop();
     control_timer->Stop();
     SetCursor(wxCursor("GRIPPING_HAND_CURSOR"));
     left_drag = true;
     prev_x = event.GetX();
     prev_y = event.GetY();
   }
-  else if (event.LeftUp() && !right_drag)
+  else if (event.LeftUp() && !right_drag) // Camera orbiting the scene
   { SetCursor(wxCursor("OPEN_HAND_CURSOR"));
     left_drag = false;
-    animation_x = event.GetX();
-    animation_y = event.GetY();
-    animation_angle = 0;
-    test_timer->Start(25, true);
+    animation_x = event.GetX(); // Needs renamed - this is mouse_x_start
+    animation_y = event.GetY(); // (wxPoint GetPosition)
+    //animation_angle = 0; // This var indicates camera is orbiting
+    //test_timer->Start(25, true);
+    wxMilliSleep(25);
+    // Do stuff that test_timer currently does
+    Get_Orbit_Animation_Speed();
   }
 
   if(event.RightDown() && !left_drag)
-  { test_timer->Stop();
+  { //test_timer->Stop();
     control_timer->Stop();
     SetCursor(wxCursor("POINTING_HAND_CURSOR"));
     right_drag = true;
     prev_x = event.GetX();
     prev_y = event.GetY();
   }
-  else if (event.RightUp() && !left_drag)
+  else if (event.RightUp() && !left_drag) // Camera stationary and spinning
   { SetCursor(wxCursor("OPEN_HAND_CURSOR"));
     right_drag = false;
     animation_x = event.GetX();
     animation_y = event.GetY();
-    animation_angle = 1;
-    test_timer->Start(25, true);
+    //animation_angle = 1; // This var indicates camera is spinning
+    //test_timer->Start(25, true);
+    wxMilliSleep(25);
+    // Do stuff that test_timer currently does
+    Get_Spin_Animation_Speed();
   }
 
   if (event.Dragging())
@@ -210,20 +216,55 @@ void Canvas::Event_Mouse(wxMouseEvent &event)
     
 }
 
-void Canvas::Event_Test_Timer(wxTimerEvent &WXUNUSED(event))
+void Canvas::Get_Orbit_Animation_Speed() {
+    float mouse_x = (float)(wxGetMousePosition().x - this->GetScreenPosition().x); // (wxPoint GetMousePosition)
+    float mouse_y = (float)(wxGetMousePosition().y - this->GetScreenPosition().y);
+    float move_x = animation_x - mouse_x;
+    float move_y = mouse_y - animation_y;
+
+    if (fabs(move_x) > 2 || fabs(move_y) > 2) {         // Has mouse moved enough to trigger animation
+        animation_x = move_x / 5;
+        animation_y = move_y / 5;
+        animation_angle = 0;
+        camera->Transform(animation_x, animation_y);
+
+        Refresh();
+        control_timer->Start(10);
+    }
+}
+
+void Canvas::Get_Spin_Animation_Speed() {
+    float mouse_x = (float)(wxGetMousePosition().x - this->GetScreenPosition().x); // (wxPoint GetMousePosition)
+    float mouse_y = (float)(wxGetMousePosition().y - this->GetScreenPosition().y);
+    float move_x = animation_x - mouse_x;
+    float move_y = mouse_y - animation_y;
+
+    if (fabs(move_x) > 2 || fabs(move_y) > 2) {         // Has mouse moved enough to trigger animation
+        animation_angle = -camera->Calc_Twist_Angle((int)animation_x, (int)animation_y, (int)mouse_x, (int)mouse_y);
+        if (animation_angle == 0) {
+            return;
+        }
+        camera->Twist(animation_angle);
+
+        Refresh();
+        control_timer->Start(10);
+    }
+}
+
+/*void Canvas::Event_Test_Timer(wxTimerEvent &WXUNUSED(event))
 { float mouse_x = (float)(wxGetMousePosition().x - this->GetScreenPosition().x);
   float mouse_y = (float)(wxGetMousePosition().y - this->GetScreenPosition().y);
   float move_x = animation_x - mouse_x;
   float move_y = mouse_y - animation_y;
 
   if (fabs(move_x) > 2 || fabs(move_y) > 2)         // Has mouse moved enough to trigger animation
-  { if (animation_angle)       // Twist animation
+  { if (animation_angle)        // Twist animation
     { animation_angle = -camera->Calc_Twist_Angle((int)animation_x, (int)animation_y, (int)mouse_x, (int)mouse_y);
       if (animation_angle == 0)
         return;
       camera->Twist(animation_angle);
     }
-    else                  // Rotation animation
+    else                        // Rotation animation
     { animation_x = move_x / 5;
       animation_y = move_y / 5;
       animation_angle = 0;
@@ -233,7 +274,7 @@ void Canvas::Event_Test_Timer(wxTimerEvent &WXUNUSED(event))
     Refresh();
     control_timer->Start(10);
   }
-}
+}*/
 
 void Canvas::Event_Animation_Timer(wxTimerEvent &WXUNUSED(event)) {
     //float anim_angle = scene->Get_Animation_Angle();
@@ -412,10 +453,10 @@ void Canvas::Clean_Display(display_enum old_display)
 /* Set_State */
 /*************/
 void Canvas::Set_State(state_enum new_state)
-{ GLfloat ambient_light[] = {0.4, 0.4, 0.4, 1};
+{ //GLfloat ambient_light[] = {0.4, 0.4, 0.4, 1};
 
   switch(new_state)
-  { case STATE_2D: glDisable(GL_DEPTH_TEST);
+  { /*case STATE_2D: glDisable(GL_DEPTH_TEST);
       glMatrixMode(GL_PROJECTION);
       glLoadIdentity();
       gluOrtho2D(0, 800, 0, 600);
@@ -431,9 +472,9 @@ void Canvas::Set_State(state_enum new_state)
       break;
     case STATE_BLEND: glEnable(GL_BLEND);
       glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-      break;
+      break;*/
     case STATE_ACTION:
-      test_timer->Stop();
+      //test_timer->Stop();
       animation_timer->Stop();
       control_timer->Stop();
       SetCursor(wxCursor("OPEN_HAND_CURSOR"));
@@ -442,7 +483,7 @@ void Canvas::Set_State(state_enum new_state)
       mouse_enabled = true;
       break;
     case STATE_NO_ACTION:
-      test_timer->Stop();
+      //test_timer->Stop();
       animation_timer->Stop();
       control_timer->Stop();
       SetCursor(wxCursor("NO_ACTION_CURSOR"));

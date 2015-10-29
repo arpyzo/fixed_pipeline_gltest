@@ -3,6 +3,7 @@
 
 #include <wx/wx.h>
 #include <wx/glcanvas.h>
+#include <wx/utils.h>
 
 #include "GLUT/glut.h"
 
@@ -55,7 +56,7 @@ class Canvas : public wxGLCanvas {
 		void Event_Paint(wxPaintEvent &event);
 		void Event_Erase_Background(wxEraseEvent &event);
 		void Event_Mouse(wxMouseEvent &event);
-		void Event_Test_Timer(wxTimerEvent &event);
+		//void Event_Test_Timer(wxTimerEvent &event);
 		void Event_Animation_Timer(wxTimerEvent &event);
 		void Event_Control_Timer(wxTimerEvent &event);
 
@@ -65,9 +66,9 @@ class Canvas : public wxGLCanvas {
 		void Set_State(state_enum new_state);  
 
 		void Clear_Screen();
-		//void Vertices_Test();
-		//void Points_Lines();
-		//void Cube_Static();
+		/*void Vertices_Test();
+		void Points_Lines();
+		void Cube_Static();
 		void Cube_Rotate();
 		void Pyramid_Rotate();
 		void Multi_Rotate();
@@ -75,7 +76,7 @@ class Canvas : public wxGLCanvas {
 		void Ambient_Light_Rotate();
 		void Simple_Light_Control(bool fixed_light);
 		void Materials_Control();
-		void Blending_Control();
+		void Blending_Control();*/
 
 	private:
 		wxGLContext *gl_context;
@@ -83,7 +84,7 @@ class Canvas : public wxGLCanvas {
 
 		RGB_Frame *rgb_win;
 
-		wxTimer *test_timer;
+		//wxTimer *test_timer;
 		wxTimer *animation_timer;
 		wxTimer *control_timer;
 		float animation_x, animation_y, animation_angle;
@@ -95,6 +96,9 @@ class Canvas : public wxGLCanvas {
 		int scale_factor;
 
 		GLuint spheres_list;
+
+        void Get_Orbit_Animation_Speed();
+        void Get_Spin_Animation_Speed();
 
   DECLARE_EVENT_TABLE()
 };
