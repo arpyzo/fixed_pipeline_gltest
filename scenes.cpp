@@ -51,6 +51,21 @@ void Scene::Init_Matrix() {
     glLoadIdentity();
 }
 
+/***************************** Animated_Scene ******************************/
+float Animated_Scene::Get_Animation_Angle() {
+    return animation_angle;
+}
+
+void Animated_Scene::Set_Animation_Angle(float animation_angle) {
+    this->animation_angle = animation_angle;
+}
+
+/***************************** Controlable_Scene ******************************/
+void Controllable_Scene::Set_Camera(Camera *camera) {
+    this->camera = camera;
+}
+
+
 /***************************** Primitive_Vertices_Scene ******************************/
 void Primitive_Vertices_Scene::Set_State() {
     Set_State_2D();
@@ -114,13 +129,13 @@ void Cube_Static_Scene::Create_Shapes() {
 }
 
 /***************************** Cube_Rotate_Scene ******************************/
-float Cube_Rotate_Scene::Get_Animation_Angle() {
+/*float Cube_Rotate_Scene::Get_Animation_Angle() {
     return animation_angle;
 }
 
 void Cube_Rotate_Scene::Set_Animation_Angle(float animation_angle) {
     this->animation_angle = animation_angle;
-}
+}*/
 
 void Cube_Rotate_Scene::Set_State() {
     Set_State_3D();
@@ -143,13 +158,13 @@ void Cube_Rotate_Scene::Create_Shapes() {
 }
 
 /***************************** Pyramid_Rotate_Scene ******************************/
-float Pyramid_Rotate_Scene::Get_Animation_Angle() {
+/*float Pyramid_Rotate_Scene::Get_Animation_Angle() {
     return animation_angle;
 }
 
 void Pyramid_Rotate_Scene::Set_Animation_Angle(float animation_angle) {
     this->animation_angle = animation_angle;
-}
+}*/
 
 void Pyramid_Rotate_Scene::Set_State() {
     Set_State_3D();
@@ -172,13 +187,13 @@ void Pyramid_Rotate_Scene::Create_Shapes() {
 }
 
 /***************************** Multi_Rotate_Scene ******************************/
-float Multi_Rotate_Scene::Get_Animation_Angle() {
+/*float Multi_Rotate_Scene::Get_Animation_Angle() {
     return animation_angle;
 }
 
 void Multi_Rotate_Scene::Set_Animation_Angle(float animation_angle) {
     this->animation_angle = animation_angle;
-}
+}*/
 
 void Multi_Rotate_Scene::Set_State() {
     Set_State_3D();
@@ -207,9 +222,9 @@ void Multi_Rotate_Scene::Create_Shapes() {
 }
 
 /***************************** Cube_Control_Scene ******************************/
-void Cube_Control_Scene::Set_Camera(Camera *camera) {
+/*void Cube_Control_Scene::Set_Camera(Camera *camera) {
     this->camera = camera;
-}
+}*/
 
 void Cube_Control_Scene::Set_State() {
     Set_State_3D();
@@ -239,13 +254,13 @@ void Ambient_Light_Rotate_Scene::Set_RGB_Frame(RGB_Frame *rgb_win) {
     this->rgb_win = rgb_win;
 }
 
-float Ambient_Light_Rotate_Scene::Get_Animation_Angle() {
+/*float Ambient_Light_Rotate_Scene::Get_Animation_Angle() {
     return animation_angle;
 }
 
 void Ambient_Light_Rotate_Scene::Set_Animation_Angle(float animation_angle) {
     this->animation_angle = animation_angle;
-}
+}*/
 
 void Ambient_Light_Rotate_Scene::Set_State() {
     Set_State_3D();
@@ -277,9 +292,9 @@ void Ambient_Light_Rotate_Scene::Create_Shapes() {
 }
 
 /***************************** Rotate_Light_Control_Scene ******************************/
-void Rotate_Light_Control_Scene::Set_Camera(Camera *camera) {
+/*void Rotate_Light_Control_Scene::Set_Camera(Camera *camera) {
     this->camera = camera;
-}
+}*/
 
 void Rotate_Light_Control_Scene::Set_State() {
     Set_State_3D();
@@ -311,9 +326,9 @@ void Rotate_Light_Control_Scene::Create_Shapes() {
 }
 
 /***************************** Fixed_Light_Control_Scene ******************************/
-void Fixed_Light_Control_Scene::Set_Camera(Camera *camera) {
+/*void Fixed_Light_Control_Scene::Set_Camera(Camera *camera) {
     this->camera = camera;
-}
+}*/
 
 void Fixed_Light_Control_Scene::Set_State() {
     Set_State_3D();
@@ -345,9 +360,9 @@ void Fixed_Light_Control_Scene::Create_Shapes() {
 }
 
 /***************************** Materials_Control_Scene ******************************/
-void Materials_Control_Scene::Set_Camera(Camera *camera) {
+/*void Materials_Control_Scene::Set_Camera(Camera *camera) {
     this->camera = camera;
-}
+}*/
 
 void Materials_Control_Scene::Set_State() {
     Set_State_3D();
@@ -381,9 +396,9 @@ void Materials_Control_Scene::Create_Shapes() {
 }
 
 /***************************** Blend_Control_Scene ******************************/
-void Blend_Control_Scene::Set_Camera(Camera *camera) {
+/*void Blend_Control_Scene::Set_Camera(Camera *camera) {
     this->camera = camera;
-}
+}*/
 
 void Blend_Control_Scene::Set_State() {
     Set_State_3D();

@@ -57,6 +57,27 @@ class Scene {
         void Set_State_Blend();
 };
 
+/***************************** Animated_Scene ******************************/
+class Animated_Scene : public Scene {
+    public:
+        float Get_Animation_Angle();
+        void Set_Animation_Angle(float animation_angle);
+
+    protected:
+        float animation_angle = 0;
+
+};
+
+/***************************** Controllable_Scene ******************************/
+class Controllable_Scene : public Scene {
+    public:
+        void Set_Camera(Camera *camera);
+
+    protected:
+        Camera *camera;
+};
+
+
 /***************************** Primitive_Vertices_Scene ******************************/
 class Primitive_Vertices_Scene : public Scene {
     public:
@@ -88,69 +109,69 @@ class Cube_Static_Scene : public Scene {
 };
 
 /***************************** Cube_Rotate_Scene ******************************/
-class Cube_Rotate_Scene : public Scene {
+class Cube_Rotate_Scene : public Animated_Scene {
     public:
-        float Get_Animation_Angle();
-        void Set_Animation_Angle(float animation_angle);
+        //float Get_Animation_Angle();
+        //void Set_Animation_Angle(float animation_angle);
 
         void Set_State();
         void Generate_Polygons();
 
     protected:
-        float animation_angle = 0;
+        //float animation_angle = 0;
 
         void Create_Shapes();
 };
 
 /***************************** Pyramid_Rotate_Scene ******************************/
-class Pyramid_Rotate_Scene : public Scene {
+class Pyramid_Rotate_Scene : public Animated_Scene {
     public:
-        float Get_Animation_Angle();
-        void Set_Animation_Angle(float animation_angle);
+        //float Get_Animation_Angle();
+        //void Set_Animation_Angle(float animation_angle);
 
         void Set_State();
         void Generate_Polygons();
 
     protected:
-        float animation_angle = 0;
+        //float animation_angle = 0;
 
         void Create_Shapes();
 };
 
 /***************************** Multi_Rotate_Scene ******************************/
-class Multi_Rotate_Scene : public Scene {
+class Multi_Rotate_Scene : public Animated_Scene {
     public:
-        float Get_Animation_Angle();
-        void Set_Animation_Angle(float animation_angle);
+        //float Get_Animation_Angle();
+        //void Set_Animation_Angle(float animation_angle);
 
         void Set_State();
         void Generate_Polygons();
 
     protected:
-        float animation_angle = 0;
+        //float animation_angle = 0;
 
         void Create_Shapes();
 };
 
 /***************************** Cube_Control_Scene ******************************/
-class Cube_Control_Scene : public Scene {
+class Cube_Control_Scene : public Controllable_Scene {
     public:
-        void Set_Camera(Camera *camera);
+        //void Set_Camera(Camera *camera);
 
         void Set_State();
         void Generate_Polygons();
 
     protected:
-        Camera *camera;
+        //Camera *camera;
 
         void Create_Shapes();
 };
 
 /***************************** Ambient_Light_Rotate_Scene ******************************/
-class Ambient_Light_Rotate_Scene : public Scene {
+class Ambient_Light_Rotate_Scene : public Animated_Scene {
     public:
-        float Get_Animation_Angle();
-        void Set_Animation_Angle(float animation_angle);
+        //float Get_Animation_Angle();
+        //void Set_Animation_Angle(float animation_angle);
 
         void Set_RGB_Frame(RGB_Frame *rgb_win);
 
@@ -158,67 +179,67 @@ class Ambient_Light_Rotate_Scene : public Scene {
         void Generate_Polygons();
 
     protected:
-        float animation_angle = 0;
+        //float animation_angle = 0;
         RGB_Frame *rgb_win;
 
         void Create_Shapes();
 };
 
 /***************************** Rotate_Light_Control_Scene ******************************/
-class Rotate_Light_Control_Scene : public Scene {
+class Rotate_Light_Control_Scene : public Controllable_Scene {
     public:
-        void Set_Camera(Camera *camera);
+        //void Set_Camera(Camera *camera);
 
         void Set_State();
         void Generate_Polygons();
 
     protected:
-        Camera *camera;
+        //Camera *camera;
         GLuint spheres_list;
 
         void Create_Shapes();
 };
 
 /***************************** Fixed_Light_Control_Scene ******************************/
-class Fixed_Light_Control_Scene : public Scene {
+class Fixed_Light_Control_Scene : public Controllable_Scene {
     public:
-        void Set_Camera(Camera *camera);
+        //void Set_Camera(Camera *camera);
 
         void Set_State();
         void Generate_Polygons();
 
     protected:
-        Camera *camera;
+        //Camera *camera;
         GLuint spheres_list;
 
         void Create_Shapes();
 };
 
 /***************************** Materials_Control_Scene ******************************/
-class Materials_Control_Scene : public Scene {
+class Materials_Control_Scene : public Controllable_Scene {
     public:
-        void Set_Camera(Camera *camera);
+        //void Set_Camera(Camera *camera);
 
         void Set_State();
         void Generate_Polygons();
 
     protected:
-        Camera *camera;
+        //Camera *camera;
         GLuint spheres_list;
 
         void Create_Shapes();
 };
 
 /***************************** Blend_Control_Scene ******************************/
-class Blend_Control_Scene : public Scene {
+class Blend_Control_Scene : public Controllable_Scene {
     public:
-        void Set_Camera(Camera *camera);
+        //void Set_Camera(Camera *camera);
 
         void Set_State();
         void Generate_Polygons();
 
     protected:
-        Camera *camera;
+        //Camera *camera;
         GLuint spheres_list;
 
         void Create_Shapes();
