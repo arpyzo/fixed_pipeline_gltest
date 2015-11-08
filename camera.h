@@ -6,6 +6,9 @@
 class Camera {
     public:
         Camera();
+        void Set_Twist_Angle(float angle);
+        void Set_Spin_Vector(float x, float y);
+
         void Reset();
         void Set_Viewport(int viewsize_x, int viewsize_y);
         void Get_Rotation(float *rot_angle, float rot_vec[3]);
@@ -17,6 +20,12 @@ class Camera {
         void Twist(float twist_angle);
 
     private:
+        float twist_angle;
+        struct {
+            float x;
+            float y;
+        } spin_vector;
+
         float orig_pos[3], orig_top[3];
         float cur_pos[3], cur_top[3];
         float cur_angle, cur_twist;

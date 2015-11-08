@@ -14,16 +14,11 @@
 #include "utility.h"
 
 enum {
-    TIMER_TEST,
     TIMER_ANIMATION,
     TIMER_CONTROL
 };
 
 enum state_enum {
-	STATE_2D,
-	STATE_3D,
-	STATE_LIT,
-	STATE_BLEND,
 	STATE_ACTION,
 	STATE_NO_ACTION
 };
@@ -56,7 +51,6 @@ class Canvas : public wxGLCanvas {
 		void Event_Paint(wxPaintEvent &event);
 		void Event_Erase_Background(wxEraseEvent &event);
 		void Event_Mouse(wxMouseEvent &event);
-		//void Event_Test_Timer(wxTimerEvent &event);
 		void Event_Animation_Timer(wxTimerEvent &event);
 		void Event_Control_Timer(wxTimerEvent &event);
 
@@ -66,17 +60,6 @@ class Canvas : public wxGLCanvas {
 		void Set_State(state_enum new_state);  
 
 		void Clear_Screen();
-		/*void Vertices_Test();
-		void Points_Lines();
-		void Cube_Static();
-		void Cube_Rotate();
-		void Pyramid_Rotate();
-		void Multi_Rotate();
-		void Cube_Control();
-		void Ambient_Light_Rotate();
-		void Simple_Light_Control(bool fixed_light);
-		void Materials_Control();
-		void Blending_Control();*/
 
 	private:
 		wxGLContext *gl_context;
@@ -84,7 +67,6 @@ class Canvas : public wxGLCanvas {
 
 		RGB_Frame *rgb_win;
 
-		//wxTimer *test_timer;
 		wxTimer *animation_timer;
 		wxTimer *control_timer;
 		float animation_x, animation_y, animation_angle;
@@ -97,8 +79,8 @@ class Canvas : public wxGLCanvas {
 
 		GLuint spheres_list;
 
-        void Get_Orbit_Animation_Speed();
-        void Get_Spin_Animation_Speed();
+        void Set_Camera_Orbit_Speed();
+        void Set_Camera_Spin_Speed();
 
   DECLARE_EVENT_TABLE()
 };

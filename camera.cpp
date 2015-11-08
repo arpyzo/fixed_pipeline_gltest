@@ -17,6 +17,15 @@ Camera::Camera() {
     Reset();
 }
 
+void Camera::Set_Twist_Angle(float angle) {
+    twist_angle = angle;
+}
+
+void Camera::Set_Spin_Vector(float x, float y) {
+    spin_vector.x = x;
+    spin_vector.y = y;
+}
+
 /*********/
 /* Reset */
 /*********/

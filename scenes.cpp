@@ -52,15 +52,31 @@ void Scene::Init_Matrix() {
 }
 
 /***************************** Animated_Scene ******************************/
-float Animated_Scene::Get_Animation_Angle() {
+/*float Animated_Scene::Get_Animation_Angle() {
     return animation_angle;
 }
 
 void Animated_Scene::Set_Animation_Angle(float animation_angle) {
     this->animation_angle = animation_angle;
+}*/
+
+void Animated_Scene::Increment_Animation_Angle() {
+    animation_angle++;
+    if (animation_angle > 360) {
+        animation_angle = 0;
+    }
 }
 
 /***************************** Controlable_Scene ******************************/
+Controllable_Scene::Controllable_Scene() {
+    camera = new Camera();
+    camera->Reset();
+}
+
+Camera *Controllable_Scene::Get_Camera() {
+    return camera;
+}
+
 void Controllable_Scene::Set_Camera(Camera *camera) {
     this->camera = camera;
 }

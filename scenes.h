@@ -41,6 +41,8 @@ class Scene {
 
         virtual float Get_Animation_Angle() { return 0; }
         virtual void Set_Animation_Angle(float animation_angle) {}
+        virtual void Increment_Animation_Angle() {}
+        virtual Camera *Get_Camera() { return NULL; }
         virtual void Set_Camera(Camera *camera) {}
         virtual void Set_RGB_Frame(RGB_Frame *rgb_win) {}
 
@@ -60,8 +62,9 @@ class Scene {
 /***************************** Animated_Scene ******************************/
 class Animated_Scene : public Scene {
     public:
-        float Get_Animation_Angle();
-        void Set_Animation_Angle(float animation_angle);
+        //float Get_Animation_Angle();
+        //void Set_Animation_Angle(float animation_angle);
+        void Increment_Animation_Angle();
 
     protected:
         float animation_angle = 0;
@@ -71,6 +74,8 @@ class Animated_Scene : public Scene {
 /***************************** Controllable_Scene ******************************/
 class Controllable_Scene : public Scene {
     public:
+        Controllable_Scene();
+        Camera *Get_Camera();
         void Set_Camera(Camera *camera);
 
     protected:
