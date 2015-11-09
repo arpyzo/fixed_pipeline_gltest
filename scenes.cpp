@@ -81,6 +81,17 @@ void Controllable_Scene::Set_Camera(Camera *camera) {
     this->camera = camera;
 }
 
+Controllable_Scene::Camera_Motion Controllable_Scene::Get_Camera_Motion() {
+    return camera_motion;
+}
+
+void Controllable_Scene::Set_Camera_Motion(Camera_Motion camera_motion) {
+    this->camera_motion = camera_motion;
+}
+
+void Controllable_Scene::Increment_Camera_Angle() {
+
+}
 
 /***************************** Primitive_Vertices_Scene ******************************/
 void Primitive_Vertices_Scene::Set_State() {

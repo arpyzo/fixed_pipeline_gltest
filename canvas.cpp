@@ -59,7 +59,15 @@ void Canvas::Control(display_enum new_display)
 /* Canvas Events */
 /*****************/
 void Canvas::Event_Paint(wxPaintEvent &WXUNUSED(event)) {
-    switch (current_display) {
+    if (current_display == TRANSITION) {
+        Clear_Screen();
+        return;
+    }
+
+    scene->Generate_Polygons();
+    SwapBuffers();
+
+    /*switch (current_display) {
         case TRANSITION: 
             Clear_Screen();
             break;
@@ -112,7 +120,7 @@ void Canvas::Event_Paint(wxPaintEvent &WXUNUSED(event)) {
             SwapBuffers();
             break;
         //default: Cube_Static();
-  }
+  }*/
 }
 
 void Canvas::Event_Resize(wxSizeEvent &WXUNUSED(event))
@@ -173,16 +181,20 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
 
     if (event.Dragging()) {
         if (left_drag) { // Reverse direction - Camera and scene movement are opposite each other
-          camera->Transform((float)(prev_x-event.GetX()), (float)(event.GetY()-prev_y));
-          Refresh();
-          prev_x = event.GetX();
-          prev_y = event.GetY();
+            camera->Transform((float)(prev_x-event.GetX()), (float)(event.GetY()-prev_y));
+
+            Refresh();
+
+            prev_x = event.GetX();
+            prev_y = event.GetY();
         }
         else if (right_drag) {
             int width, height;
             GetClientSize(&width, &height);
             camera->Twist(camera->Calc_Twist_Angle(prev_x, (height-prev_y)-1, event.GetX(), (height-event.GetY())-1));
+
             Refresh();
+
             prev_x = event.GetX();
             prev_y = event.GetY();
 
@@ -223,6 +235,7 @@ void Canvas::Set_Camera_Spin_Speed() {
             return;
         }
         camera->Set_Twist_Angle(animation_angle);
+        static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::SPIN);
 
         //camera->Twist(animation_angle);
 
@@ -242,7 +255,8 @@ void Canvas::Set_Camera_Orbit_Speed() {
         animation_y = move_y / 5;
         camera->Set_Spin_Vector(animation_x, animation_y);
 
-        animation_angle = 0;
+        //animation_angle = 0;
+        static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::ORBIT);
         //camera->Transform(animation_x, animation_y);
 
         Refresh();
@@ -259,18 +273,22 @@ void Canvas::Event_Animation_Timer(wxTimerEvent &WXUNUSED(event)) {
     }
 
     scene->Set_Animation_Angle(animation_angle);*/
-    scene->Increment_Animation_Angle();
+    static_cast<Animated_Scene*>(scene)->Increment_Animation_Angle();
 
     Refresh();
 }
 
-void Canvas::Event_Control_Timer(wxTimerEvent &WXUNUSED(event))
-{ if (animation_angle)
-    camera->Twist(animation_angle);
-  else
-    camera->Transform(animation_x, animation_y);
+void Canvas::Event_Control_Timer(wxTimerEvent &WXUNUSED(event)) {
+    //if (animation_angle)
+    if (static_cast<Controllable_Scene*>(scene)->Get_Camera_Motion() == Controllable_Scene::SPIN) {
+        camera->Twist(animation_angle);
+    } else {
+        camera->Transform(animation_x, animation_y);
+    }
 
-  Refresh();
+    static_cast<Controllable_Scene*>(scene)->Increment_Camera_Angle();
+
+    Refresh();
 }
 
 /********************/

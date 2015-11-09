@@ -37,13 +37,22 @@ class Scene {
             BLEND_CONTROL
         };
 
+        /*enum Camera_Motion {
+            SPIN,
+            ORBIT
+        };*/
+
         static Scene *Create_Scene(Scene_Type type);
 
         virtual float Get_Animation_Angle() { return 0; }
         virtual void Set_Animation_Angle(float animation_angle) {}
-        virtual void Increment_Animation_Angle() {}
+        //virtual void Increment_Animation_Angle() {}
+        //virtual void Increment_Camera_Angle() {}
         virtual Camera *Get_Camera() { return NULL; }
         virtual void Set_Camera(Camera *camera) {}
+        //virtual Camera_Motion Get_Camera_Motion() { return SPIN; }
+        //virtual void Set_Camera_Motion(Camera_Motion camera_motion) {}
+
         virtual void Set_RGB_Frame(RGB_Frame *rgb_win) {}
 
         virtual void Set_State() {}
@@ -74,12 +83,22 @@ class Animated_Scene : public Scene {
 /***************************** Controllable_Scene ******************************/
 class Controllable_Scene : public Scene {
     public:
+        enum Camera_Motion {
+            SPIN,
+            ORBIT
+        };
+
         Controllable_Scene();
         Camera *Get_Camera();
         void Set_Camera(Camera *camera);
+        Camera_Motion Get_Camera_Motion();
+        void Set_Camera_Motion(Camera_Motion camera_motion);
+
+        void Increment_Camera_Angle();
 
     protected:
         Camera *camera;
+        Camera_Motion camera_motion;
 };
 
 
