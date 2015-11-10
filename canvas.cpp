@@ -49,7 +49,7 @@ void Canvas::Animate(display_enum new_display)
 void Canvas::Control(display_enum new_display)
 { Init_Display(new_display);
 
-  camera->Reset();
+  //camera->Reset();
   scale_factor = 7;
   Refresh();
   Set_State(STATE_ACTION);
@@ -170,13 +170,46 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
     else if (event.RightUp() && !left_drag) { // Camera stationary and spinning
         SetCursor(wxCursor("OPEN_HAND_CURSOR"));
         right_drag = false;
-        animation_x = event.GetX();
-        animation_y = event.GetY();
+        //animation_x = event.GetX();
+        //animation_y = event.GetY();
+
+        wxPoint mouse_start = event.GetPosition();
         //animation_angle = 1; // This var indicates camera is spinning
         //test_timer->Start(25, true);
         wxMilliSleep(25);
         // Do stuff that test_timer currently does
-        Set_Camera_Spin_Speed();
+        //Set_Camera_Spin_Speed();
+
+
+        //float mouse_x = (float)(wxGetMousePosition().x - this->GetScreenPosition().x); // (wxPoint GetMousePosition)
+        //float mouse_y = (float)(wxGetMousePosition().y - this->GetScreenPosition().y);
+
+        wxPoint mouse_end = wxGetMousePosition() - GetScreenPosition();
+
+        //float move_x = animation_x - mouse_x;
+        //float move_y = mouse_y - animation_y;
+
+        int mouse_moved_x = mouse_start.x - mouse_end.x;
+        int mouse_moved_y = mouse_end.y - mouse_start.y;
+
+        //if (fabs(move_x) > 2 || fabs(move_y) > 2) {         // Has mouse moved enough to trigger animation
+        //if (abs(mouse_moved_x) > 2 || abs(mouse_moved_y) > 2) {     // Has mouse moved enough to trigger animation?
+        if (abs(mouse_start.x - mouse_end.x) > 2 || abs(mouse_start.y - mouse_end.y) > 2) { // Has mouse moved enough to trigger animation?
+            //animation_angle = -camera->Calc_Twist_Angle((int)animation_x, (int)animation_y, (int)mouse_x, (int)mouse_y);
+            animation_angle = -camera->Calc_Spin_Angle(mouse_start.x, mouse_start.y, mouse_end.x, mouse_end.y);
+            if (animation_angle == 0) {
+                return;
+            }
+            camera->Set_Twist_Angle(animation_angle);
+            static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::SPIN);
+
+            //camera->Twist(animation_angle);
+
+            Refresh();
+            control_timer->Start(1);
+        }
+
+
     }
 
     if (event.Dragging()) {
@@ -191,7 +224,7 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
         else if (right_drag) {
             int width, height;
             GetClientSize(&width, &height);
-            camera->Twist(camera->Calc_Twist_Angle(prev_x, (height-prev_y)-1, event.GetX(), (height-event.GetY())-1));
+            camera->Twist(camera->Calc_Spin_Angle(prev_x, (height-prev_y)-1, event.GetX(), (height-event.GetY())-1));
 
             Refresh();
 
@@ -221,27 +254,6 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
         glOrtho(-x_scale, x_scale, -y_scale, y_scale, 100, 900);
         Refresh();
     }  
-}
-
-void Canvas::Set_Camera_Spin_Speed() {
-    float mouse_x = (float)(wxGetMousePosition().x - this->GetScreenPosition().x); // (wxPoint GetMousePosition)
-    float mouse_y = (float)(wxGetMousePosition().y - this->GetScreenPosition().y);
-    float move_x = animation_x - mouse_x;
-    float move_y = mouse_y - animation_y;
-
-    if (fabs(move_x) > 2 || fabs(move_y) > 2) {         // Has mouse moved enough to trigger animation
-        animation_angle = -camera->Calc_Twist_Angle((int)animation_x, (int)animation_y, (int)mouse_x, (int)mouse_y);
-        if (animation_angle == 0) {
-            return;
-        }
-        camera->Set_Twist_Angle(animation_angle);
-        static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::SPIN);
-
-        //camera->Twist(animation_angle);
-
-        Refresh();
-        control_timer->Start(1);
-    }
 }
 
 void Canvas::Set_Camera_Orbit_Speed() {

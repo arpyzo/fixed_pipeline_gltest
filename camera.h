@@ -15,7 +15,7 @@ class Camera {
         void Get_Twist(float *rot_angle);
         void Get_Location(float pos[3], float top[3]);
         void Calc_Rot_Angles();
-        float Calc_Twist_Angle(int start_x, int start_y, int end_x, int end_y);
+        float Calc_Spin_Angle(int start_x, int start_y, int end_x, int end_y);
         void Transform(float flat_x, float flat_y);
         void Twist(float twist_angle);
 

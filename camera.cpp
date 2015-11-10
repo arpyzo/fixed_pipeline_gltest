@@ -121,7 +121,7 @@ void Camera::Calc_Rot_Angles() {
 /********************/
 /* Calc_Twist_Angle */
 /********************/
-float Camera::Calc_Twist_Angle(int start_x, int start_y, int end_x, int end_y) {
+float Camera::Calc_Spin_Angle(int start_x, int start_y, int end_x, int end_y) {
     float start_vec[2], end_vec[2];
 
     start_vec[0] = viewcenter_x - (float)start_x;
