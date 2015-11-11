@@ -79,7 +79,7 @@ class Canvas : public wxGLCanvas {
 
 		GLuint spheres_list;
 
-        void Set_Camera_Orbit_Speed();
+        //void Set_Camera_Orbit_Speed();
 
   DECLARE_EVENT_TABLE()
 };

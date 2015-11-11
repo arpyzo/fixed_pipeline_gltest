@@ -1,6 +1,10 @@
 # Fixed pipeline OpenGL test
 
-Demo application written to learn and experiment with OpenGL features.
+Demo application written to learn and experiment with fixed pipeline OpenGL features.
+
+## Warning!
+
+This code is undergoing a major refactoring and will almost certainly give you a headache in its current state.
 
 ## Demos
 

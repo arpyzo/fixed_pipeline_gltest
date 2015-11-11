@@ -6,8 +6,11 @@
 class Camera {
     public:
         Camera();
+        float Get_Twist_Angle();
         void Set_Twist_Angle(float angle);
-        void Set_Spin_Vector(float x, float y);
+        void Set_Orbit_Vector(float x, float y);
+        float Get_Orbit_Vector_X();
+        float Get_Orbit_Vector_Y();
 
         void Reset();
         void Set_Viewport(int viewsize_x, int viewsize_y);

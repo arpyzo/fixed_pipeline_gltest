@@ -71,6 +71,8 @@ void Animated_Scene::Increment_Animation_Angle() {
 Controllable_Scene::Controllable_Scene() {
     camera = new Camera();
     camera->Reset();
+
+    Set_Control_Coords(0, 0, 0, 0);
 }
 
 Camera *Controllable_Scene::Get_Camera() {
@@ -81,16 +83,44 @@ void Controllable_Scene::Set_Camera(Camera *camera) {
     this->camera = camera;
 }
 
+void Controllable_Scene::Set_Control_Coords(int start_x, int start_y, int end_x, int end_y) {
+    control_start.x = start_x;
+    control_start.y = start_y;
+    control_end.x = end_x;
+    control_end.y = end_y;
+}
+
 Controllable_Scene::Camera_Motion Controllable_Scene::Get_Camera_Motion() {
     return camera_motion;
 }
 
-void Controllable_Scene::Set_Camera_Motion(Camera_Motion camera_motion) {
+bool Controllable_Scene::Set_Camera_Motion(Camera_Motion camera_motion) {
     this->camera_motion = camera_motion;
+
+    if (camera_motion == Controllable_Scene::SPIN) {
+        float angle = -camera->Calc_Spin_Angle(control_start.x, control_start.y, control_end.x, control_end.y);
+        if (angle == 0) {
+            return false;
+        }
+        camera->Set_Twist_Angle(angle);
+    }
+    else { // Controllable_Scene::ORBIT
+        camera->Set_Orbit_Vector((control_start.x - control_end.x) / 5, (control_end.y - control_start.y) / 5);
+    }
+
+    return true;
 }
 
 void Controllable_Scene::Increment_Camera_Angle() {
 
+}
+
+void Controllable_Scene::Spin_Camera() {
+    camera->Twist(camera->Get_Twist_Angle());
+}
+
+void Controllable_Scene::Orbit_Camera() {
+    camera->Transform(camera->Get_Orbit_Vector_X(), camera->Get_Orbit_Vector_Y());
 }
 
 /***************************** Primitive_Vertices_Scene ******************************/

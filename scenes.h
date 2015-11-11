@@ -88,15 +88,26 @@ class Controllable_Scene : public Scene {
             ORBIT
         };
 
+        struct Control_Vec {
+            int x;
+            int y;
+        };
+
         Controllable_Scene();
         Camera *Get_Camera();
         void Set_Camera(Camera *camera);
+        void Set_Control_Coords(int start_x, int start_y, int end_x, int end_y);
         Camera_Motion Get_Camera_Motion();
-        void Set_Camera_Motion(Camera_Motion camera_motion);
+        bool Set_Camera_Motion(Camera_Motion camera_motion);
 
         void Increment_Camera_Angle();
+        void Spin_Camera();
+        void Orbit_Camera();
 
     protected:
+        Control_Vec control_start;
+        Control_Vec control_end;
+
         Camera *camera;
         Camera_Motion camera_motion;
 };
