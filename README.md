@@ -16,10 +16,10 @@ This code is undergoing a major refactoring and will almost certainly give you a
 
 ## TODO
 
- * Major reformatting
+ * Reformatting
  * Refactoring
  * Memory leaks need fixing
 
 ## OUTDATED
 
-Outdated as it uses a fixed pipeline which has been superseded by programmable pipelines. 
+Outdated as it uses a fixed pipeline which have been superseded by programmable pipelines. 

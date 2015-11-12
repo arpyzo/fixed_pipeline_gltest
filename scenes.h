@@ -44,6 +44,8 @@ class Scene {
 
         static Scene *Create_Scene(Scene_Type type);
 
+        virtual void Set_Viewport(int width, int height);
+
         virtual float Get_Animation_Angle() { return 0; }
         virtual void Set_Animation_Angle(float animation_angle) {}
         //virtual void Increment_Animation_Angle() {}
@@ -94,9 +96,10 @@ class Controllable_Scene : public Scene {
         };
 
         Controllable_Scene();
+        void Set_Viewport(int width, int height);
         Camera *Get_Camera();
         void Set_Camera(Camera *camera);
-        void Set_Control_Coords(int start_x, int start_y, int end_x, int end_y);
+        void Set_Control_Coords(int start_x, int start_y, int end_x, int end_y, float scale_factor = 1);
         Camera_Motion Get_Camera_Motion();
         bool Set_Camera_Motion(Camera_Motion camera_motion);
 
@@ -107,6 +110,7 @@ class Controllable_Scene : public Scene {
     protected:
         Control_Vec control_start;
         Control_Vec control_end;
+        float control_scale;
 
         Camera *camera;
         Camera_Motion camera_motion;

@@ -21,7 +21,7 @@ Canvas::Canvas(wxWindow *parent)
     animation_timer = new wxTimer(this, TIMER_ANIMATION);
     control_timer = new wxTimer(this, TIMER_CONTROL);
 
-    camera = new Camera();
+    //camera = new Camera();
     mouse_enabled = false;
 
     glClearColor(0, 0, 0, 1);
@@ -67,68 +67,16 @@ void Canvas::Event_Paint(wxPaintEvent &WXUNUSED(event)) {
     scene->Generate_Polygons();
     SwapBuffers();
 
-    /*switch (current_display) {
-        case TRANSITION: 
-            Clear_Screen();
-            break;
-        case VERTICES: //Vertices_Test();
-            scene->Generate_Polygons();
-            SwapBuffers();
-            break;
-        case POINTS_LINES: //Points_Lines();
-            scene->Generate_Polygons();
-            SwapBuffers();
-            break;
-        case CUBE_STATIC: //Cube_Static();
-            scene->Generate_Polygons();
-            SwapBuffers();
-            break;
-        case CUBE_ROTATE: //Cube_Rotate();
-            scene->Generate_Polygons();
-            SwapBuffers();
-            break;
-        case PYRAMID_ROTATE: //Pyramid_Rotate();
-            scene->Generate_Polygons();
-            SwapBuffers();
-            break;
-        case MULTI_ROTATE: //Multi_Rotate();
-            scene->Generate_Polygons();
-            SwapBuffers();
-            break;
-        case CUBE_CONTROL: //Cube_Control();
-            scene->Generate_Polygons();
-            SwapBuffers();
-            break;
-        case AMBIENT_LIGHT_ROTATE: //Ambient_Light_Rotate();
-            scene->Generate_Polygons();
-            SwapBuffers();
-            break;
-        case ROTATE_LIGHT_CONTROL: //Simple_Light_Control(false);
-            scene->Generate_Polygons();
-            SwapBuffers();
-            break;
-        case FIXED_LIGHT_CONTROL: //Simple_Light_Control(true);
-            scene->Generate_Polygons();
-            SwapBuffers();
-            break;
-        case MATERIALS_CONTROL: //Materials_Control();
-            scene->Generate_Polygons();
-            SwapBuffers();
-            break;
-        case BLEND_CONTROL: //Blending_Control();
-            scene->Generate_Polygons();
-            SwapBuffers();
-            break;
-        //default: Cube_Static();
-  }*/
+    // Need a default?
 }
 
 void Canvas::Event_Resize(wxSizeEvent &WXUNUSED(event))
 { int width, height;
     
   GetClientSize(&width, &height);
-  glViewport(0, 0, (GLint)width, (GLint)height);
-  camera->Set_Viewport(width, height);
+  scene->Set_Viewport(width, height);
+  //glViewport(0, 0, (GLint)width, (GLint)height);
+  //camera->Set_Viewport(width, height);
 
   // TODO: This needs further work
 }
@@ -136,7 +84,7 @@ void Canvas::Event_Resize(wxSizeEvent &WXUNUSED(event))
 void Canvas::Event_Erase_Background(wxEraseEvent &WXUNUSED(event)) { }
 
 void Canvas::Event_Mouse(wxMouseEvent &event) {
-    static long prev_x, prev_y;
+    static wxPoint mouse_prev;
 
     if (!mouse_enabled) // TODO: Why?
         return;
@@ -145,8 +93,8 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
         control_timer->Stop();
         SetCursor(wxCursor("GRIPPING_HAND_CURSOR"));
         left_drag = true;
-        prev_x = event.GetX();
-        prev_y = event.GetY();
+        mouse_prev = event.GetPosition();
+
     }
     else if (event.LeftUp() && !right_drag) { // Camera orbiting the scene
         SetCursor(wxCursor("OPEN_HAND_CURSOR"));
@@ -176,7 +124,7 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
             //animation_y = move_y / 5;
             //camera->Set_Spin_Vector(animation_x, animation_y);
             //camera->Set_Orbit_Vector((mouse_start.x - mouse_end.x) / 5, (mouse_end.y - mouse_start.y) / 5);
-            static_cast<Controllable_Scene*>(scene)->Set_Control_Coords(mouse_start.x, mouse_start.y, mouse_end.x, mouse_end.y);
+            static_cast<Controllable_Scene*>(scene)->Set_Control_Coords(mouse_start.x, mouse_start.y, mouse_end.x, mouse_end.y, 0.2);
 
             //animation_angle = 0;
             static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::ORBIT);
@@ -191,8 +139,7 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
         control_timer->Stop();
         SetCursor(wxCursor("POINTING_HAND_CURSOR"));
         right_drag = true;
-        prev_x = event.GetX();
-        prev_y = event.GetY();
+        mouse_prev = event.GetPosition();
     }
     else if (event.RightUp() && !left_drag) { // Camera stationary and spinning
         SetCursor(wxCursor("OPEN_HAND_CURSOR"));
@@ -246,22 +193,28 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
 
     if (event.Dragging()) {
         if (left_drag) { // Reverse direction - Camera and scene movement are opposite each other
-            camera->Transform((float)(prev_x-event.GetX()), (float)(event.GetY()-prev_y));
+            static_cast<Controllable_Scene*>(scene)->Set_Control_Coords(mouse_prev.x, mouse_prev.y, event.GetX(), event.GetY());
+            static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::ORBIT);
+            static_cast<Controllable_Scene*>(scene)->Orbit_Camera();
+
+            //camera->Transform((float)(mouse_prev_x-event.GetX()), (float)(event.GetY()-mouse_prev_y));
 
             Refresh();
 
-            prev_x = event.GetX();
-            prev_y = event.GetY();
+            mouse_prev = event.GetPosition();
+
         }
         else if (right_drag) {
-            int width, height;
-            GetClientSize(&width, &height);
-            camera->Twist(camera->Calc_Spin_Angle(prev_x, (height-prev_y)-1, event.GetX(), (height-event.GetY())-1));
+            static_cast<Controllable_Scene*>(scene)->Set_Control_Coords(mouse_prev.x, mouse_prev.y, event.GetX(), event.GetY());
+            static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::SPIN);
+            static_cast<Controllable_Scene*>(scene)->Spin_Camera();
+
+            //camera->Twist(camera->Calc_Spin_Angle(mouse_prev_x, (height - mouse_prev_y) - 1, event.GetX(), (height-event.GetY()) - 1));
 
             Refresh();
 
-            prev_x = event.GetX();
-            prev_y = event.GetY();
+            mouse_prev = event.GetPosition();
+
 
             //STIME
             //    LOOP
@@ -288,35 +241,7 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
     }  
 }
 
-/*void Canvas::Set_Camera_Orbit_Speed() {
-    float mouse_x = (float)(wxGetMousePosition().x - this->GetScreenPosition().x); // (wxPoint GetMousePosition)
-    float mouse_y = (float)(wxGetMousePosition().y - this->GetScreenPosition().y);
-    float move_x = animation_x - mouse_x;
-    float move_y = mouse_y - animation_y;
-
-    if (fabs(move_x) > 2 || fabs(move_y) > 2) {         // Has mouse moved enough to trigger animation
-        animation_x = move_x / 5;
-        animation_y = move_y / 5;
-        camera->Set_Spin_Vector(animation_x, animation_y);
-
-        //animation_angle = 0;
-        static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::ORBIT);
-        //camera->Transform(animation_x, animation_y);
-
-        Refresh();
-        control_timer->Start(1);
-    }
-}*/
-
 void Canvas::Event_Animation_Timer(wxTimerEvent &WXUNUSED(event)) {
-    //float anim_angle = scene->Get_Animation_Angle();
-    
-    /*animation_angle++;
-    if (animation_angle > 360) {
-        animation_angle = 0;
-    }
-
-    scene->Set_Animation_Angle(animation_angle);*/
     static_cast<Animated_Scene*>(scene)->Increment_Animation_Angle();
 
     Refresh();
@@ -417,8 +342,7 @@ void Canvas::Init_Display(display_enum new_display) {
         case CUBE_CONTROL:
             scene = Scene::Create_Scene(Scene::CUBE_CONTROL);
             scene->Set_State();
-            //scene->Set_Camera(camera);
-            camera = scene->Get_Camera();
+            //camera = scene->Get_Camera();
             break;
         case AMBIENT_LIGHT_ROTATE: 
             scene = Scene::Create_Scene(Scene::AMBIENT_LIGHT_ROTATE);
@@ -429,26 +353,22 @@ void Canvas::Init_Display(display_enum new_display) {
         case ROTATE_LIGHT_CONTROL:
             scene = Scene::Create_Scene(Scene::ROTATE_LIGHT_CONTROL);
             scene->Set_State();
-            //scene->Set_Camera(camera);
-            camera = scene->Get_Camera();
+            //camera = scene->Get_Camera();
             break;
         case FIXED_LIGHT_CONTROL:
             scene = Scene::Create_Scene(Scene::FIXED_LIGHT_CONTROL);
             scene->Set_State();
-            //scene->Set_Camera(camera);
-            camera = scene->Get_Camera();
+            //camera = scene->Get_Camera();
             break;
         case MATERIALS_CONTROL:
             scene = Scene::Create_Scene(Scene::MATERIALS_CONTROL);
             scene->Set_State();
-            //scene->Set_Camera(camera);
-            camera = scene->Get_Camera();
+            //camera = scene->Get_Camera();
             break;
         case BLEND_CONTROL:
             scene = Scene::Create_Scene(Scene::BLEND_CONTROL);
             scene->Set_State();
-            //scene->Set_Camera(camera);
-            camera = scene->Get_Camera();
+            //camera = scene->Get_Camera();
             break;
     }
 }

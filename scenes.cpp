@@ -19,6 +19,10 @@ Scene *Scene::Create_Scene(Scene_Type scene_type) {
     return NULL;
 }
 
+void Scene::Set_Viewport(int width, int height) {
+    glViewport(0, 0, (GLint)width, (GLint)height);
+}
+
 void Scene::Set_State_2D() {
     glDisable(GL_DEPTH_TEST);
     glMatrixMode(GL_PROJECTION);
@@ -75,6 +79,12 @@ Controllable_Scene::Controllable_Scene() {
     Set_Control_Coords(0, 0, 0, 0);
 }
 
+void Controllable_Scene::Set_Viewport(int width, int height) {
+    glViewport(0, 0, (GLint)width, (GLint)height);
+    camera->Set_Viewport(width, height);
+}
+
+
 Camera *Controllable_Scene::Get_Camera() {
     return camera;
 }
@@ -83,11 +93,12 @@ void Controllable_Scene::Set_Camera(Camera *camera) {
     this->camera = camera;
 }
 
-void Controllable_Scene::Set_Control_Coords(int start_x, int start_y, int end_x, int end_y) {
+void Controllable_Scene::Set_Control_Coords(int start_x, int start_y, int end_x, int end_y, float control_scale) {
     control_start.x = start_x;
     control_start.y = start_y;
     control_end.x = end_x;
     control_end.y = end_y;
+    this->control_scale = control_scale;
 }
 
 Controllable_Scene::Camera_Motion Controllable_Scene::Get_Camera_Motion() {
@@ -105,7 +116,7 @@ bool Controllable_Scene::Set_Camera_Motion(Camera_Motion camera_motion) {
         camera->Set_Twist_Angle(angle);
     }
     else { // Controllable_Scene::ORBIT
-        camera->Set_Orbit_Vector((control_start.x - control_end.x) / 5, (control_end.y - control_start.y) / 5);
+        camera->Set_Orbit_Vector((control_start.x - control_end.x) * control_scale, (control_end.y - control_start.y) * control_scale);
     }
 
     return true;

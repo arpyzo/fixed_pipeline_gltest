@@ -69,17 +69,15 @@ class Canvas : public wxGLCanvas {
 
 		wxTimer *animation_timer;
 		wxTimer *control_timer;
-		float animation_x, animation_y, animation_angle;
+        //float animation_x, animation_y, animation_angle;
 
-		Camera *camera;
+		//Camera *camera;
         Scene *scene;
 		bool mouse_enabled;
 		bool left_drag, right_drag;
 		int scale_factor;
 
 		GLuint spheres_list;
-
-        //void Set_Camera_Orbit_Speed();
 
   DECLARE_EVENT_TABLE()
 };
