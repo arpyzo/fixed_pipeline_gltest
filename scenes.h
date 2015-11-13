@@ -60,7 +60,11 @@ class Scene {
         virtual void Set_State() {}
         virtual void Generate_Polygons() {}
 
+        void Change_Scale_Factor(int scale_factor_delta);
+
     protected:
+        int scale_factor;
+
         void Init_Matrix();
         virtual void Create_Shapes() {}
         

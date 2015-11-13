@@ -224,10 +224,11 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
     }
 
     if (event.GetWheelRotation() != 0) {
-        int x_scale, y_scale;
+        //int x_scale, y_scale;
    
-        scale_factor += (event.GetWheelRotation() / event.GetWheelDelta());
-        if (scale_factor < 0) {
+        //scale_factor += (event.GetWheelRotation() / event.GetWheelDelta());
+        scene->Change_Scale_Factor(event.GetWheelRotation() / event.GetWheelDelta());
+        /*if (scale_factor < 0) {
             scale_factor = 0;
         }
 
@@ -236,7 +237,7 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
 
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(-x_scale, x_scale, -y_scale, y_scale, 100, 900);
+        glOrtho(-x_scale, x_scale, -y_scale, y_scale, 100, 900);*/
         Refresh();
     }  
 }

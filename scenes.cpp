@@ -53,6 +53,22 @@ void Scene::Set_State_Blend() {
 void Scene::Init_Matrix() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+
+    scale_factor = 7;
+}
+
+void Scene::Change_Scale_Factor(int scale_factor_delta) {
+    scale_factor += scale_factor_delta;
+    if (scale_factor < 0) {
+        scale_factor = 0;
+    }
+
+    int x_scale = 200 + scale_factor * scale_factor * 4;
+    int y_scale = 150 + scale_factor * scale_factor * 3;
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-x_scale, x_scale, -y_scale, y_scale, 100, 900);
 }
 
 /***************************** Animated_Scene ******************************/
