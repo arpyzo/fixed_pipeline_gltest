@@ -26,6 +26,8 @@ enum {
 class Frame : public wxFrame {
 	public:
 		Frame();
+        ~Frame();
+
 		void Setup_Menu();
 		void Menu_Vertices(wxCommandEvent &event);
 		void Menu_Points_Lines(wxCommandEvent &event);

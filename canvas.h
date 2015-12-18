@@ -43,9 +43,12 @@ enum display_enum {
 class Canvas : public wxGLCanvas {
 	public:
 		Canvas(wxWindow *parent);
-		void Display(display_enum new_display);
-		void Animate(display_enum new_display);
-		void Control(display_enum new_display);
+        ~Canvas();
+
+		//void Display(display_enum new_display);
+		//void Animate(display_enum new_display);
+        //void Control(display_enum new_display);
+        void Activate_Scene(display_enum new_display);
 
 		void Event_Resize(wxSizeEvent &event);
 		void Event_Paint(wxPaintEvent &event);

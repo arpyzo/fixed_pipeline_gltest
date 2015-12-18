@@ -44,6 +44,10 @@ class Scene {
 
         static Scene *Create_Scene(Scene_Type type);
 
+        virtual bool Is_Controllable() { return false; }
+        virtual bool Is_Animated() { return false; }
+        virtual bool Needs_RGB_Controls() { return false; }
+
         virtual void Set_Viewport(int width, int height);
 
         virtual float Get_Animation_Angle() { return 0; }
@@ -77,6 +81,8 @@ class Scene {
 /***************************** Animated_Scene ******************************/
 class Animated_Scene : public Scene {
     public:
+        bool Is_Animated() { return true; }
+
         //float Get_Animation_Angle();
         //void Set_Animation_Angle(float animation_angle);
         void Increment_Animation_Angle();
@@ -100,6 +106,8 @@ class Controllable_Scene : public Scene {
         };
 
         Controllable_Scene();
+        bool Is_Controllable() { return true; }
+
         void Set_Viewport(int width, int height);
         Camera *Get_Camera();
         void Set_Camera(Camera *camera);
@@ -215,6 +223,8 @@ class Ambient_Light_Rotate_Scene : public Animated_Scene {
     public:
         //float Get_Animation_Angle();
         //void Set_Animation_Angle(float animation_angle);
+
+        bool Needs_RGB_Controls() { return true; }
 
         void Set_RGB_Frame(RGB_Frame *rgb_win);
 
