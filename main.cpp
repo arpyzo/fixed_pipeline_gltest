@@ -86,73 +86,73 @@ void Frame::Menu_State(wxCommandEvent &WXUNUSED(event)) {
 void Frame::Menu_Vertices(wxCommandEvent &WXUNUSED(event)) {
     //gl_canvas->Display(VERTICES);
     //gl_canvas->Activate_Scene(VERTICES);
-    gl_canvas->Activate_Scene2(Scene::PRIMITIVE_VERTICES);
+    gl_canvas->Switch_Scene(Scene::PRIMITIVE_VERTICES);
 }
 
 void Frame::Menu_Points_Lines(wxCommandEvent &WXUNUSED(event)) {
     //gl_canvas->Display(POINTS_LINES);
     //gl_canvas->Activate_Scene(POINTS_LINES);
-    gl_canvas->Activate_Scene2(Scene::POINTS_LINES);
+    gl_canvas->Switch_Scene(Scene::POINTS_LINES);
 }
 
 void Frame::Menu_Static_Cube(wxCommandEvent &WXUNUSED(event)) {
     //gl_canvas->Display(CUBE_STATIC);
     //gl_canvas->Activate_Scene(CUBE_STATIC);
-    gl_canvas->Activate_Scene2(Scene::CUBE_STATIC);
+    gl_canvas->Switch_Scene(Scene::CUBE_STATIC);
 }
 
 void Frame::Menu_Rotate_Cube(wxCommandEvent &WXUNUSED(event)) {
     //gl_canvas->Animate(CUBE_ROTATE);
     //gl_canvas->Activate_Scene(CUBE_ROTATE);
-    gl_canvas->Activate_Scene2(Scene::CUBE_ROTATE);
+    gl_canvas->Switch_Scene(Scene::CUBE_ROTATE);
 }
 
 void Frame::Menu_Rotate_Pyramid(wxCommandEvent &WXUNUSED(event)) {
     //gl_canvas->Animate(PYRAMID_ROTATE);
     //gl_canvas->Activate_Scene(PYRAMID_ROTATE);
-    gl_canvas->Activate_Scene2(Scene::PYRAMID_ROTATE);
+    gl_canvas->Switch_Scene(Scene::PYRAMID_ROTATE);
 }
 
 void Frame::Menu_Rotate_Multi(wxCommandEvent &WXUNUSED(event)) {
     //gl_canvas->Animate(MULTI_ROTATE);
     //gl_canvas->Activate_Scene(MULTI_ROTATE);
-    gl_canvas->Activate_Scene2(Scene::MULTI_ROTATE);
+    gl_canvas->Switch_Scene(Scene::MULTI_ROTATE);
 }
 
 void Frame::Menu_Control_Cube(wxCommandEvent &WXUNUSED(event)) {
     //gl_canvas->Control(CUBE_CONTROL);
     //gl_canvas->Activate_Scene(CUBE_CONTROL);
-    gl_canvas->Activate_Scene2(Scene::CUBE_CONTROL);
+    gl_canvas->Switch_Scene(Scene::CUBE_CONTROL);
 }
 
 void Frame::Menu_Ambient_Light(wxCommandEvent &WXUNUSED(event)) {
     //gl_canvas->Animate(AMBIENT_LIGHT_ROTATE);
     //gl_canvas->Activate_Scene(AMBIENT_LIGHT_ROTATE);
-    gl_canvas->Activate_Scene2(Scene::AMBIENT_LIGHT_ROTATE);
+    gl_canvas->Switch_Scene(Scene::AMBIENT_LIGHT_ROTATE);
 }
 
 void Frame::Menu_Rotating_Light(wxCommandEvent &WXUNUSED(event)) {
     //gl_canvas->Control(ROTATE_LIGHT_CONTROL);
     //gl_canvas->Activate_Scene(ROTATE_LIGHT_CONTROL);
-    gl_canvas->Activate_Scene2(Scene::ROTATE_LIGHT_CONTROL);
+    gl_canvas->Switch_Scene(Scene::ROTATE_LIGHT_CONTROL);
 }
 
 void Frame::Menu_Fixed_Light(wxCommandEvent &WXUNUSED(event)) {
     //gl_canvas->Control(FIXED_LIGHT_CONTROL);
     //gl_canvas->Activate_Scene(FIXED_LIGHT_CONTROL);
-    gl_canvas->Activate_Scene2(Scene::FIXED_LIGHT_CONTROL);
+    gl_canvas->Switch_Scene(Scene::FIXED_LIGHT_CONTROL);
 }
 
 void Frame::Menu_Materials(wxCommandEvent &WXUNUSED(event)) {
     //gl_canvas->Control(MATERIALS_CONTROL);
     //gl_canvas->Activate_Scene(MATERIALS_CONTROL);
-    gl_canvas->Activate_Scene2(Scene::MATERIALS_CONTROL);
+    gl_canvas->Switch_Scene(Scene::MATERIALS_CONTROL);
 }
 
 void Frame::Menu_Blending(wxCommandEvent &WXUNUSED(event)) {
     //gl_canvas->Control(BLEND_CONTROL);
     //gl_canvas->Activate_Scene(BLEND_CONTROL);
-    gl_canvas->Activate_Scene2(Scene::BLEND_CONTROL);
+    gl_canvas->Switch_Scene(Scene::BLEND_CONTROL);
 }
 
 void Frame::Menu_About(wxCommandEvent &WXUNUSED(event)) {

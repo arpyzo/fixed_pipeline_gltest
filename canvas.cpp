@@ -21,11 +21,9 @@ Canvas::Canvas(wxWindow *parent)
     animation_timer = new wxTimer(this, TIMER_ANIMATION);
     control_timer = new wxTimer(this, TIMER_CONTROL);
 
-    mouse_enabled = false;
-
     glClearColor(0, 0, 0, 1);
 
-    Activate_Scene2(Scene::CUBE_STATIC);
+    Switch_Scene(Scene::CUBE_STATIC);
 }
 
 Canvas::~Canvas() {
@@ -69,9 +67,10 @@ void Canvas::Control(display_enum new_display)
     }
 }*/
 
-void Canvas::Activate_Scene2(Scene::Scene_Type scene_type) {
+void Canvas::Switch_Scene(Scene::Scene_Type scene_type) {
     if (scene) {
-        Clean_Display2(current_scene);
+        //Clean_Display2(current_scene);
+        Clean_Display2();
         delete scene;
     }
 
@@ -82,7 +81,8 @@ void Canvas::Activate_Scene2(Scene::Scene_Type scene_type) {
     if (scene->Is_Animated()) {
         animation_timer->Start(50);
     } else if (scene->Is_Controllable()) {
-        Set_State(STATE_ACTION);
+        //Set_State(STATE_ACTION);
+        Enable_Control();
     }
 }
 
@@ -343,7 +343,7 @@ void Canvas::Display_GL_State() {
 }*/
 
 void Canvas::Init_Display2(Scene::Scene_Type scene_type) {
-    Scene::Scene_Type old_display = current_scene;
+    //Scene::Scene_Type old_display = current_scene;
 
     //current_display = TRANSITION;
     //current_scene = NONE;
@@ -457,9 +457,13 @@ void Canvas::Init_Display2(Scene::Scene_Type scene_type) {
     }
 }*/
 
-void Canvas::Clean_Display2(Scene::Scene_Type scene_type) {
-    if (scene->Is_Controllable()) {
-        Set_State(STATE_NO_ACTION);
+//void Canvas::Clean_Display2(Scene::Scene_Type scene_type) {
+void Canvas::Clean_Display2() {
+        if (scene->Is_Animated()) {
+        animation_timer->Stop();
+    } else if (scene->Is_Controllable()) {
+        //Set_State(STATE_NO_ACTION);
+        Disable_Control();
     }
 
     if (scene->Needs_RGB_Controls()) {
@@ -505,7 +509,7 @@ void Canvas::Clean_Display2(Scene::Scene_Type scene_type) {
 /*************/
 /* Set_State */
 /*************/
-void Canvas::Set_State(state_enum new_state)
+/*void Canvas::Set_State(state_enum new_state)
 { switch(new_state)
   { case STATE_ACTION:
       animation_timer->Stop();
@@ -521,12 +525,25 @@ void Canvas::Set_State(state_enum new_state)
       SetCursor(wxCursor("NO_ACTION_CURSOR"));
       mouse_enabled = false;
       break;
-/*    case STATE_NO_MOTION:
+    case STATE_NO_MOTION:
       test_timer->Stop();
       control_timer->Stop();
       animation_x = 0;
-      animation_y = 0;*/
+      animation_y = 0;
   }
+}*/
+
+void Canvas::Enable_Control() {
+    SetCursor(wxCursor("OPEN_HAND_CURSOR"));
+    left_drag = false;
+    right_drag = false;
+    mouse_enabled = true;
+}
+
+void Canvas::Disable_Control() {
+    control_timer->Stop();
+    SetCursor(wxCursor("NO_ACTION_CURSOR"));
+    mouse_enabled = false;
 }
 
 /****************/

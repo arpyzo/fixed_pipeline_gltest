@@ -39,10 +39,10 @@ class Canvas : public wxGLCanvas {
             TIMER_CONTROL
         };
 
-        enum state_enum {
+        /*enum state_enum {
             STATE_ACTION,
             STATE_NO_ACTION
-        };
+        };*/
 
 		Canvas(wxWindow *parent);
         ~Canvas();
@@ -51,7 +51,7 @@ class Canvas : public wxGLCanvas {
 		//void Animate(display_enum new_display);
         //void Control(display_enum new_display);
         //void Activate_Scene(display_enum new_display);
-        void Activate_Scene2(Scene::Scene_Type scene_type);
+        void Switch_Scene(Scene::Scene_Type scene_type);
 
 		void Event_Resize(wxSizeEvent &event);
 		void Event_Paint(wxPaintEvent &event);
@@ -64,13 +64,17 @@ class Canvas : public wxGLCanvas {
         //void Init_Display(display_enum display_option);
         void Init_Display2(Scene::Scene_Type scene_type);
         //void Clean_Display(display_enum old_display);
-        void Clean_Display2(Scene::Scene_Type scene_type);
-        void Set_State(state_enum new_state);
+        //void Clean_Display2(Scene::Scene_Type scene_type);
+        void Clean_Display2();
+        //void Set_State(state_enum new_state);
 
 		void Clear_Screen();
 
 	private:
-		wxGLContext *gl_context;
+        void Enable_Control();
+        void Disable_Control();
+
+        wxGLContext *gl_context;
 		//display_enum current_display;
         Scene::Scene_Type current_scene;
 
@@ -82,9 +86,9 @@ class Canvas : public wxGLCanvas {
 
 		//Camera *camera;
         Scene *scene = NULL;
-		bool mouse_enabled;
+		bool mouse_enabled = false;
 		bool left_drag, right_drag;
-		int scale_factor;
+		//int scale_factor;
 
 		//GLuint spheres_list;
 
