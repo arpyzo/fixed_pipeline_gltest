@@ -169,6 +169,10 @@ void Primitive_Vertices_Scene::Create_Shapes() {
 }
 
 /***************************** Points_Lines_Scene ******************************/
+Points_Lines_Scene::~Points_Lines_Scene() {
+    glDisable(GL_LINE_STIPPLE);
+}
+
 void Points_Lines_Scene::Set_State() {
     Set_State_2D();
     glEnable(GL_LINE_STIPPLE);
@@ -334,6 +338,10 @@ void Cube_Control_Scene::Create_Shapes() {
 }
 
 /***************************** Ambient_Light_Rotate_Scene ******************************/
+Ambient_Light_Rotate_Scene::~Ambient_Light_Rotate_Scene() {
+    glDisable(GL_LIGHTING);
+}
+
 void Ambient_Light_Rotate_Scene::Set_RGB_Frame(RGB_Frame *rgb_win) {
     this->rgb_win = rgb_win;
 }
@@ -376,6 +384,11 @@ void Ambient_Light_Rotate_Scene::Create_Shapes() {
 }
 
 /***************************** Rotate_Light_Control_Scene ******************************/
+Rotate_Light_Control_Scene::~Rotate_Light_Control_Scene() {
+    glDisable(GL_LIGHTING);
+    glDeleteLists(spheres_list, 1);
+}
+
 /*void Rotate_Light_Control_Scene::Set_Camera(Camera *camera) {
     this->camera = camera;
 }*/
@@ -410,6 +423,11 @@ void Rotate_Light_Control_Scene::Create_Shapes() {
 }
 
 /***************************** Fixed_Light_Control_Scene ******************************/
+Fixed_Light_Control_Scene::~Fixed_Light_Control_Scene() {
+    glDisable(GL_LIGHTING);
+    glDeleteLists(spheres_list, 1);
+}
+
 /*void Fixed_Light_Control_Scene::Set_Camera(Camera *camera) {
     this->camera = camera;
 }*/
@@ -444,6 +462,10 @@ void Fixed_Light_Control_Scene::Create_Shapes() {
 }
 
 /***************************** Materials_Control_Scene ******************************/
+Materials_Control_Scene::~Materials_Control_Scene() {
+    glDisable(GL_LIGHTING);
+    glDeleteLists(spheres_list, 1);
+}
 /*void Materials_Control_Scene::Set_Camera(Camera *camera) {
     this->camera = camera;
 }*/
@@ -480,6 +502,10 @@ void Materials_Control_Scene::Create_Shapes() {
 }
 
 /***************************** Blend_Control_Scene ******************************/
+Blend_Control_Scene::~Blend_Control_Scene() {
+    glDisable(GL_BLEND);
+}
+
 /*void Blend_Control_Scene::Set_Camera(Camera *camera) {
     this->camera = camera;
 }*/

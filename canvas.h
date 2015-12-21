@@ -81,12 +81,12 @@ class Canvas : public wxGLCanvas {
         //float animation_x, animation_y, animation_angle;
 
 		//Camera *camera;
-        Scene *scene;
+        Scene *scene = NULL;
 		bool mouse_enabled;
 		bool left_drag, right_drag;
 		int scale_factor;
 
-		GLuint spheres_list;
+		//GLuint spheres_list;
 
   DECLARE_EVENT_TABLE()
 };

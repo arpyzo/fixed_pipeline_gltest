@@ -41,6 +41,7 @@ class Scene {
         };*/
 
         static Scene *Create_Scene(Scene_Type type);
+        virtual ~Scene() {}
 
         virtual bool Is_Controllable() { return false; }
         virtual bool Is_Animated() { return false; }
@@ -140,6 +141,8 @@ class Primitive_Vertices_Scene : public Scene {
 /***************************** Points_Lines_Scene ******************************/
 class Points_Lines_Scene : public Scene {
     public:
+        ~Points_Lines_Scene();
+
         void Set_State();
         void Generate_Polygons();
 
@@ -219,6 +222,7 @@ class Cube_Control_Scene : public Controllable_Scene {
 /***************************** Ambient_Light_Rotate_Scene ******************************/
 class Ambient_Light_Rotate_Scene : public Animated_Scene {
     public:
+        ~Ambient_Light_Rotate_Scene();
         //float Get_Animation_Angle();
         //void Set_Animation_Angle(float animation_angle);
 
@@ -239,6 +243,7 @@ class Ambient_Light_Rotate_Scene : public Animated_Scene {
 /***************************** Rotate_Light_Control_Scene ******************************/
 class Rotate_Light_Control_Scene : public Controllable_Scene {
     public:
+        ~Rotate_Light_Control_Scene();
         //void Set_Camera(Camera *camera);
 
         void Set_State();
@@ -254,6 +259,7 @@ class Rotate_Light_Control_Scene : public Controllable_Scene {
 /***************************** Fixed_Light_Control_Scene ******************************/
 class Fixed_Light_Control_Scene : public Controllable_Scene {
     public:
+        ~Fixed_Light_Control_Scene();
         //void Set_Camera(Camera *camera);
 
         void Set_State();
@@ -269,6 +275,7 @@ class Fixed_Light_Control_Scene : public Controllable_Scene {
 /***************************** Materials_Control_Scene ******************************/
 class Materials_Control_Scene : public Controllable_Scene {
     public:
+        ~Materials_Control_Scene();
         //void Set_Camera(Camera *camera);
 
         void Set_State();
@@ -284,6 +291,7 @@ class Materials_Control_Scene : public Controllable_Scene {
 /***************************** Blend_Control_Scene ******************************/
 class Blend_Control_Scene : public Controllable_Scene {
     public:
+        ~Blend_Control_Scene();
         //void Set_Camera(Camera *camera);
 
         void Set_State();

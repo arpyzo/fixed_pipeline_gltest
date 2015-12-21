@@ -70,6 +70,11 @@ void Canvas::Control(display_enum new_display)
 }*/
 
 void Canvas::Activate_Scene2(Scene::Scene_Type scene_type) {
+    if (scene) {
+        Clean_Display2(current_scene);
+        delete scene;
+    }
+
     Init_Display2(scene_type);
 
     Refresh();
@@ -344,7 +349,7 @@ void Canvas::Init_Display2(Scene::Scene_Type scene_type) {
     //current_scene = NONE;
     
     // TODO: change to get scene_type from the scene itself
-    Clean_Display2(current_scene);
+    //Clean_Display2(current_scene);
     current_scene = scene_type;
 
     scene = Scene::Create_Scene(scene_type);
@@ -453,10 +458,18 @@ void Canvas::Init_Display2(Scene::Scene_Type scene_type) {
 }*/
 
 void Canvas::Clean_Display2(Scene::Scene_Type scene_type) {
-    switch (scene_type) {
+    if (scene->Is_Controllable()) {
+        Set_State(STATE_NO_ACTION);
+    }
+
+    if (scene->Needs_RGB_Controls()) {
+        rgb_win->Show(FALSE);
+    }
+
+/*    switch (scene_type) {
         case Scene::PRIMITIVE_VERTICES:
             break;
-        case Scene::POINTS_LINES: glDisable(GL_LINE_STIPPLE);
+        case Scene::POINTS_LINES: //glDisable(GL_LINE_STIPPLE);
             break;
         case Scene::CUBE_STATIC:
             break;
@@ -466,27 +479,27 @@ void Canvas::Clean_Display2(Scene::Scene_Type scene_type) {
             break;
         case Scene::MULTI_ROTATE:
             break;
-        case Scene::CUBE_CONTROL: Set_State(STATE_NO_ACTION);
+        case Scene::CUBE_CONTROL: //Set_State(STATE_NO_ACTION);
             break;
-        case Scene::AMBIENT_LIGHT_ROTATE: glDisable(GL_LIGHTING);
-            rgb_win->Show(FALSE);
+        case Scene::AMBIENT_LIGHT_ROTATE: //glDisable(GL_LIGHTING);
+            //rgb_win->Show(FALSE);
             break;
-        case Scene::ROTATE_LIGHT_CONTROL: Set_State(STATE_NO_ACTION);
-            glDisable(GL_LIGHTING);
-            glDeleteLists(spheres_list, 1);
+        case Scene::ROTATE_LIGHT_CONTROL: //Set_State(STATE_NO_ACTION);
+            //glDisable(GL_LIGHTING);
+            //glDeleteLists(spheres_list, 1);
             break;
-        case Scene::FIXED_LIGHT_CONTROL: Set_State(STATE_NO_ACTION);
-            glDisable(GL_LIGHTING);
-            glDeleteLists(spheres_list, 1);
+        case Scene::FIXED_LIGHT_CONTROL: //Set_State(STATE_NO_ACTION);
+            //glDisable(GL_LIGHTING);
+            //glDeleteLists(spheres_list, 1);
             break;
-        case Scene::MATERIALS_CONTROL: Set_State(STATE_NO_ACTION);
-            glDisable(GL_LIGHTING);
-            glDeleteLists(spheres_list, 1);
+        case Scene::MATERIALS_CONTROL: //Set_State(STATE_NO_ACTION);
+            //glDisable(GL_LIGHTING);
+            //glDeleteLists(spheres_list, 1);
             break;
-        case Scene::BLEND_CONTROL: Set_State(STATE_NO_ACTION);
-            glDisable(GL_BLEND);
+        case Scene::BLEND_CONTROL: //Set_State(STATE_NO_ACTION);
+            //glDisable(GL_BLEND);
             break;
-    }
+    }*/
 }
 
 /*************/
