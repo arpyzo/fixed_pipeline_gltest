@@ -1,7 +1,6 @@
 #include "canvas.h"
 
-/***************************** Canvas ******************************/
-
+/******************************** Canvas *********************************/
 BEGIN_EVENT_TABLE(Canvas, wxGLCanvas)
     EVT_SIZE             (Canvas::Event_Resize)
     EVT_PAINT            (Canvas::Event_Paint)
@@ -31,81 +30,22 @@ Canvas::~Canvas() {
     delete gl_context;
 }
 
-/***********/
-/* Actions */
-/***********/
-/*void Canvas::Display(display_enum new_display)
-{ Init_Display(new_display);
-
-  Refresh();
-}
-
-void Canvas::Animate(display_enum new_display)
-{ Init_Display(new_display);
-
-  Refresh();
-  animation_timer->Start(50);
-}
-
-void Canvas::Control(display_enum new_display)
-{ Init_Display(new_display);
-
-  //scale_factor = 7;
-  Refresh();
-  Set_State(STATE_ACTION);
-}*/
-
-/*void Canvas::Activate_Scene(display_enum new_display) {
-    Init_Display(new_display);
-
-    Refresh();
-
-    if (scene->Is_Animated()) {
-        animation_timer->Start(50);
-    } else if (scene->Is_Controllable()) {
-        Set_State(STATE_ACTION);
-    }
-}*/
-
-void Canvas::Switch_Scene(Scene::Scene_Type scene_type) {
-    if (scene) {
-        //Clean_Display2(current_scene);
-        Clean_Display2();
-        delete scene;
-    }
-
-    Init_Display2(scene_type);
-
-    Refresh();
-
-    if (scene->Is_Animated()) {
-        animation_timer->Start(50);
-    } else if (scene->Is_Controllable()) {
-        //Set_State(STATE_ACTION);
-        Enable_Control();
-    }
-}
-
 /*****************/
 /* Canvas Events */
 /*****************/
 void Canvas::Event_Paint(wxPaintEvent &WXUNUSED(event)) {
-    /*if (current_display == TRANSITION) {
-        Clear_Screen();
-        return;
-    }*/
-
-    scene->Generate_Polygons();
-    SwapBuffers();
-
-    // Need a default?
+    if (scene) {
+        scene->Generate_Polygons();
+        SwapBuffers();
+    }
 }
 
-void Canvas::Event_Resize(wxSizeEvent &WXUNUSED(event))
-{ int width, height;
-    
-  GetClientSize(&width, &height);
-  scene->Set_Viewport(width, height);
+void Canvas::Event_Resize(wxSizeEvent &WXUNUSED(event)) {
+    if (scene) {
+        int width, height;
+        GetClientSize(&width, &height);
+        scene->Set_Viewport(width, height);
+    }
 
   // TODO: This needs further work
 }
@@ -229,6 +169,73 @@ void Canvas::Event_Control_Timer(wxTimerEvent &WXUNUSED(event)) {
     Refresh();
 }
 
+/*********************/
+/* Scene Maintenance */
+/*********************/
+void Canvas::Switch_Scene(Scene::Scene_Type scene_type) {
+    if (scene) {
+        Cleanup_Scene();
+    }
+
+    Initialize_Scene(scene_type);
+
+    Refresh();
+
+    if (scene->Is_Animated()) {
+        animation_timer->Start(50);
+    } else if (scene->Is_Controllable()) {
+        Enable_Control();
+    }
+}
+
+void Canvas::Initialize_Scene(Scene::Scene_Type scene_type) {
+    scene = Scene::Create_Scene(scene_type);
+    scene->Set_State();
+
+    if (scene->Needs_RGB_Controls()) {
+        scene->Set_RGB_Frame(rgb_win);
+        rgb_win->Show(TRUE);
+    }
+}
+
+void Canvas::Cleanup_Scene() {
+    if (scene->Is_Animated()) {
+        animation_timer->Stop();
+    } else if (scene->Is_Controllable()) {
+        Disable_Control();
+    }
+
+    if (scene->Needs_RGB_Controls()) {
+        rgb_win->Show(FALSE);
+    }
+
+    delete scene;
+}
+
+void Canvas::Enable_Control() {
+    SetCursor(wxCursor("OPEN_HAND_CURSOR"));
+    left_drag = false;
+    right_drag = false;
+    mouse_enabled = true;
+}
+
+void Canvas::Disable_Control() {
+    control_timer->Stop();
+    SetCursor(wxCursor("NO_ACTION_CURSOR"));
+    mouse_enabled = false;
+}
+
+/****************/
+/* Clear_Screen */
+/****************/
+void Canvas::Clear_Screen() {
+    wxPaintDC dc(this);
+
+    glClear(GL_COLOR_BUFFER_BIT);
+    glFlush();
+    SwapBuffers();
+}
+
 /********************/
 /* Display_GL_State */
 /********************/
@@ -269,290 +276,4 @@ void Canvas::Display_GL_State() {
     state_msg += wxString::Format("GL_LIGHT1 --- %s\n", Bool_Str(glIsEnabled(GL_LIGHT1)).c_str());
 
     wxMessageBox(state_msg, "OpenGL State");
-}
-
-/****************/
-/* Init_Display */
-/****************/
-/*void Canvas::Init_Display(display_enum new_display) {
-    display_enum old_display = current_display;
-
-    current_display = TRANSITION;
-    Clean_Display(old_display);
-    current_display = new_display;
-
-    switch (current_display) {
-    case VERTICES:
-        scene = Scene::Create_Scene(Scene::PRIMITIVE_VERTICES);
-        //scene->Set_State();
-        break;
-    case POINTS_LINES:
-        scene = Scene::Create_Scene(Scene::POINTS_LINES);
-        //scene->Set_State();
-        break;
-    case CUBE_STATIC:
-        scene = Scene::Create_Scene(Scene::CUBE_STATIC);
-        //scene->Set_State();
-        break;
-    case CUBE_ROTATE:
-        scene = Scene::Create_Scene(Scene::CUBE_ROTATE);
-        //scene->Set_State();
-        break;
-    case PYRAMID_ROTATE:
-        scene = Scene::Create_Scene(Scene::PYRAMID_ROTATE);
-        //scene->Set_State();
-        break;
-    case MULTI_ROTATE:
-        scene = Scene::Create_Scene(Scene::MULTI_ROTATE);
-        //scene->Set_State();
-        break;
-    case CUBE_CONTROL:
-        scene = Scene::Create_Scene(Scene::CUBE_CONTROL);
-        //scene->Set_State();
-        break;
-    case AMBIENT_LIGHT_ROTATE:
-        scene = Scene::Create_Scene(Scene::AMBIENT_LIGHT_ROTATE);
-        //scene->Set_State();
-        //scene->Set_RGB_Frame(rgb_win);
-        //rgb_win->Show(TRUE);
-        break;
-    case ROTATE_LIGHT_CONTROL:
-        scene = Scene::Create_Scene(Scene::ROTATE_LIGHT_CONTROL);
-        //scene->Set_State();
-        break;
-    case FIXED_LIGHT_CONTROL:
-        scene = Scene::Create_Scene(Scene::FIXED_LIGHT_CONTROL);
-        //scene->Set_State();
-        break;
-    case MATERIALS_CONTROL:
-        scene = Scene::Create_Scene(Scene::MATERIALS_CONTROL);
-        //scene->Set_State();
-        break;
-    case BLEND_CONTROL:
-        scene = Scene::Create_Scene(Scene::BLEND_CONTROL);
-        //scene->Set_State();
-        break;
-    }
-
-    // TODO: Check for NULL scene?
-    scene->Set_State();
-    if (scene->Needs_RGB_Controls()) {
-        scene->Set_RGB_Frame(rgb_win);
-        rgb_win->Show(TRUE);
-    }
-}*/
-
-void Canvas::Init_Display2(Scene::Scene_Type scene_type) {
-    //Scene::Scene_Type old_display = current_scene;
-
-    //current_display = TRANSITION;
-    //current_scene = NONE;
-    
-    // TODO: change to get scene_type from the scene itself
-    //Clean_Display2(current_scene);
-    current_scene = scene_type;
-
-    scene = Scene::Create_Scene(scene_type);
-
-/*    switch (current_display) {
-    case VERTICES:
-        scene = Scene::Create_Scene(Scene::PRIMITIVE_VERTICES);
-        //scene->Set_State();
-        break;
-    case POINTS_LINES:
-        scene = Scene::Create_Scene(Scene::POINTS_LINES);
-        //scene->Set_State();
-        break;
-    case CUBE_STATIC:
-        scene = Scene::Create_Scene(Scene::CUBE_STATIC);
-        //scene->Set_State();
-        break;
-    case CUBE_ROTATE:
-        scene = Scene::Create_Scene(Scene::CUBE_ROTATE);
-        //scene->Set_State();
-        break;
-    case PYRAMID_ROTATE:
-        scene = Scene::Create_Scene(Scene::PYRAMID_ROTATE);
-        //scene->Set_State();
-        break;
-    case MULTI_ROTATE:
-        scene = Scene::Create_Scene(Scene::MULTI_ROTATE);
-        //scene->Set_State();
-        break;
-    case CUBE_CONTROL:
-        scene = Scene::Create_Scene(Scene::CUBE_CONTROL);
-        //scene->Set_State();
-        break;
-    case AMBIENT_LIGHT_ROTATE:
-        scene = Scene::Create_Scene(Scene::AMBIENT_LIGHT_ROTATE);
-        //scene->Set_State();
-        //scene->Set_RGB_Frame(rgb_win);
-        //rgb_win->Show(TRUE);
-        break;
-    case ROTATE_LIGHT_CONTROL:
-        scene = Scene::Create_Scene(Scene::ROTATE_LIGHT_CONTROL);
-        //scene->Set_State();
-        break;
-    case FIXED_LIGHT_CONTROL:
-        scene = Scene::Create_Scene(Scene::FIXED_LIGHT_CONTROL);
-        //scene->Set_State();
-        break;
-    case MATERIALS_CONTROL:
-        scene = Scene::Create_Scene(Scene::MATERIALS_CONTROL);
-        //scene->Set_State();
-        break;
-    case BLEND_CONTROL:
-        scene = Scene::Create_Scene(Scene::BLEND_CONTROL);
-        //scene->Set_State();
-        break;
-    }*/
-
-    // TODO: Check for NULL scene?
-    scene->Set_State();
-    if (scene->Needs_RGB_Controls()) {
-        scene->Set_RGB_Frame(rgb_win);
-        rgb_win->Show(TRUE);
-    }
-}
-
-/*****************/
-/* Clean_Display */
-/*****************/
-/*void Canvas::Clean_Display(display_enum old_display)
-{
-    switch (old_display)
-    {
-    case VERTICES:
-        break;
-    case POINTS_LINES: glDisable(GL_LINE_STIPPLE);
-        break;
-    case CUBE_STATIC:
-        break;
-    case CUBE_ROTATE:
-        break;
-    case PYRAMID_ROTATE:
-        break;
-    case MULTI_ROTATE:
-        break;
-    case CUBE_CONTROL: Set_State(STATE_NO_ACTION);
-        break;
-    case AMBIENT_LIGHT_ROTATE: glDisable(GL_LIGHTING);
-        rgb_win->Show(FALSE);
-        break;
-    case ROTATE_LIGHT_CONTROL: Set_State(STATE_NO_ACTION);
-        glDisable(GL_LIGHTING);
-        glDeleteLists(spheres_list, 1);
-        break;
-    case FIXED_LIGHT_CONTROL: Set_State(STATE_NO_ACTION);
-        glDisable(GL_LIGHTING);
-        glDeleteLists(spheres_list, 1);
-        break;
-    case MATERIALS_CONTROL: Set_State(STATE_NO_ACTION);
-        glDisable(GL_LIGHTING);
-        glDeleteLists(spheres_list, 1);
-        break;
-    case BLEND_CONTROL: Set_State(STATE_NO_ACTION);
-        glDisable(GL_BLEND);
-        break;
-    }
-}*/
-
-//void Canvas::Clean_Display2(Scene::Scene_Type scene_type) {
-void Canvas::Clean_Display2() {
-        if (scene->Is_Animated()) {
-        animation_timer->Stop();
-    } else if (scene->Is_Controllable()) {
-        //Set_State(STATE_NO_ACTION);
-        Disable_Control();
-    }
-
-    if (scene->Needs_RGB_Controls()) {
-        rgb_win->Show(FALSE);
-    }
-
-/*    switch (scene_type) {
-        case Scene::PRIMITIVE_VERTICES:
-            break;
-        case Scene::POINTS_LINES: //glDisable(GL_LINE_STIPPLE);
-            break;
-        case Scene::CUBE_STATIC:
-            break;
-        case Scene::CUBE_ROTATE:
-            break;
-        case Scene::PYRAMID_ROTATE:
-            break;
-        case Scene::MULTI_ROTATE:
-            break;
-        case Scene::CUBE_CONTROL: //Set_State(STATE_NO_ACTION);
-            break;
-        case Scene::AMBIENT_LIGHT_ROTATE: //glDisable(GL_LIGHTING);
-            //rgb_win->Show(FALSE);
-            break;
-        case Scene::ROTATE_LIGHT_CONTROL: //Set_State(STATE_NO_ACTION);
-            //glDisable(GL_LIGHTING);
-            //glDeleteLists(spheres_list, 1);
-            break;
-        case Scene::FIXED_LIGHT_CONTROL: //Set_State(STATE_NO_ACTION);
-            //glDisable(GL_LIGHTING);
-            //glDeleteLists(spheres_list, 1);
-            break;
-        case Scene::MATERIALS_CONTROL: //Set_State(STATE_NO_ACTION);
-            //glDisable(GL_LIGHTING);
-            //glDeleteLists(spheres_list, 1);
-            break;
-        case Scene::BLEND_CONTROL: //Set_State(STATE_NO_ACTION);
-            //glDisable(GL_BLEND);
-            break;
-    }*/
-}
-
-/*************/
-/* Set_State */
-/*************/
-/*void Canvas::Set_State(state_enum new_state)
-{ switch(new_state)
-  { case STATE_ACTION:
-      animation_timer->Stop();
-      control_timer->Stop();
-      SetCursor(wxCursor("OPEN_HAND_CURSOR"));
-      left_drag = false;
-      right_drag = false;
-      mouse_enabled = true;
-      break;
-    case STATE_NO_ACTION:
-      animation_timer->Stop();
-      control_timer->Stop();
-      SetCursor(wxCursor("NO_ACTION_CURSOR"));
-      mouse_enabled = false;
-      break;
-    case STATE_NO_MOTION:
-      test_timer->Stop();
-      control_timer->Stop();
-      animation_x = 0;
-      animation_y = 0;
-  }
-}*/
-
-void Canvas::Enable_Control() {
-    SetCursor(wxCursor("OPEN_HAND_CURSOR"));
-    left_drag = false;
-    right_drag = false;
-    mouse_enabled = true;
-}
-
-void Canvas::Disable_Control() {
-    control_timer->Stop();
-    SetCursor(wxCursor("NO_ACTION_CURSOR"));
-    mouse_enabled = false;
-}
-
-/****************/
-/* Clear_Screen */
-/****************/
-void Canvas::Clear_Screen() {
-    wxPaintDC dc(this);
-
-    glClear(GL_COLOR_BUFFER_BIT);
-    glFlush();
-    SwapBuffers();
 }
