@@ -17,8 +17,6 @@ void Interleaved_Pyramid();
 
 void Prep_Spheres(GLuint *spheres_list);
 
-
-
 /***************************** Scene ******************************/
 class Scene {
     public:

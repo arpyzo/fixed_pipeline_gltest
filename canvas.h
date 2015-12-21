@@ -13,17 +13,9 @@
 #include "tools.h"
 #include "utility.h"
 
-enum {
-    TIMER_ANIMATION,
-    TIMER_CONTROL
-};
 
-enum state_enum {
-	STATE_ACTION,
-	STATE_NO_ACTION
-};
 
-enum display_enum {
+/*enum display_enum {
 	TRANSITION,
 	VERTICES,
 	POINTS_LINES,
@@ -37,18 +29,29 @@ enum display_enum {
 	FIXED_LIGHT_CONTROL,
 	MATERIALS_CONTROL,
 	BLEND_CONTROL
-};
+};*/
 
 /************************** Canvas **********************************/
 class Canvas : public wxGLCanvas {
 	public:
+        enum {
+            TIMER_ANIMATION,
+            TIMER_CONTROL
+        };
+
+        enum state_enum {
+            STATE_ACTION,
+            STATE_NO_ACTION
+        };
+
 		Canvas(wxWindow *parent);
         ~Canvas();
 
 		//void Display(display_enum new_display);
 		//void Animate(display_enum new_display);
         //void Control(display_enum new_display);
-        void Activate_Scene(display_enum new_display);
+        //void Activate_Scene(display_enum new_display);
+        void Activate_Scene2(Scene::Scene_Type scene_type);
 
 		void Event_Resize(wxSizeEvent &event);
 		void Event_Paint(wxPaintEvent &event);
@@ -58,15 +61,18 @@ class Canvas : public wxGLCanvas {
 		void Event_Control_Timer(wxTimerEvent &event);
 
 		void Display_GL_State();
-		void Init_Display(display_enum display_option);
-		void Clean_Display(display_enum old_display);
-		void Set_State(state_enum new_state);  
+        //void Init_Display(display_enum display_option);
+        void Init_Display2(Scene::Scene_Type scene_type);
+        //void Clean_Display(display_enum old_display);
+        void Clean_Display2(Scene::Scene_Type scene_type);
+        void Set_State(state_enum new_state);
 
 		void Clear_Screen();
 
 	private:
 		wxGLContext *gl_context;
-		display_enum current_display;
+		//display_enum current_display;
+        Scene::Scene_Type current_scene;
 
 		RGB_Frame *rgb_win;
 

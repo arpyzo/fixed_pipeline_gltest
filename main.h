@@ -3,6 +3,7 @@
 
 #include <wx/wx.h>
 #include "canvas.h"
+#include "scenes.h"
 
 enum {
 	MENU_QUIT,
