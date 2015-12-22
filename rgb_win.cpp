@@ -1,14 +1,14 @@
-#include "tools.h"
+#include "rgb_win.h"
 
 
-/***************************** RGB_Frame ******************************/
+/***************************** RGB_Win ******************************/
 
-BEGIN_EVENT_TABLE(RGB_Frame, wxMiniFrame)
-  EVT_SPIN_UP    (wxID_ANY, RGB_Frame::Event_Spin_Up)
-  EVT_SPIN_DOWN  (wxID_ANY, RGB_Frame::Event_Spin_Down)
+BEGIN_EVENT_TABLE(RGB_Win, wxMiniFrame)
+  EVT_SPIN_UP    (wxID_ANY, RGB_Win::Event_Spin_Up)
+  EVT_SPIN_DOWN  (wxID_ANY, RGB_Win::Event_Spin_Down)
 END_EVENT_TABLE()
 
-RGB_Frame::RGB_Frame(wxWindow *parent)
+RGB_Win::RGB_Win(wxWindow *parent)
 : wxMiniFrame(parent, -1, "RGBA", wxDefaultPosition, wxSize(103,116))
 { wxPanel *main_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
   wxBoxSizer *main_vsizer = new wxBoxSizer(wxVERTICAL);
@@ -16,7 +16,7 @@ RGB_Frame::RGB_Frame(wxWindow *parent)
   wxSpinButton *red_spinner, *green_spinner, *blue_spinner, *alpha_spinner;
 
   red_text_ctrl = new wxTextCtrl(main_panel, wxID_ANY, "0.40", wxDefaultPosition, wxSize(35,-1));
-  red_spinner = new wxSpinButton(main_panel, R_SPIN, wxDefaultPosition, wxSize(-1,21), wxSP_VERTICAL | wxSP_ARROW_KEYS);
+  red_spinner = new wxSpinButton(main_panel, RED_SPINNER, wxDefaultPosition, wxSize(-1,21), wxSP_VERTICAL | wxSP_ARROW_KEYS);
   
   hsizer = new wxBoxSizer(wxHORIZONTAL);
   hsizer->Add(new wxStaticText(main_panel, wxID_ANY, " Red:", wxDefaultPosition, wxSize(40,-1)), 0, wxALL | wxALIGN_CENTER, 0);
@@ -25,7 +25,7 @@ RGB_Frame::RGB_Frame(wxWindow *parent)
   main_vsizer->Add(hsizer, 0, wxALL, 1);
 
   green_text_ctrl = new wxTextCtrl(main_panel, wxID_ANY, "0.40", wxDefaultPosition, wxSize(35,-1));
-  green_spinner = new wxSpinButton(main_panel, G_SPIN, wxDefaultPosition, wxSize(-1,21), wxSP_VERTICAL | wxSP_ARROW_KEYS);
+  green_spinner = new wxSpinButton(main_panel, GREEN_SPINNER, wxDefaultPosition, wxSize(-1,21), wxSP_VERTICAL | wxSP_ARROW_KEYS);
   
   hsizer = new wxBoxSizer(wxHORIZONTAL);
   hsizer->Add(new wxStaticText(main_panel, wxID_ANY, " Green:", wxDefaultPosition, wxSize(40,-1)), 0, wxALL | wxALIGN_CENTER, 0);
@@ -34,7 +34,7 @@ RGB_Frame::RGB_Frame(wxWindow *parent)
   main_vsizer->Add(hsizer, 0, wxLEFT | wxRIGHT | wxBOTTOM, 1);
 
   blue_text_ctrl = new wxTextCtrl(main_panel, wxID_ANY, "0.40", wxDefaultPosition, wxSize(35,-1));
-  blue_spinner = new wxSpinButton(main_panel, B_SPIN, wxDefaultPosition, wxSize(-1,21), wxSP_VERTICAL | wxSP_ARROW_KEYS);
+  blue_spinner = new wxSpinButton(main_panel, BLUE_SPINNER, wxDefaultPosition, wxSize(-1,21), wxSP_VERTICAL | wxSP_ARROW_KEYS);
   
   hsizer = new wxBoxSizer(wxHORIZONTAL);
   hsizer->Add(new wxStaticText(main_panel, wxID_ANY, " Blue:", wxDefaultPosition, wxSize(40,-1)), 0, wxALL | wxALIGN_CENTER, 0);
@@ -43,7 +43,7 @@ RGB_Frame::RGB_Frame(wxWindow *parent)
   main_vsizer->Add(hsizer, 0, wxLEFT | wxRIGHT | wxBOTTOM, 1);
 
   alpha_text_ctrl = new wxTextCtrl(main_panel, wxID_ANY, "1.00", wxDefaultPosition, wxSize(35,-1));
-  alpha_spinner = new wxSpinButton(main_panel, A_SPIN, wxDefaultPosition, wxSize(-1,21), wxSP_VERTICAL | wxSP_ARROW_KEYS);
+  alpha_spinner = new wxSpinButton(main_panel, ALPHA_SPINNER, wxDefaultPosition, wxSize(-1,21), wxSP_VERTICAL | wxSP_ARROW_KEYS);
   
   hsizer = new wxBoxSizer(wxHORIZONTAL);
   hsizer->Add(new wxStaticText(main_panel, wxID_ANY, " Alpha:", wxDefaultPosition, wxSize(40,-1)), 0, wxALL | wxALIGN_CENTER, 0);
@@ -57,25 +57,25 @@ RGB_Frame::RGB_Frame(wxWindow *parent)
 /*****************/
 /* Event_Spin_Up */
 /*****************/
-void RGB_Frame::Event_Spin_Up(wxSpinEvent &event)
+void RGB_Win::Event_Spin_Up(wxSpinEvent &event)
 { wxTextCtrl *color_text_ctrl;
   double value;
 
   switch(event.GetId())
-  { case R_SPIN: color_text_ctrl = red_text_ctrl;
+  { case RED_SPINNER: color_text_ctrl = red_text_ctrl;
       break;
-    case G_SPIN: color_text_ctrl = green_text_ctrl;
+    case GREEN_SPINNER: color_text_ctrl = green_text_ctrl;
       break;
-    case B_SPIN: color_text_ctrl = blue_text_ctrl;
+    case BLUE_SPINNER: color_text_ctrl = blue_text_ctrl;
       break;
-    case A_SPIN: color_text_ctrl = alpha_text_ctrl;
+    case ALPHA_SPINNER: color_text_ctrl = alpha_text_ctrl;
       break;
     default:
       return;
   }
     
   if (!color_text_ctrl->GetValue().ToDouble(&value))
-  { if (event.GetId() != A_SPIN)
+  { if (event.GetId() != ALPHA_SPINNER)
       value = 0.35;
     else
       value = 0.95;
@@ -90,25 +90,25 @@ void RGB_Frame::Event_Spin_Up(wxSpinEvent &event)
 /*******************/
 /* Event_Spin_Down */
 /*******************/
-void RGB_Frame::Event_Spin_Down(wxSpinEvent &event)
+void RGB_Win::Event_Spin_Down(wxSpinEvent &event)
 { wxTextCtrl *color_text_ctrl;
   double value;
 
   switch(event.GetId())
-  { case R_SPIN: color_text_ctrl = red_text_ctrl;
+  { case RED_SPINNER: color_text_ctrl = red_text_ctrl;
       break;
-    case G_SPIN: color_text_ctrl = green_text_ctrl;
+    case GREEN_SPINNER: color_text_ctrl = green_text_ctrl;
       break;
-    case B_SPIN: color_text_ctrl = blue_text_ctrl;
+    case BLUE_SPINNER: color_text_ctrl = blue_text_ctrl;
       break;
-    case A_SPIN: color_text_ctrl = alpha_text_ctrl;
+    case ALPHA_SPINNER: color_text_ctrl = alpha_text_ctrl;
       break;
     default:
       return;
   }
     
   if (!color_text_ctrl->GetValue().ToDouble(&value))
-  { if (event.GetId() != A_SPIN)
+  { if (event.GetId() != ALPHA_SPINNER)
       value = 0.45;
     else
       value = 1.05;
@@ -120,7 +120,7 @@ void RGB_Frame::Event_Spin_Down(wxSpinEvent &event)
   color_text_ctrl->SetValue(wxString::Format("%.2f", value));
 }
 
-void RGB_Frame::Get_Values(float rgba[4])
+void RGB_Win::Get_Values(float rgba[4])
 { double value[4];
 
   if (!red_text_ctrl->GetValue().ToDouble(&value[0]))

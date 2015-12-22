@@ -131,16 +131,16 @@ Primitive_Vertices_Scene::Primitive_Vertices_Scene() {
     Set_State_2D();
 }
 
-void Primitive_Vertices_Scene::Generate_Polygons() {
+void Primitive_Vertices_Scene::Create() {
     Init_Matrix();
     glClear(GL_COLOR_BUFFER_BIT);
 
-    Create_Shapes();
+    Generate_Polygons();
 
     glFlush();
 }
 
-void Primitive_Vertices_Scene::Create_Shapes() {
+void Primitive_Vertices_Scene::Generate_Polygons() {
     Primitive_Vertices();
 }
 
@@ -154,16 +154,16 @@ Points_Lines_Scene::~Points_Lines_Scene() {
     glDisable(GL_LINE_STIPPLE);
 }
 
-void Points_Lines_Scene::Generate_Polygons() {
+void Points_Lines_Scene::Create() {
     Init_Matrix();
     glClear(GL_COLOR_BUFFER_BIT);
 
-    Create_Shapes();
+    Generate_Polygons();
 
     glFlush();
 }
 
-void Points_Lines_Scene::Create_Shapes() {
+void Points_Lines_Scene::Generate_Polygons() {
     Various_Points();
     Various_Lines();
 }
@@ -173,7 +173,7 @@ Cube_Static_Scene::Cube_Static_Scene() {
     Set_State_3D();
 }
 
-void Cube_Static_Scene::Generate_Polygons() {
+void Cube_Static_Scene::Create() {
     Init_Matrix();
     glTranslatef(0, 0, -300);
     glRotatef(45, 1, 0, 0);
@@ -183,12 +183,12 @@ void Cube_Static_Scene::Generate_Polygons() {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    Create_Shapes();
+    Generate_Polygons();
 
     glFlush();
 }
 
-void Cube_Static_Scene::Create_Shapes() {
+void Cube_Static_Scene::Generate_Polygons() {
     Primitive_Cube();
 }
 
@@ -197,19 +197,19 @@ Cube_Rotate_Scene::Cube_Rotate_Scene() {
     Set_State_3D();
 }
 
-void Cube_Rotate_Scene::Generate_Polygons() {
+void Cube_Rotate_Scene::Create() {
     Init_Matrix();
     glTranslatef(0, 0, -300);
     glRotatef(animation_angle, 1, 1, 1);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    Create_Shapes();
+    Generate_Polygons();
 
     glFlush();
 }
 
-void Cube_Rotate_Scene::Create_Shapes() {
+void Cube_Rotate_Scene::Generate_Polygons() {
     Primitive_Cube();
 }
 
@@ -218,19 +218,19 @@ Pyramid_Rotate_Scene::Pyramid_Rotate_Scene() {
     Set_State_3D();
 }
 
-void Pyramid_Rotate_Scene::Generate_Polygons() {
+void Pyramid_Rotate_Scene::Create() {
     Init_Matrix();
     glTranslatef(0, 0, -300);
     glRotatef(animation_angle, 1, 1, 1);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    Create_Shapes();
+    Generate_Polygons();
 
     glFlush();
 }
 
-void Pyramid_Rotate_Scene::Create_Shapes() {
+void Pyramid_Rotate_Scene::Generate_Polygons() {
     Interleaved_Pyramid();
 }
 
@@ -239,19 +239,19 @@ Multi_Rotate_Scene::Multi_Rotate_Scene() {
     Set_State_3D();
 }
 
-void Multi_Rotate_Scene::Generate_Polygons() {
+void Multi_Rotate_Scene::Create() {
     Init_Matrix();
     glTranslatef(0, 0, -300);
     glRotatef(animation_angle, 1, 1, 1);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    Create_Shapes();
+    Generate_Polygons();
 
     glFlush();
 }
 
-void Multi_Rotate_Scene::Create_Shapes() {
+void Multi_Rotate_Scene::Generate_Polygons() {
     glPushMatrix();
     glTranslatef(-150, 0, 0);
     Interleaved_Cube(100);
@@ -266,7 +266,7 @@ Cube_Control_Scene::Cube_Control_Scene() {
     Set_State_3D();
 }
 
-void Cube_Control_Scene::Generate_Polygons() {
+void Cube_Control_Scene::Create() {
     Init_Matrix();
     glTranslatef(0, 0, -300);
 
@@ -276,12 +276,12 @@ void Cube_Control_Scene::Generate_Polygons() {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    Create_Shapes();
+    Generate_Polygons();
 
     glFlush();
 }
 
-void Cube_Control_Scene::Create_Shapes() {
+void Cube_Control_Scene::Generate_Polygons() {
     Primitive_Cube();
 }
 
@@ -295,11 +295,11 @@ Ambient_Light_Rotate_Scene::~Ambient_Light_Rotate_Scene() {
     glDisable(GL_LIGHTING);
 }
 
-void Ambient_Light_Rotate_Scene::Set_RGB_Frame(RGB_Frame *rgb_win) {
+void Ambient_Light_Rotate_Scene::Set_RGB_Frame(RGB_Win *rgb_win) {
     this->rgb_win = rgb_win;
 }
 
-void Ambient_Light_Rotate_Scene::Generate_Polygons() {
+void Ambient_Light_Rotate_Scene::Create() {
     Init_Matrix();
     glTranslatef(0, 0, -300);
     glRotatef(animation_angle, 1, 1, 1);
@@ -314,12 +314,12 @@ void Ambient_Light_Rotate_Scene::Generate_Polygons() {
     GLfloat light_pos[] = { 200, -200, 200, 0 };
     glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
 
-    Create_Shapes();
+    Generate_Polygons();
 
     glFlush();
 }
 
-void Ambient_Light_Rotate_Scene::Create_Shapes() {
+void Ambient_Light_Rotate_Scene::Generate_Polygons() {
     glutSolidSphere(100, 50, 50);
 }
 
@@ -336,7 +336,7 @@ Rotate_Light_Control_Scene::~Rotate_Light_Control_Scene() {
     glDeleteLists(spheres_list, 1);
 }
 
-void Rotate_Light_Control_Scene::Generate_Polygons() {
+void Rotate_Light_Control_Scene::Create() {
     Init_Matrix();
     glTranslatef(0, 0, -300);
 
@@ -349,12 +349,12 @@ void Rotate_Light_Control_Scene::Generate_Polygons() {
     GLfloat light_pos[] = { 200, 200, 200, 0 };
     glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
 
-    Create_Shapes();
+    Generate_Polygons();
 
     glFlush();
 }
 
-void Rotate_Light_Control_Scene::Create_Shapes() {
+void Rotate_Light_Control_Scene::Generate_Polygons() {
     glCallList(spheres_list);
 }
 
@@ -371,7 +371,7 @@ Fixed_Light_Control_Scene::~Fixed_Light_Control_Scene() {
     glDeleteLists(spheres_list, 1);
 }
 
-void Fixed_Light_Control_Scene::Generate_Polygons() {
+void Fixed_Light_Control_Scene::Create() {
     Init_Matrix();
     glTranslatef(0, 0, -300);
 
@@ -384,12 +384,12 @@ void Fixed_Light_Control_Scene::Generate_Polygons() {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    Create_Shapes();
+    Generate_Polygons();
 
     glFlush();
 }
 
-void Fixed_Light_Control_Scene::Create_Shapes() {
+void Fixed_Light_Control_Scene::Generate_Polygons() {
     glCallList(spheres_list);
 }
 
@@ -406,7 +406,7 @@ Materials_Control_Scene::~Materials_Control_Scene() {
     glDeleteLists(spheres_list, 1);
 }
 
-void Materials_Control_Scene::Generate_Polygons() {
+void Materials_Control_Scene::Create() {
     Init_Matrix();
     glTranslatef(0, 0, -300);
 
@@ -419,14 +419,14 @@ void Materials_Control_Scene::Generate_Polygons() {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    Create_Shapes();
+    Generate_Polygons();
 
     // TODO: Implement materials
 
     glFlush();
 }
 
-void Materials_Control_Scene::Create_Shapes() {
+void Materials_Control_Scene::Generate_Polygons() {
     glCallList(spheres_list);
 }
 
@@ -442,7 +442,7 @@ Blend_Control_Scene::~Blend_Control_Scene() {
     glDisable(GL_BLEND);
 }
 
-void Blend_Control_Scene::Generate_Polygons() {
+void Blend_Control_Scene::Create() {
     Init_Matrix();
     glTranslatef(0, 0, -300);
 
@@ -452,12 +452,12 @@ void Blend_Control_Scene::Generate_Polygons() {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    Create_Shapes();
+    Generate_Polygons();
 
     glFlush();
 }
 
-void Blend_Control_Scene::Create_Shapes() {
+void Blend_Control_Scene::Generate_Polygons() {
     Interleaved_Cube(200);
 
     glDepthMask(GL_FALSE);

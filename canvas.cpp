@@ -15,7 +15,7 @@ Canvas::Canvas(wxWindow *parent)
     gl_context = new wxGLContext(this);
     SetCurrent(*gl_context);
 
-    rgb_win = new RGB_Frame(this);
+    rgb_win = new RGB_Win(this);
 
     animation_timer = new wxTimer(this, TIMER_ANIMATION);
     control_timer = new wxTimer(this, TIMER_CONTROL);
@@ -35,7 +35,7 @@ Canvas::~Canvas() {
 /*****************/
 void Canvas::Event_Paint(wxPaintEvent &WXUNUSED(event)) {
     if (scene) {
-        scene->Generate_Polygons();
+        scene->Create();
         SwapBuffers();
     }
 }

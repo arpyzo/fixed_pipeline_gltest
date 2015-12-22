@@ -140,14 +140,12 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\camera.cpp" />
     <ClCompile Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\canvas.cpp" />
+    <ClCompile Include="rgb_win.cpp" />
     <ClCompile Include="scenes.cpp" />
     <ClCompile Include="vector.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"> /EHsc   /EHsc </AdditionalOptions>
     </ClCompile>
     <ClCompile Include="main.cpp">
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"> /EHsc   /EHsc </AdditionalOptions>
-    </ClCompile>
-    <ClCompile Include="tools.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"> /EHsc   /EHsc </AdditionalOptions>
     </ClCompile>
     <ClCompile Include="utility.cpp">
@@ -157,10 +155,10 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\camera.h" />
     <ClInclude Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\canvas.h" />
+    <ClInclude Include="rgb_win.h" />
     <ClInclude Include="scenes.h" />
     <ClInclude Include="vector.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="tools.h" />
     <ClInclude Include="utility.h" />
   </ItemGroup>
   <ItemGroup>

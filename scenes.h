@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 #include "camera.h"
-#include "tools.h"
+#include "rgb_win.h"
 
 void Primitive_Vertices();
 void Various_Points();
@@ -43,9 +43,9 @@ class Scene {
         virtual bool Needs_RGB_Controls() { return false; }
 
         virtual void Set_Viewport(int width, int height);
-        virtual void Set_RGB_Frame(RGB_Frame *rgb_win) {}
+        virtual void Set_RGB_Frame(RGB_Win *rgb_win) {}
 
-        virtual void Generate_Polygons() {}
+        virtual void Create() {}
 
         void Change_Scale_Factor(int scale_factor_delta);
 
@@ -53,7 +53,7 @@ class Scene {
         int scale_factor;
 
         void Init_Matrix();
-        virtual void Create_Shapes() {}
+        virtual void Generate_Polygons() {}
         
         void Set_State_2D();
         void Set_State_3D();
@@ -107,10 +107,10 @@ class Primitive_Vertices_Scene : public Scene {
     public:
         Primitive_Vertices_Scene();
 
-        void Generate_Polygons();
+        void Create();
 
     protected:
-        void Create_Shapes();
+        void Generate_Polygons();
 };
 
 /***************************** Points_Lines_Scene ******************************/
@@ -119,10 +119,10 @@ class Points_Lines_Scene : public Scene {
         Points_Lines_Scene();
         ~Points_Lines_Scene();
 
-        void Generate_Polygons();
+        void Create();
 
     protected:
-        void Create_Shapes();
+        void Generate_Polygons();
 };
 
 /***************************** Cube_Static_Scene ******************************/
@@ -130,10 +130,10 @@ class Cube_Static_Scene : public Scene {
     public:
         Cube_Static_Scene();
 
-        void Generate_Polygons();
+        void Create();
 
     protected:
-        void Create_Shapes();
+        void Generate_Polygons();
 };
 
 /***************************** Cube_Rotate_Scene ******************************/
@@ -141,10 +141,10 @@ class Cube_Rotate_Scene : public Animated_Scene {
     public:
         Cube_Rotate_Scene();
 
-        void Generate_Polygons();
+        void Create();
 
     protected:
-        void Create_Shapes();
+        void Generate_Polygons();
 };
 
 /***************************** Pyramid_Rotate_Scene ******************************/
@@ -152,10 +152,10 @@ class Pyramid_Rotate_Scene : public Animated_Scene {
     public:
         Pyramid_Rotate_Scene();
 
-        void Generate_Polygons();
+        void Create();
 
     protected:
-        void Create_Shapes();
+        void Generate_Polygons();
 };
 
 /***************************** Multi_Rotate_Scene ******************************/
@@ -163,10 +163,10 @@ class Multi_Rotate_Scene : public Animated_Scene {
     public:
         Multi_Rotate_Scene();
 
-        void Generate_Polygons();
+        void Create();
 
     protected:
-        void Create_Shapes();
+        void Generate_Polygons();
 };
 
 /***************************** Cube_Control_Scene ******************************/
@@ -174,10 +174,10 @@ class Cube_Control_Scene : public Controllable_Scene {
     public:
         Cube_Control_Scene();
 
-        void Generate_Polygons();
+        void Create();
 
     protected:
-        void Create_Shapes();
+        void Generate_Polygons();
 };
 
 /***************************** Ambient_Light_Rotate_Scene ******************************/
@@ -187,14 +187,14 @@ class Ambient_Light_Rotate_Scene : public Animated_Scene {
         ~Ambient_Light_Rotate_Scene();
 
         bool Needs_RGB_Controls() { return true; }
-        void Set_RGB_Frame(RGB_Frame *rgb_win);
+        void Set_RGB_Frame(RGB_Win *rgb_win);
 
-        void Generate_Polygons();
+        void Create();
 
     protected:
-        void Create_Shapes();
+        void Generate_Polygons();
 
-        RGB_Frame *rgb_win;
+        RGB_Win *rgb_win;
 };
 
 /***************************** Rotate_Light_Control_Scene ******************************/
@@ -203,10 +203,10 @@ class Rotate_Light_Control_Scene : public Controllable_Scene {
         Rotate_Light_Control_Scene();
         ~Rotate_Light_Control_Scene();
 
-        void Generate_Polygons();
+        void Create();
 
     protected:
-        void Create_Shapes();
+        void Generate_Polygons();
 
         GLuint spheres_list;
 };
@@ -217,10 +217,10 @@ class Fixed_Light_Control_Scene : public Controllable_Scene {
         Fixed_Light_Control_Scene();
         ~Fixed_Light_Control_Scene();
 
-        void Generate_Polygons();
+        void Create();
 
     protected:
-        void Create_Shapes();
+        void Generate_Polygons();
 
         GLuint spheres_list;
 };
@@ -231,10 +231,10 @@ class Materials_Control_Scene : public Controllable_Scene {
         Materials_Control_Scene();
         ~Materials_Control_Scene();
 
-        void Generate_Polygons();
+        void Create();
 
     protected:
-        void Create_Shapes();
+        void Generate_Polygons();
 
         GLuint spheres_list;
 };
@@ -245,10 +245,10 @@ class Blend_Control_Scene : public Controllable_Scene {
         Blend_Control_Scene();
         ~Blend_Control_Scene();
 
-        void Generate_Polygons();
+        void Create();
 
     protected:
-        void Create_Shapes();
+        void Generate_Polygons();
 
         GLuint spheres_list;
 };

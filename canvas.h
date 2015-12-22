@@ -10,7 +10,7 @@
 #include "vector.h"
 #include "scenes.h"
 #include "camera.h"
-#include "tools.h"
+#include "rgb_win.h"
 #include "utility.h"
 
 /************************** Canvas **********************************/
@@ -45,7 +45,7 @@ class Canvas : public wxGLCanvas {
 
         wxGLContext *gl_context;
 
-		RGB_Frame *rgb_win;
+		RGB_Win *rgb_win;
 
 		wxTimer *animation_timer;
 		wxTimer *control_timer;
