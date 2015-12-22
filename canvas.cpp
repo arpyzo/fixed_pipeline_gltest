@@ -60,6 +60,7 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
         return;
     }
 
+    // TODO: Reorganize this logic
     if (event.LeftDown() && !right_drag) {
         control_timer->Stop();
 
@@ -118,7 +119,7 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
         if (left_drag) { // Reverse direction - Camera and scene movement are opposite each other
             static_cast<Controllable_Scene*>(scene)->Set_Control_Coords(mouse_prev.x, mouse_prev.y, event.GetX(), event.GetY());
             static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::ORBIT);
-            static_cast<Controllable_Scene*>(scene)->Orbit_Camera();
+            static_cast<Controllable_Scene*>(scene)->Move_Camera();
 
             Refresh();
 
@@ -126,7 +127,7 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
         } else if (right_drag) {
             static_cast<Controllable_Scene*>(scene)->Set_Control_Coords(mouse_prev.x, mouse_prev.y, event.GetX(), event.GetY());
             static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::SPIN);
-            static_cast<Controllable_Scene*>(scene)->Spin_Camera();
+            static_cast<Controllable_Scene*>(scene)->Move_Camera();
 
             Refresh();
 
@@ -139,7 +140,7 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
         scene->Change_Scale_Factor(event.GetWheelRotation() / event.GetWheelDelta());
 
         Refresh();
-    }  
+    }
 }
 
 void Canvas::Event_Animation_Timer(wxTimerEvent &WXUNUSED(event)) {
@@ -149,13 +150,7 @@ void Canvas::Event_Animation_Timer(wxTimerEvent &WXUNUSED(event)) {
 }
 
 void Canvas::Event_Control_Timer(wxTimerEvent &WXUNUSED(event)) {
-    if (static_cast<Controllable_Scene*>(scene)->Get_Camera_Motion() == Controllable_Scene::SPIN) {
-        static_cast<Controllable_Scene*>(scene)->Spin_Camera();
-    } else {
-        static_cast<Controllable_Scene*>(scene)->Orbit_Camera();
-    }
-
-    static_cast<Controllable_Scene*>(scene)->Increment_Camera_Angle();
+    static_cast<Controllable_Scene*>(scene)->Move_Camera();
 
     Refresh();
 }
@@ -181,7 +176,6 @@ void Canvas::Switch_Scene(Scene::Scene_Type scene_type) {
 
 void Canvas::Initialize_Scene(Scene::Scene_Type scene_type) {
     scene = Scene::Create_Scene(scene_type);
-    scene->Set_State();
 
     if (scene->Needs_RGB_Controls()) {
         scene->Set_RGB_Frame(rgb_win);
@@ -215,9 +209,9 @@ void Canvas::Disable_Control() {
     mouse_enabled = false;
 }
 
-/****************/
-/* Clear_Screen */
-/****************/
+/********************/
+/* Miscellaneous GL */
+/********************/
 void Canvas::Clear_Screen() {
     wxPaintDC dc(this);
 
@@ -226,9 +220,6 @@ void Canvas::Clear_Screen() {
     SwapBuffers();
 }
 
-/********************/
-/* Display_GL_State */
-/********************/
 void Canvas::Display_GL_State() {
     wxString state_msg = "";
     int state_int;

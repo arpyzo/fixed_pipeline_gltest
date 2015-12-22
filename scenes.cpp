@@ -72,17 +72,8 @@ void Scene::Change_Scale_Factor(int scale_factor_delta) {
 }
 
 /***************************** Animated_Scene ******************************/
-/*float Animated_Scene::Get_Animation_Angle() {
-    return animation_angle;
-}
-
-void Animated_Scene::Set_Animation_Angle(float animation_angle) {
-    this->animation_angle = animation_angle;
-}*/
-
 void Animated_Scene::Increment_Animation_Angle() {
-    animation_angle++;
-    if (animation_angle > 360) {
+    if (++animation_angle > 360) {
         animation_angle = 0;
     }
 }
@@ -90,23 +81,17 @@ void Animated_Scene::Increment_Animation_Angle() {
 /***************************** Controlable_Scene ******************************/
 Controllable_Scene::Controllable_Scene() {
     camera = new Camera();
-    camera->Reset();
 
     Set_Control_Coords(0, 0, 0, 0);
+}
+
+Controllable_Scene::~Controllable_Scene() {
+    delete camera;
 }
 
 void Controllable_Scene::Set_Viewport(int width, int height) {
     glViewport(0, 0, (GLint)width, (GLint)height);
     camera->Set_Viewport(width, height);
-}
-
-
-Camera *Controllable_Scene::Get_Camera() {
-    return camera;
-}
-
-void Controllable_Scene::Set_Camera(Camera *camera) {
-    this->camera = camera;
 }
 
 void Controllable_Scene::Set_Control_Coords(int start_x, int start_y, int end_x, int end_y, float control_scale) {
@@ -117,10 +102,6 @@ void Controllable_Scene::Set_Control_Coords(int start_x, int start_y, int end_x,
     this->control_scale = control_scale;
 }
 
-Controllable_Scene::Camera_Motion Controllable_Scene::Get_Camera_Motion() {
-    return camera_motion;
-}
-
 bool Controllable_Scene::Set_Camera_Motion(Camera_Motion camera_motion) {
     this->camera_motion = camera_motion;
 
@@ -129,29 +110,24 @@ bool Controllable_Scene::Set_Camera_Motion(Camera_Motion camera_motion) {
         if (angle == 0) {
             return false;
         }
-        camera->Set_Twist_Angle(angle);
-    }
-    else { // Controllable_Scene::ORBIT
+        camera->Set_Spin_Angle(angle);
+    } else { // Controllable_Scene::ORBIT
         camera->Set_Orbit_Vector((control_start.x - control_end.x) * control_scale, (control_end.y - control_start.y) * control_scale);
     }
 
     return true;
 }
 
-void Controllable_Scene::Increment_Camera_Angle() {
-
-}
-
-void Controllable_Scene::Spin_Camera() {
-    camera->Twist(camera->Get_Twist_Angle());
-}
-
-void Controllable_Scene::Orbit_Camera() {
-    camera->Transform(camera->Get_Orbit_Vector_X(), camera->Get_Orbit_Vector_Y());
+void Controllable_Scene::Move_Camera() {
+    if (camera_motion == Controllable_Scene::SPIN) {
+        camera->Twist(camera->Get_Spin_Angle());
+    } else {
+        camera->Transform(camera->Get_Orbit_Vector_X(), camera->Get_Orbit_Vector_Y());
+    }
 }
 
 /***************************** Primitive_Vertices_Scene ******************************/
-void Primitive_Vertices_Scene::Set_State() {
+Primitive_Vertices_Scene::Primitive_Vertices_Scene() {
     Set_State_2D();
 }
 
@@ -169,13 +145,13 @@ void Primitive_Vertices_Scene::Create_Shapes() {
 }
 
 /***************************** Points_Lines_Scene ******************************/
-Points_Lines_Scene::~Points_Lines_Scene() {
-    glDisable(GL_LINE_STIPPLE);
-}
-
-void Points_Lines_Scene::Set_State() {
+Points_Lines_Scene::Points_Lines_Scene() {
     Set_State_2D();
     glEnable(GL_LINE_STIPPLE);
+}
+
+Points_Lines_Scene::~Points_Lines_Scene() {
+    glDisable(GL_LINE_STIPPLE);
 }
 
 void Points_Lines_Scene::Generate_Polygons() {
@@ -193,7 +169,7 @@ void Points_Lines_Scene::Create_Shapes() {
 }
 
 /***************************** Cube_Static_Scene ******************************/
-void Cube_Static_Scene::Set_State() {
+Cube_Static_Scene::Cube_Static_Scene() {
     Set_State_3D();
 }
 
@@ -217,15 +193,7 @@ void Cube_Static_Scene::Create_Shapes() {
 }
 
 /***************************** Cube_Rotate_Scene ******************************/
-/*float Cube_Rotate_Scene::Get_Animation_Angle() {
-    return animation_angle;
-}
-
-void Cube_Rotate_Scene::Set_Animation_Angle(float animation_angle) {
-    this->animation_angle = animation_angle;
-}*/
-
-void Cube_Rotate_Scene::Set_State() {
+Cube_Rotate_Scene::Cube_Rotate_Scene() {
     Set_State_3D();
 }
 
@@ -246,15 +214,7 @@ void Cube_Rotate_Scene::Create_Shapes() {
 }
 
 /***************************** Pyramid_Rotate_Scene ******************************/
-/*float Pyramid_Rotate_Scene::Get_Animation_Angle() {
-    return animation_angle;
-}
-
-void Pyramid_Rotate_Scene::Set_Animation_Angle(float animation_angle) {
-    this->animation_angle = animation_angle;
-}*/
-
-void Pyramid_Rotate_Scene::Set_State() {
+Pyramid_Rotate_Scene::Pyramid_Rotate_Scene() {
     Set_State_3D();
 }
 
@@ -275,15 +235,7 @@ void Pyramid_Rotate_Scene::Create_Shapes() {
 }
 
 /***************************** Multi_Rotate_Scene ******************************/
-/*float Multi_Rotate_Scene::Get_Animation_Angle() {
-    return animation_angle;
-}
-
-void Multi_Rotate_Scene::Set_Animation_Angle(float animation_angle) {
-    this->animation_angle = animation_angle;
-}*/
-
-void Multi_Rotate_Scene::Set_State() {
+Multi_Rotate_Scene::Multi_Rotate_Scene() {
     Set_State_3D();
 }
 
@@ -310,11 +262,7 @@ void Multi_Rotate_Scene::Create_Shapes() {
 }
 
 /***************************** Cube_Control_Scene ******************************/
-/*void Cube_Control_Scene::Set_Camera(Camera *camera) {
-    this->camera = camera;
-}*/
-
-void Cube_Control_Scene::Set_State() {
+Cube_Control_Scene::Cube_Control_Scene() {
     Set_State_3D();
 }
 
@@ -338,25 +286,17 @@ void Cube_Control_Scene::Create_Shapes() {
 }
 
 /***************************** Ambient_Light_Rotate_Scene ******************************/
+Ambient_Light_Rotate_Scene::Ambient_Light_Rotate_Scene() {
+    Set_State_3D();
+    Set_State_Lit();
+}
+
 Ambient_Light_Rotate_Scene::~Ambient_Light_Rotate_Scene() {
     glDisable(GL_LIGHTING);
 }
 
 void Ambient_Light_Rotate_Scene::Set_RGB_Frame(RGB_Frame *rgb_win) {
     this->rgb_win = rgb_win;
-}
-
-/*float Ambient_Light_Rotate_Scene::Get_Animation_Angle() {
-    return animation_angle;
-}
-
-void Ambient_Light_Rotate_Scene::Set_Animation_Angle(float animation_angle) {
-    this->animation_angle = animation_angle;
-}*/
-
-void Ambient_Light_Rotate_Scene::Set_State() {
-    Set_State_3D();
-    Set_State_Lit();
 }
 
 void Ambient_Light_Rotate_Scene::Generate_Polygons() {
@@ -368,7 +308,7 @@ void Ambient_Light_Rotate_Scene::Generate_Polygons() {
 
     float ambient_light[4];
     rgb_win->Get_Values(ambient_light);
-    //  wxMessageBox(wxString::Format("R - %.2f\nG - %.2f\nB - %.2f\nA - %.2f\n", ambient_light[0], ambient_light[1], ambient_light[2], ambient_light[3]));
+    //wxMessageBox(wxString::Format("R - %.2f\nG - %.2f\nB - %.2f\nA - %.2f\n", ambient_light[0], ambient_light[1], ambient_light[2], ambient_light[3]));
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, (GLfloat *)ambient_light);
 
     GLfloat light_pos[] = { 200, -200, 200, 0 };
@@ -384,20 +324,16 @@ void Ambient_Light_Rotate_Scene::Create_Shapes() {
 }
 
 /***************************** Rotate_Light_Control_Scene ******************************/
-Rotate_Light_Control_Scene::~Rotate_Light_Control_Scene() {
-    glDisable(GL_LIGHTING);
-    glDeleteLists(spheres_list, 1);
-}
-
-/*void Rotate_Light_Control_Scene::Set_Camera(Camera *camera) {
-    this->camera = camera;
-}*/
-
-void Rotate_Light_Control_Scene::Set_State() {
+Rotate_Light_Control_Scene::Rotate_Light_Control_Scene() {
     Set_State_3D();
     Set_State_Lit();
 
     Prep_Spheres(&spheres_list);
+}
+
+Rotate_Light_Control_Scene::~Rotate_Light_Control_Scene() {
+    glDisable(GL_LIGHTING);
+    glDeleteLists(spheres_list, 1);
 }
 
 void Rotate_Light_Control_Scene::Generate_Polygons() {
@@ -423,20 +359,16 @@ void Rotate_Light_Control_Scene::Create_Shapes() {
 }
 
 /***************************** Fixed_Light_Control_Scene ******************************/
-Fixed_Light_Control_Scene::~Fixed_Light_Control_Scene() {
-    glDisable(GL_LIGHTING);
-    glDeleteLists(spheres_list, 1);
-}
-
-/*void Fixed_Light_Control_Scene::Set_Camera(Camera *camera) {
-    this->camera = camera;
-}*/
-
-void Fixed_Light_Control_Scene::Set_State() {
+Fixed_Light_Control_Scene::Fixed_Light_Control_Scene() {
     Set_State_3D();
     Set_State_Lit();
 
     Prep_Spheres(&spheres_list);
+}
+
+Fixed_Light_Control_Scene::~Fixed_Light_Control_Scene() {
+    glDisable(GL_LIGHTING);
+    glDeleteLists(spheres_list, 1);
 }
 
 void Fixed_Light_Control_Scene::Generate_Polygons() {
@@ -462,19 +394,16 @@ void Fixed_Light_Control_Scene::Create_Shapes() {
 }
 
 /***************************** Materials_Control_Scene ******************************/
-Materials_Control_Scene::~Materials_Control_Scene() {
-    glDisable(GL_LIGHTING);
-    glDeleteLists(spheres_list, 1);
-}
-/*void Materials_Control_Scene::Set_Camera(Camera *camera) {
-    this->camera = camera;
-}*/
-
-void Materials_Control_Scene::Set_State() {
+Materials_Control_Scene::Materials_Control_Scene() {
     Set_State_3D();
     Set_State_Lit();
 
     Prep_Spheres(&spheres_list);
+}
+
+Materials_Control_Scene::~Materials_Control_Scene() {
+    glDisable(GL_LIGHTING);
+    glDeleteLists(spheres_list, 1);
 }
 
 void Materials_Control_Scene::Generate_Polygons() {
@@ -502,19 +431,15 @@ void Materials_Control_Scene::Create_Shapes() {
 }
 
 /***************************** Blend_Control_Scene ******************************/
-Blend_Control_Scene::~Blend_Control_Scene() {
-    glDisable(GL_BLEND);
-}
-
-/*void Blend_Control_Scene::Set_Camera(Camera *camera) {
-    this->camera = camera;
-}*/
-
-void Blend_Control_Scene::Set_State() {
+Blend_Control_Scene::Blend_Control_Scene() {
     Set_State_3D();
     Set_State_Blend();
 
     Prep_Spheres(&spheres_list);
+}
+
+Blend_Control_Scene::~Blend_Control_Scene() {
+    glDisable(GL_BLEND);
 }
 
 void Blend_Control_Scene::Generate_Polygons() {

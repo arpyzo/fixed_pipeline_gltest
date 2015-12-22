@@ -17,25 +17,25 @@ Camera::Camera() {
     Reset();
 }
 
-float Camera::Get_Twist_Angle() {
-    return twist_angle;
+float Camera::Get_Spin_Angle() {
+    return spin_angle;
 }
 
-void Camera::Set_Twist_Angle(float angle) {
-    twist_angle = angle;
+void Camera::Set_Spin_Angle(float angle) {
+    spin_angle = angle;
 }
 
 float Camera::Get_Orbit_Vector_X() {
-    return spin_vector.x;
+    return orbit_vector.x;
 }
 
 float Camera::Get_Orbit_Vector_Y() {
-    return spin_vector.y;
+    return orbit_vector.y;
 }
 
 void Camera::Set_Orbit_Vector(float x, float y) {
-    spin_vector.x = x;
-    spin_vector.y = y;
+    orbit_vector.x = x;
+    orbit_vector.y = y;
 }
 
 /*********/

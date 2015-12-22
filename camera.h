@@ -6,8 +6,8 @@
 class Camera {
     public:
         Camera();
-        float Get_Twist_Angle();
-        void Set_Twist_Angle(float angle);
+        float Get_Spin_Angle();
+        void Set_Spin_Angle(float angle);
         void Set_Orbit_Vector(float x, float y);
         float Get_Orbit_Vector_X();
         float Get_Orbit_Vector_Y();
@@ -23,11 +23,11 @@ class Camera {
         void Twist(float twist_angle);
 
     private:
-        float twist_angle;
+        float spin_angle;
         struct {
             float x;
             float y;
-        } spin_vector;
+        } orbit_vector;
 
         float orig_pos[3], orig_top[3];
         float cur_pos[3], cur_top[3];
