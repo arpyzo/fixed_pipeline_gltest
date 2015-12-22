@@ -52,7 +52,6 @@ class Canvas : public wxGLCanvas {
 
         Scene *scene = NULL;
 		bool mouse_enabled = false;
-		bool left_drag, right_drag;
 
   DECLARE_EVENT_TABLE()
 };

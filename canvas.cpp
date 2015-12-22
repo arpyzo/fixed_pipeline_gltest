@@ -54,65 +54,64 @@ void Canvas::Event_Erase_Background(wxEraseEvent &WXUNUSED(event)) { }
 
 void Canvas::Event_Mouse(wxMouseEvent &event) {
     static wxPoint mouse_prev;
+    static bool left_drag, right_drag;
 
-    if (!mouse_enabled) // TODO: Why?
+    if (!mouse_enabled) {
         return;
+    }
 
     if (event.LeftDown() && !right_drag) {
         control_timer->Stop();
-        SetCursor(wxCursor("GRIPPING_HAND_CURSOR"));
+
         left_drag = true;
+        SetCursor(wxCursor("GRIPPING_HAND_CURSOR"));
         mouse_prev = event.GetPosition();
 
+        return;
     }
-    else if (event.LeftUp() && !right_drag) { // Camera orbiting the scene
+    
+    if (event.LeftUp() && !right_drag) { // Camera orbiting the scene
         SetCursor(wxCursor("OPEN_HAND_CURSOR"));
         left_drag = false;
 
         wxPoint mouse_start = event.GetPosition();
-
         wxMilliSleep(25);
-
         wxPoint mouse_end = wxGetMousePosition() - GetScreenPosition();
 
-
-        if (abs(mouse_start.x - mouse_end.x) > 2 || abs(mouse_start.y - mouse_end.y) > 2) { // Has mouse moved enough to trigger animation?
+        if (abs(mouse_start.x - mouse_end.x) > 2 || abs(mouse_start.y - mouse_end.y) > 2) { // Has mouse moved enough to trigger animation?            
             static_cast<Controllable_Scene*>(scene)->Set_Control_Coords(mouse_start.x, mouse_start.y, mouse_end.x, mouse_end.y, 0.2);
-
             static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::ORBIT);
 
-            Refresh();
             control_timer->Start(1);
         }
+        return;
     }
 
     if (event.RightDown() && !left_drag) {
         control_timer->Stop();
-        SetCursor(wxCursor("POINTING_HAND_CURSOR"));
+
         right_drag = true;
+        SetCursor(wxCursor("POINTING_HAND_CURSOR"));
         mouse_prev = event.GetPosition();
+
+        return;
     }
-    else if (event.RightUp() && !left_drag) { // Camera stationary and spinning
+    
+    if (event.RightUp() && !left_drag) { // Camera stationary and spinning
         SetCursor(wxCursor("OPEN_HAND_CURSOR"));
         right_drag = false;
 
         wxPoint mouse_start = event.GetPosition();
         wxMilliSleep(25);
-
         wxPoint mouse_end = wxGetMousePosition() - GetScreenPosition();
 
         if (abs(mouse_start.x - mouse_end.x) > 2 || abs(mouse_start.y - mouse_end.y) > 2) { // Has mouse moved enough to trigger animation?
-
             static_cast<Controllable_Scene*>(scene)->Set_Control_Coords(mouse_start.x, mouse_start.y, mouse_end.x, mouse_end.y);
+            static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::SPIN);
 
-            if (static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::SPIN)) {
-
-                Refresh();
-                control_timer->Start(1);
-            }
+            control_timer->Start(1);
         }
-
-
+        return;
     }
 
     if (event.Dragging()) {
@@ -124,9 +123,7 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
             Refresh();
 
             mouse_prev = event.GetPosition();
-
-        }
-        else if (right_drag) {
+        } else if (right_drag) {
             static_cast<Controllable_Scene*>(scene)->Set_Control_Coords(mouse_prev.x, mouse_prev.y, event.GetX(), event.GetY());
             static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::SPIN);
             static_cast<Controllable_Scene*>(scene)->Spin_Camera();
@@ -134,17 +131,11 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
             Refresh();
 
             mouse_prev = event.GetPosition();
-
-
-            //STIME
-            //    LOOP
-            //        camera->Twist(700, 350, 699, 354, 399, 299);
-            //ETIME
         }
+        return;
     }
 
     if (event.GetWheelRotation() != 0) {
-   
         scene->Change_Scale_Factor(event.GetWheelRotation() / event.GetWheelDelta());
 
         Refresh();
@@ -214,13 +205,12 @@ void Canvas::Cleanup_Scene() {
 
 void Canvas::Enable_Control() {
     SetCursor(wxCursor("OPEN_HAND_CURSOR"));
-    left_drag = false;
-    right_drag = false;
     mouse_enabled = true;
 }
 
 void Canvas::Disable_Control() {
     control_timer->Stop();
+
     SetCursor(wxCursor("NO_ACTION_CURSOR"));
     mouse_enabled = false;
 }
@@ -260,11 +250,11 @@ void Canvas::Display_GL_State() {
     state_msg += wxString::Format("GL_POINT_SIZE_RANGE --- %.1f, %.1f\n", state_float[0], state_float[1]);
     glGetFloatv(GL_POINT_SIZE_GRANULARITY, state_float);
     state_msg += wxString::Format("GL_POINT_SIZE_GRANULARITY --- %.4f\n", state_float[0]);
-    /*glGetFloatv(GL_SMOOTH_POINT_SIZE_RANGE, state_float);
-    state_msg += wxString::Format("GL_SMOOTH_POINT_SIZE_RANGE --- %f, %f\n", state_float[0], state_float[1]);
-    glGetFloatv(GL_ALIASED_POINT_SIZE_RANGE, state_float);
-    state_msg += wxString::Format("GL_ALIASED_POINT_SIZE_RANGE --- %f, %f\n", state_float[0], state_float[1]);
-    */
+    //glGetFloatv(GL_SMOOTH_POINT_SIZE_RANGE, state_float);
+    //state_msg += wxString::Format("GL_SMOOTH_POINT_SIZE_RANGE --- %f, %f\n", state_float[0], state_float[1]);
+    //glGetFloatv(GL_ALIASED_POINT_SIZE_RANGE, state_float);
+    //state_msg += wxString::Format("GL_ALIASED_POINT_SIZE_RANGE --- %f, %f\n", state_float[0], state_float[1]);
+    
     state_msg += wxString::Format("GL_LIGHTING --- %s\n", Bool_Str(glIsEnabled(GL_LIGHTING)).c_str());
     state_msg += wxString::Format("GL_LIGHT_MODEL_LOCAL_VIEWER --- %s\n", Bool_Str(glIsEnabled(GL_LIGHT_MODEL_LOCAL_VIEWER)).c_str());
     state_msg += wxString::Format("GL_LIGHT_MODEL_TWO_SIDE --- %s\n", Bool_Str(glIsEnabled(GL_LIGHT_MODEL_TWO_SIDE)).c_str());
