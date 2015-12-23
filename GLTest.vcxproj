@@ -140,7 +140,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\camera.cpp" />
     <ClCompile Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\canvas.cpp" />
-    <ClCompile Include="rgb_win.cpp" />
+    <ClCompile Include="rgba_win.cpp" />
     <ClCompile Include="scenes.cpp" />
     <ClCompile Include="vector.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"> /EHsc   /EHsc </AdditionalOptions>
@@ -155,7 +155,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\camera.h" />
     <ClInclude Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\canvas.h" />
-    <ClInclude Include="rgb_win.h" />
+    <ClInclude Include="rgba_win.h" />
     <ClInclude Include="scenes.h" />
     <ClInclude Include="vector.h" />
     <ClInclude Include="main.h" />

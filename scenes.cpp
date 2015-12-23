@@ -295,8 +295,10 @@ Ambient_Light_Rotate_Scene::~Ambient_Light_Rotate_Scene() {
     glDisable(GL_LIGHTING);
 }
 
-void Ambient_Light_Rotate_Scene::Set_RGB_Frame(RGB_Win *rgb_win) {
-    this->rgb_win = rgb_win;
+void Ambient_Light_Rotate_Scene::Set_Ambient_Light(float rgba[4]) {
+    for (int i = 0; i <= 3; i++) {
+        ambient_light[i] = rgba[i];
+    }
 }
 
 void Ambient_Light_Rotate_Scene::Create() {
@@ -306,9 +308,6 @@ void Ambient_Light_Rotate_Scene::Create() {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    float ambient_light[4];
-    rgb_win->Get_Values(ambient_light);
-    //wxMessageBox(wxString::Format("R - %.2f\nG - %.2f\nB - %.2f\nA - %.2f\n", ambient_light[0], ambient_light[1], ambient_light[2], ambient_light[3]));
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, (GLfloat *)ambient_light);
 
     GLfloat light_pos[] = { 200, -200, 200, 0 };

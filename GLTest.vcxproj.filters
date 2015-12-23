@@ -33,7 +33,7 @@
     <ClCompile Include="scenes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="rgb_win.cpp">
+    <ClCompile Include="rgba_win.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,7 +56,7 @@
     <ClInclude Include="scenes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="rgb_win.h">
+    <ClInclude Include="rgba_win.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

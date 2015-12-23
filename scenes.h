@@ -5,7 +5,6 @@
 
 #include <stdio.h>
 #include "camera.h"
-#include "rgb_win.h"
 
 void Primitive_Vertices();
 void Various_Points();
@@ -40,10 +39,9 @@ class Scene {
 
         virtual bool Is_Controllable() { return false; }
         virtual bool Is_Animated() { return false; }
-        virtual bool Needs_RGB_Controls() { return false; }
+        virtual bool Needs_RGBA_Controls() { return false; }
 
         virtual void Set_Viewport(int width, int height);
-        virtual void Set_RGB_Frame(RGB_Win *rgb_win) {}
 
         virtual void Create() {}
 
@@ -186,15 +184,15 @@ class Ambient_Light_Rotate_Scene : public Animated_Scene {
         Ambient_Light_Rotate_Scene();
         ~Ambient_Light_Rotate_Scene();
 
-        bool Needs_RGB_Controls() { return true; }
-        void Set_RGB_Frame(RGB_Win *rgb_win);
+        bool Needs_RGBA_Controls() { return true; }
+        void Set_Ambient_Light(float rgba[4]);
 
         void Create();
 
     protected:
         void Generate_Polygons();
 
-        RGB_Win *rgb_win;
+        float ambient_light[4];
 };
 
 /***************************** Rotate_Light_Control_Scene ******************************/

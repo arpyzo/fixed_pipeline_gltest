@@ -15,7 +15,7 @@ Canvas::Canvas(wxWindow *parent)
     gl_context = new wxGLContext(this);
     SetCurrent(*gl_context);
 
-    rgb_win = new RGB_Win(this);
+    rgba_win = new RGBA_Win(this);
 
     animation_timer = new wxTimer(this, TIMER_ANIMATION);
     control_timer = new wxTimer(this, TIMER_CONTROL);
@@ -147,8 +147,15 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
     }
 }
 
+/**********/
+/* Timers */
+/**********/
 void Canvas::Event_Animation_Timer(wxTimerEvent &WXUNUSED(event)) {
     static_cast<Animated_Scene*>(scene)->Increment_Animation_Angle();
+
+    if (scene->Needs_RGBA_Controls()) {
+        Set_Scene_RGBA();
+    }
 
     Refresh();
 }
@@ -181,9 +188,9 @@ void Canvas::Switch_Scene(Scene::Scene_Type scene_type) {
 void Canvas::Initialize_Scene(Scene::Scene_Type scene_type) {
     scene = Scene::Create_Scene(scene_type);
 
-    if (scene->Needs_RGB_Controls()) {
-        scene->Set_RGB_Frame(rgb_win);
-        rgb_win->Show(TRUE);
+    if (scene->Needs_RGBA_Controls()) {
+        rgba_win->Show(TRUE);
+        Set_Scene_RGBA();
     }
 }
 
@@ -194,8 +201,8 @@ void Canvas::Cleanup_Scene() {
         Disable_Control();
     }
 
-    if (scene->Needs_RGB_Controls()) {
-        rgb_win->Show(FALSE);
+    if (scene->Needs_RGBA_Controls()) {
+        rgba_win->Show(FALSE);
     }
 
     delete scene;
@@ -261,4 +268,14 @@ void Canvas::Display_GL_State() {
     state_msg += wxString::Format("GL_LIGHT1 --- %s\n", Bool_Str(glIsEnabled(GL_LIGHT1)).c_str());
 
     wxMessageBox(state_msg, "OpenGL State");
+}
+
+/****************/
+/* Misc Private */
+/****************/
+void Canvas::Set_Scene_RGBA() {
+    float rgba[4];
+
+    rgba_win->Get_Values(rgba);
+    static_cast<Ambient_Light_Rotate_Scene*>(scene)->Set_Ambient_Light(rgba);
 }
