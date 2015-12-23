@@ -4,26 +4,28 @@ IMPLEMENT_APP(App)
 
 /***************************** Frame ******************************/
 BEGIN_EVENT_TABLE(Frame, wxFrame)
-    EVT_MENU    (MENU_QUIT,             Frame::Menu_Quit)
-    EVT_MENU    (MENU_STATE,            Frame::Menu_State)
-    EVT_MENU    (MENU_VERTICIES,        Frame::Menu_Vertices)
-    EVT_MENU    (MENU_POINTS,           Frame::Menu_Points_Lines)
-    EVT_MENU    (MENU_STATIC_CUBE,      Frame::Menu_Static_Cube)
-    EVT_MENU    (MENU_ROTATE_CUBE,      Frame::Menu_Rotate_Cube)
-    EVT_MENU    (MENU_ROTATE_PYRAMID,   Frame::Menu_Rotate_Pyramid)
-    EVT_MENU    (MENU_ROTATE_MULTI,     Frame::Menu_Rotate_Multi)
-    EVT_MENU    (MENU_CONTROL_CUBE,     Frame::Menu_Control_Cube)
-    EVT_MENU    (MENU_AMBIENT_LIGHT,    Frame::Menu_Ambient_Light)
-    EVT_MENU    (MENU_ROTATE_LIGHT,     Frame::Menu_Rotating_Light)
-    EVT_MENU    (MENU_FIXED_LIGHT,      Frame::Menu_Fixed_Light)
-    EVT_MENU    (MENU_MATERIALS,        Frame::Menu_Materials)
-    EVT_MENU    (MENU_BLEND,            Frame::Menu_Blending)
-    EVT_MENU    (MENU_ABOUT,            Frame::Menu_About)
+    EVT_MENU    (MENU_VERTICES,         Frame::Menu_Item)
+    EVT_MENU    (MENU_POINTS,           Frame::Menu_Item)
+    EVT_MENU    (MENU_STATIC_CUBE,      Frame::Menu_Item)
+    EVT_MENU    (MENU_ROTATE_CUBE,      Frame::Menu_Item)
+    EVT_MENU    (MENU_ROTATE_PYRAMID,   Frame::Menu_Item)
+    EVT_MENU    (MENU_ROTATE_MULTI,     Frame::Menu_Item)
+    EVT_MENU    (MENU_CONTROL_CUBE,     Frame::Menu_Item)
+    EVT_MENU    (MENU_AMBIENT_LIGHT,    Frame::Menu_Item)
+    EVT_MENU    (MENU_ROTATE_LIGHT,     Frame::Menu_Item)
+    EVT_MENU    (MENU_FIXED_LIGHT,      Frame::Menu_Item)
+    EVT_MENU    (MENU_MATERIALS,        Frame::Menu_Item)
+    EVT_MENU    (MENU_BLEND,            Frame::Menu_Item)
+
+    EVT_MENU    (MENU_GL_STATE,         Frame::Menu_Item)
+    EVT_MENU    (MENU_ABOUT,            Frame::Menu_Item)
+    EVT_MENU    (MENU_QUIT,             Frame::Menu_Item)
 END_EVENT_TABLE()
         
 Frame::Frame() 
 : wxFrame((wxFrame *)NULL, -1, "GLTest", wxPoint(50, 50), wxSize(808, 654)) {
     SetIcon(wxIcon("GLTEST_ICON"));
+    Setup_Menu_To_Scene_Array();
     Setup_Menu();
 
     gl_canvas = new Canvas(this);
@@ -33,10 +35,24 @@ Frame::~Frame() {
     delete gl_canvas;
 }
 
+/****************/
+/* Menu Related */
+/****************/
+void Frame::Setup_Menu_To_Scene_Array() {
+    menu_to_scene[MENU_VERTICES] = Scene::PRIMITIVE_VERTICES;
+    menu_to_scene[MENU_POINTS] = Scene::POINTS_LINES;
+    menu_to_scene[MENU_STATIC_CUBE] = Scene::CUBE_STATIC;
+    menu_to_scene[MENU_ROTATE_CUBE] = Scene::CUBE_ROTATE;
+    menu_to_scene[MENU_ROTATE_PYRAMID] = Scene::PYRAMID_ROTATE;
+    menu_to_scene[MENU_ROTATE_MULTI] = Scene::MULTI_ROTATE;
+    menu_to_scene[MENU_CONTROL_CUBE] = Scene::CUBE_CONTROL;
+    menu_to_scene[MENU_AMBIENT_LIGHT] = Scene::AMBIENT_LIGHT_ROTATE;
+    menu_to_scene[MENU_ROTATE_LIGHT] = Scene::ROTATE_LIGHT_CONTROL;
+    menu_to_scene[MENU_FIXED_LIGHT] = Scene::FIXED_LIGHT_CONTROL;
+    menu_to_scene[MENU_MATERIALS] = Scene::MATERIALS_CONTROL;
+    menu_to_scene[MENU_BLEND] = Scene::BLEND_CONTROL;
+}
 
-/*************************/
-/* Menu Member Functions */
-/*************************/
 void Frame::Setup_Menu() {
     wxMenuBar *menu_bar = new wxMenuBar();
     wxMenu *file_menu = new wxMenu();
@@ -50,10 +66,10 @@ void Frame::Setup_Menu() {
     file_menu->Append(MENU_QUIT, "E&xit");
     menu_bar->Append(file_menu, "&File");
 
-    util_menu->Append(MENU_STATE, "GL &State");
+    util_menu->Append(MENU_GL_STATE, "GL &State");
     menu_bar->Append(util_menu, "&Utility");
 
-    basic_2d_menu->Append(MENU_VERTICIES, "Vertices");
+    basic_2d_menu->Append(MENU_VERTICES, "Vertices");
     basic_2d_menu->Append(MENU_POINTS, "Points and Lines");
     menu_bar->Append(basic_2d_menu, "Basic &2D");
 
@@ -79,64 +95,20 @@ void Frame::Setup_Menu() {
     SetMenuBar(menu_bar);
 }
 
-void Frame::Menu_State(wxCommandEvent &WXUNUSED(event)) {
-    gl_canvas->Display_GL_State();
-}
-
-void Frame::Menu_Vertices(wxCommandEvent &WXUNUSED(event)) {
-    gl_canvas->Switch_Scene(Scene::PRIMITIVE_VERTICES);
-}
-
-void Frame::Menu_Points_Lines(wxCommandEvent &WXUNUSED(event)) {
-    gl_canvas->Switch_Scene(Scene::POINTS_LINES);
-}
-
-void Frame::Menu_Static_Cube(wxCommandEvent &WXUNUSED(event)) {
-    gl_canvas->Switch_Scene(Scene::CUBE_STATIC);
-}
-
-void Frame::Menu_Rotate_Cube(wxCommandEvent &WXUNUSED(event)) {
-    gl_canvas->Switch_Scene(Scene::CUBE_ROTATE);
-}
-
-void Frame::Menu_Rotate_Pyramid(wxCommandEvent &WXUNUSED(event)) {
-    gl_canvas->Switch_Scene(Scene::PYRAMID_ROTATE);
-}
-
-void Frame::Menu_Rotate_Multi(wxCommandEvent &WXUNUSED(event)) {
-    gl_canvas->Switch_Scene(Scene::MULTI_ROTATE);
-}
-
-void Frame::Menu_Control_Cube(wxCommandEvent &WXUNUSED(event)) {
-    gl_canvas->Switch_Scene(Scene::CUBE_CONTROL);
-}
-
-void Frame::Menu_Ambient_Light(wxCommandEvent &WXUNUSED(event)) {
-    gl_canvas->Switch_Scene(Scene::AMBIENT_LIGHT_ROTATE);
-}
-
-void Frame::Menu_Rotating_Light(wxCommandEvent &WXUNUSED(event)) {
-    gl_canvas->Switch_Scene(Scene::ROTATE_LIGHT_CONTROL);
-}
-
-void Frame::Menu_Fixed_Light(wxCommandEvent &WXUNUSED(event)) {
-    gl_canvas->Switch_Scene(Scene::FIXED_LIGHT_CONTROL);
-}
-
-void Frame::Menu_Materials(wxCommandEvent &WXUNUSED(event)) {
-    gl_canvas->Switch_Scene(Scene::MATERIALS_CONTROL);
-}
-
-void Frame::Menu_Blending(wxCommandEvent &WXUNUSED(event)) {
-    gl_canvas->Switch_Scene(Scene::BLEND_CONTROL);
-}
-
-void Frame::Menu_About(wxCommandEvent &WXUNUSED(event)) {
-    wxMessageBox("GLTest\nOpenGL Demonstration Program\nRobert E. Pyzalski 2007", "About..", wxICON_INFORMATION);
-}
-
-void Frame::Menu_Quit(wxCommandEvent &WXUNUSED(event)) {
-    Close(TRUE);
+void Frame::Menu_Item(wxCommandEvent &event) {
+    switch(event.GetId()) {
+        case MENU_GL_STATE:
+            gl_canvas->Display_GL_State();
+            return;
+        case MENU_ABOUT:
+            wxMessageBox("GLTest\nOpenGL Demonstration Program\nRobert E. Pyzalski 2007", "About..", wxICON_INFORMATION);
+            return;
+        case MENU_QUIT:
+            Close(TRUE);
+            return;
+        default:
+            gl_canvas->Switch_Scene(menu_to_scene[event.GetId()]);
+    }
 }
 
 /****************************** App *******************************/

@@ -22,8 +22,7 @@ Canvas::Canvas(wxWindow *parent)
 
     glClearColor(0, 0, 0, 1);
 
-    //Switch_Scene(Scene::CUBE_STATIC);
-    Switch_Scene(Scene::AMBIENT_LIGHT_ROTATE);
+    Switch_Scene(Scene::CUBE_STATIC);
 }
 
 Canvas::~Canvas() {

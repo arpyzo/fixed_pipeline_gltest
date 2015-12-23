@@ -2,7 +2,7 @@
 
 /***************************** Scene ******************************/
 Scene *Scene::Create_Scene(Scene_Type scene_type) {
-    switch (scene_type) {
+    switch(scene_type) {
         case PRIMITIVE_VERTICES: return new Primitive_Vertices_Scene();
         case POINTS_LINES: return new Points_Lines_Scene();
         case CUBE_STATIC: return new Cube_Static_Scene();
