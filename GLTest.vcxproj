@@ -102,7 +102,7 @@
       <MinimalRebuild>true</MinimalRebuild>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <AdditionalIncludeDirectories>C:\wxWidgets\include;C:\wxWidgets\lib\vc_lib\mswud;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;__WXMSW__;__WXDEBUG__;_WINDOWS;NOPCH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;__WXMSW__;__WXDEBUG__;_WINDOWS;NOPCH;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\Debug\GLTest.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\Debug\</ObjectFileName>
@@ -148,9 +148,6 @@
     <ClCompile Include="main.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"> /EHsc   /EHsc </AdditionalOptions>
     </ClCompile>
-    <ClCompile Include="utility.cpp">
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"> /EHsc   /EHsc </AdditionalOptions>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\camera.h" />
@@ -159,7 +156,6 @@
     <ClInclude Include="scenes.h" />
     <ClInclude Include="vector.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="main.rc" />

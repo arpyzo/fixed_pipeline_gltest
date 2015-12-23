@@ -12,7 +12,7 @@ class RGBA_Win: public wxMiniFrame {
 
         void Get_Values(float rgba[4]);
 
-    private:
+    protected:
         wxSpinCtrlDouble *red_spin_ctrl;
         wxSpinCtrlDouble *green_spin_ctrl;
         wxSpinCtrlDouble *blue_spin_ctrl;

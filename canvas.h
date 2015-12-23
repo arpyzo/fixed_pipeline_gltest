@@ -11,30 +11,29 @@
 #include "scenes.h"
 #include "camera.h"
 #include "rgba_win.h"
-#include "utility.h"
 
 /************************** Canvas **********************************/
 class Canvas : public wxGLCanvas {
 	public:
-        enum {
-            TIMER_ANIMATION,
-            TIMER_CONTROL
-        };
-
 		Canvas(wxWindow *parent);
         ~Canvas();
 
         void Display_GL_State();
         void Switch_Scene(Scene::Scene_Type scene_type);
 
-		void Event_Resize(wxSizeEvent &event);
-		void Event_Paint(wxPaintEvent &event);
-		void Event_Erase_Background(wxEraseEvent &event);
-		void Event_Mouse(wxMouseEvent &event);
-		void Event_Animation_Timer(wxTimerEvent &event);
-		void Event_Control_Timer(wxTimerEvent &event);
+	protected:
+        enum {
+            TIMER_ANIMATION,
+            TIMER_CONTROL
+        };
 
-	private:
+        void Event_Paint(wxPaintEvent &event);
+        void Event_Resize(wxSizeEvent &event);
+        void Event_Erase_Background(wxEraseEvent &event);
+        void Event_Mouse(wxMouseEvent &event);
+        void Event_Animation_Timer(wxTimerEvent &event);
+        void Event_Control_Timer(wxTimerEvent &event);
+
         void Initialize_Scene(Scene::Scene_Type scene_type);
         void Cleanup_Scene();
 
@@ -44,6 +43,8 @@ class Canvas : public wxGLCanvas {
         void Clear_Screen();
 
         void Set_Scene_RGBA();
+
+        wxString GLBool_Str(GLboolean gl_bool);
 
         wxGLContext *gl_context;
 
@@ -55,7 +56,7 @@ class Canvas : public wxGLCanvas {
         Scene *scene = NULL;
 		bool mouse_enabled = false;
 
-  DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
 
 #endif // __CANVAS_H

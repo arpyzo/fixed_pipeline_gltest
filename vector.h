@@ -6,8 +6,6 @@
 
 #include "GLUT/glut.h"
 
-#include "utility.h"
-
 #define PI 3.1415926535
 
 void Debug_Angle(wxString angle_name, float angle);

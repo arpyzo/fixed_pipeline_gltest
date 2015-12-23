@@ -32,7 +32,7 @@ Frame::Frame()
 }
 
 Frame::~Frame() {
-    delete gl_canvas;
+    //delete gl_canvas;
 }
 
 /****************/

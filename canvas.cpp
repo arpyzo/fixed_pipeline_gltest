@@ -4,6 +4,7 @@
 BEGIN_EVENT_TABLE(Canvas, wxGLCanvas)
     EVT_SIZE             (Canvas::Event_Resize)
     EVT_PAINT            (Canvas::Event_Paint)
+    EVT_PAINT            (Canvas::Event_Paint)
     EVT_ERASE_BACKGROUND (Canvas::Event_Erase_Background)
     EVT_MOUSE_EVENTS     (Canvas::Event_Mouse)
     EVT_TIMER            (TIMER_ANIMATION, Canvas::Event_Animation_Timer)
@@ -63,7 +64,7 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
         return;
     }
 
-    // TODO: Reorganize this logic
+    // TODO: Reorganize (and simplify?) this logic
     if (event.LeftDown() && !right_drag) {
         control_timer->Stop();
 
@@ -235,17 +236,17 @@ void Canvas::Display_GL_State() {
     int state_int;
     float state_float[4];
 
-    state_msg += wxString("GL_VENDOR --- ") + wxString(glGetString(GL_VENDOR)) + wxString("\n");
-    state_msg += wxString("GL_RENDERER --- ") + wxString(glGetString(GL_RENDERER)) + wxString("\n");
-    state_msg += wxString("GL_VERSION --- ") + wxString(glGetString(GL_VERSION)) + wxString("\n");
-    state_msg += wxString("GL_EXTENSIONS --- ") + wxString(glGetString(GL_EXTENSIONS)) + wxString("\n");
-    state_msg += wxString("\n");
+    state_msg += "GL_VENDOR --- " + wxString(glGetString(GL_VENDOR)) + "\n";
+    state_msg += "GL_RENDERER --- " + wxString(glGetString(GL_RENDERER)) + "\n";
+    state_msg += "GL_VERSION --- " + wxString(glGetString(GL_VERSION)) + "\n";
+    state_msg += "GL_EXTENSIONS --- " + wxString(glGetString(GL_EXTENSIONS)) + "\n";
+    state_msg += "\n";
 
-    state_msg += wxString::Format("GL_BLEND --- %s\n", Bool_Str(glIsEnabled(GL_BLEND)).c_str());
-    state_msg += wxString::Format("GL_DEPTH_TEST --- %s\n", Bool_Str(glIsEnabled(GL_DEPTH_TEST)).c_str());
-    state_msg += wxString::Format("GL_LINE_STIPPLE --- %s\n", Bool_Str(glIsEnabled(GL_LINE_STIPPLE)).c_str());
-    state_msg += wxString::Format("GL_FOG --- %s\n", Bool_Str(glIsEnabled(GL_FOG)).c_str());
-    state_msg += wxString("\n");
+    state_msg += "GL_BLEND --- " + GLBool_Str(glIsEnabled(GL_BLEND)) + "\n";
+    state_msg += "GL_DEPTH_TEST --- " + GLBool_Str(glIsEnabled(GL_DEPTH_TEST)) + "\n";
+    state_msg += "GL_LINE_STIPPLE --- " + GLBool_Str(glIsEnabled(GL_LINE_STIPPLE)) + "\n";
+    state_msg += "GL_FOG --- " + GLBool_Str(glIsEnabled(GL_FOG)) + "\n";
+    state_msg += "\n";
 
     glGetFloatv(GL_POINT_SIZE_RANGE, state_float);
     state_msg += wxString::Format("GL_POINT_SIZE_RANGE --- %.1f, %.1f\n", state_float[0], state_float[1]);
@@ -256,17 +257,24 @@ void Canvas::Display_GL_State() {
     //glGetFloatv(GL_ALIASED_POINT_SIZE_RANGE, state_float);
     //state_msg += wxString::Format("GL_ALIASED_POINT_SIZE_RANGE --- %f, %f\n", state_float[0], state_float[1]);
     
-    state_msg += wxString::Format("GL_LIGHTING --- %s\n", Bool_Str(glIsEnabled(GL_LIGHTING)).c_str());
-    state_msg += wxString::Format("GL_LIGHT_MODEL_LOCAL_VIEWER --- %s\n", Bool_Str(glIsEnabled(GL_LIGHT_MODEL_LOCAL_VIEWER)).c_str());
-    state_msg += wxString::Format("GL_LIGHT_MODEL_TWO_SIDE --- %s\n", Bool_Str(glIsEnabled(GL_LIGHT_MODEL_TWO_SIDE)).c_str());
+    state_msg += "GL_LIGHTING --- " + GLBool_Str(glIsEnabled(GL_LIGHTING)) + "\n";
+    state_msg += "GL_LIGHT_MODEL_LOCAL_VIEWER --- " + GLBool_Str(glIsEnabled(GL_LIGHT_MODEL_LOCAL_VIEWER)) + "\n";
+    state_msg += "GL_LIGHT_MODEL_TWO_SIDE --- " + GLBool_Str(glIsEnabled(GL_LIGHT_MODEL_TWO_SIDE)) + "\n";
     glGetFloatv(GL_LIGHT_MODEL_AMBIENT, state_float);
     state_msg += wxString::Format("GL_LIGHT_MODEL_AMBIENT --- %.1f, %.1f, %.1f, %.1f\n", state_float[0], state_float[1], state_float[2], state_float[3]);
     glGetIntegerv(GL_MAX_LIGHTS, &state_int);
     state_msg += wxString::Format("GL_MAX_LIGHTS --- %d\n", state_int);
-    state_msg += wxString::Format("GL_LIGHT0 --- %s\n", Bool_Str(glIsEnabled(GL_LIGHT0)).c_str());
-    state_msg += wxString::Format("GL_LIGHT1 --- %s\n", Bool_Str(glIsEnabled(GL_LIGHT1)).c_str());
+    state_msg += "GL_LIGHT0 --- " + GLBool_Str(glIsEnabled(GL_LIGHT0)) + "\n";
+    state_msg += "GL_LIGHT1 --- " + GLBool_Str(glIsEnabled(GL_LIGHT1)) + "\n";
 
     wxMessageBox(state_msg, "OpenGL State");
+}
+
+wxString Canvas::GLBool_Str(GLboolean gl_bool) {
+    if (gl_bool) {
+        return "True";
+    }
+    return "False";
 }
 
 /****************/
