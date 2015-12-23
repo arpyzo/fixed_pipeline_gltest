@@ -23,8 +23,7 @@ class Canvas : public wxGLCanvas {
 
 	protected:
         enum {
-            TIMER_ANIMATION,
-            TIMER_CONTROL
+            TIMER_ANIMATION
         };
 
         void Event_Paint(wxPaintEvent &event);
@@ -47,13 +46,10 @@ class Canvas : public wxGLCanvas {
         wxString GLBool_Str(GLboolean gl_bool);
 
         wxGLContext *gl_context;
-
-		RGBA_Win *rgba_win;
-
-		wxTimer *animation_timer;
-		wxTimer *control_timer;
-
+        wxTimer *animation_timer;
         Scene *scene = NULL;
+        RGBA_Win *rgba_win;
+
 		bool mouse_enabled = false;
 
     DECLARE_EVENT_TABLE()

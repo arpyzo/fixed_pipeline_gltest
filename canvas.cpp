@@ -9,7 +9,6 @@ BEGIN_EVENT_TABLE(Canvas, wxGLCanvas)
     EVT_ERASE_BACKGROUND (Canvas::Event_Erase_Background)
     EVT_MOUSE_EVENTS     (Canvas::Event_Mouse)
     EVT_TIMER            (TIMER_ANIMATION, Canvas::Event_Animation_Timer)
-    EVT_TIMER            (TIMER_CONTROL,   Canvas::Event_Control_Timer)
 END_EVENT_TABLE()
 
 Canvas::Canvas(wxWindow *parent)
@@ -20,7 +19,6 @@ Canvas::Canvas(wxWindow *parent)
     rgba_win = new RGBA_Win(this);
 
     animation_timer = new wxTimer(this, TIMER_ANIMATION);
-    control_timer = new wxTimer(this, TIMER_CONTROL);
 
     glClearColor(0, 0, 0, 1);
 
@@ -29,10 +27,7 @@ Canvas::Canvas(wxWindow *parent)
 
 Canvas::~Canvas() {
     animation_timer->Stop();
-    control_timer->Stop();
-
     delete animation_timer;
-    delete control_timer;
 
     delete scene;
     delete gl_context;
@@ -70,7 +65,7 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
 
     // TODO: Reorganize (and simplify?) this logic
     if (event.LeftDown() && !right_drag) {
-        control_timer->Stop();
+        animation_timer->Stop();
 
         left_drag = true;
         SetCursor(wxCursor("GRIPPING_HAND_CURSOR"));
@@ -91,13 +86,13 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
             static_cast<Controllable_Scene*>(scene)->Set_Control_Coords(mouse_start.x, mouse_start.y, mouse_end.x, mouse_end.y, 0.2);
             static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::ORBIT);
 
-            control_timer->Start(1);
+            animation_timer->Start(25);
         }
         return;
     }
 
     if (event.RightDown() && !left_drag) {
-        control_timer->Stop();
+        animation_timer->Stop();
 
         right_drag = true;
         SetCursor(wxCursor("POINTING_HAND_CURSOR"));
@@ -118,7 +113,7 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
             static_cast<Controllable_Scene*>(scene)->Set_Control_Coords(mouse_start.x, mouse_start.y, mouse_end.x, mouse_end.y);
             static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::SPIN);
 
-            control_timer->Start(1);
+            animation_timer->Start(25);
         }
         return;
     }
@@ -151,21 +146,16 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
     }
 }
 
-/**********/
-/* Timers */
-/**********/
 void Canvas::Event_Animation_Timer(wxTimerEvent &WXUNUSED(event)) {
-    static_cast<Animated_Scene*>(scene)->Increment_Animation_Angle();
+    if (scene->Is_Animated()) {
+        static_cast<Animated_Scene*>(scene)->Increment_Animation_Angle();
+    } else if (scene->Is_Controllable()) {
+        static_cast<Controllable_Scene*>(scene)->Move_Camera();
+    }
 
     if (scene->Needs_RGBA_Controls()) {
         Set_Scene_RGBA();
     }
-
-    Refresh();
-}
-
-void Canvas::Event_Control_Timer(wxTimerEvent &WXUNUSED(event)) {
-    static_cast<Controllable_Scene*>(scene)->Move_Camera();
 
     Refresh();
 }
@@ -183,7 +173,7 @@ void Canvas::Switch_Scene(Scene::Scene_Type scene_type) {
     Refresh();
 
     if (scene->Is_Animated()) {
-        animation_timer->Start(50);
+        animation_timer->Start(25);
     } else if (scene->Is_Controllable()) {
         Enable_Control();
     }
@@ -218,7 +208,7 @@ void Canvas::Enable_Control() {
 }
 
 void Canvas::Disable_Control() {
-    control_timer->Stop();
+    animation_timer->Stop();
 
     SetCursor(wxCursor("NO_ACTION_CURSOR"));
     mouse_enabled = false;

@@ -180,7 +180,7 @@ void Cube_Static_Scene::Create() {
     glRotatef(45, 1, 0, 0);
     glRotatef(45, 0, -1, 0);
 
-    //  gluLookAt(300, 300, 300, 0, 0, 0, -1, 1, -1);
+    //gluLookAt(300, 300, 300, 0, 0, 0, -1, 1, -1);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
