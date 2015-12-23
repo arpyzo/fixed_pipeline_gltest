@@ -152,6 +152,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\camera.h" />
     <ClInclude Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\canvas.h" />
+    <ClInclude Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\debug.h" />
     <ClInclude Include="rgba_win.h" />
     <ClInclude Include="scenes.h" />
     <ClInclude Include="vector.h" />

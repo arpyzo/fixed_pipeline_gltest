@@ -1,4 +1,5 @@
 #include "rgba_win.h"
+#include "debug.h"
 
 /***************************** RGBA_Win ******************************/
 RGBA_Win::RGBA_Win(wxWindow *parent)

@@ -1,4 +1,5 @@
 #include "scenes.h"
+#include "debug.h"
 
 /***************************** Scene ******************************/
 Scene *Scene::Create_Scene(Scene_Type scene_type) {

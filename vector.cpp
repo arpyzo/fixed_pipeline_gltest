@@ -1,4 +1,5 @@
 #include "vector.h"
+#include "debug.h"
 
 /***************/
 /* Debug_Angle */

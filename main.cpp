@@ -1,4 +1,5 @@
 #include "main.h"
+#include "debug.h"
 
 IMPLEMENT_APP(App)
 
@@ -113,6 +114,8 @@ void Frame::Menu_Item(wxCommandEvent &event) {
 
 /****************************** App *******************************/
 bool App::OnInit() {
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
     Frame *main_frame = new Frame();
 
     main_frame->Show(TRUE);

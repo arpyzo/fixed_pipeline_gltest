@@ -1,4 +1,5 @@
 #include "camera.h"
+#include "debug.h"
 
 // TODO: Enhance camera rotation performance
 

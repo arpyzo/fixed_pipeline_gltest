@@ -1,4 +1,5 @@
 #include "canvas.h"
+#include "debug.h"
 
 /******************************** Canvas *********************************/
 BEGIN_EVENT_TABLE(Canvas, wxGLCanvas)
@@ -30,8 +31,11 @@ Canvas::~Canvas() {
     animation_timer->Stop();
     control_timer->Stop();
 
-    //delete rgb_win;
-    //delete gl_context;
+    delete animation_timer;
+    delete control_timer;
+
+    delete scene;
+    delete gl_context;
 }
 
 /*****************/
