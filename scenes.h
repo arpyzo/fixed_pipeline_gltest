@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include "camera.h"
+#include "vector.h"
 
 void Primitive_Vertices();
 void Various_Points();
@@ -77,25 +78,15 @@ class Controllable_Scene : public Scene {
             ORBIT
         };
 
-        struct Control_Vec {
-            int x;
-            int y;
-        };
-
         Controllable_Scene();
         ~Controllable_Scene();
         bool Is_Controllable() { return true; }
 
         void Set_Viewport(int width, int height);
-        void Set_Control_Coords(int start_x, int start_y, int end_x, int end_y, float scale_factor = 1);
-        bool Set_Camera_Motion(Camera_Motion camera_motion);
+        bool Set_Camera_Motion(int start_x, int start_y, int end_x, int end_y, float scale, Camera_Motion camera_motion);
         void Move_Camera();
 
     protected:
-        Control_Vec control_start;
-        Control_Vec control_end;
-        float control_scale;
-
         Camera *camera;
         Camera_Motion camera_motion;
 };

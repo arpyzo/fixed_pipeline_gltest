@@ -6,6 +6,7 @@
 class Camera {
     public:
         Camera();
+
         float Get_Spin_Angle();
         void Set_Spin_Angle(float angle);
         void Set_Orbit_Vector(float x, float y);
@@ -24,10 +25,7 @@ class Camera {
 
     private:
         float spin_angle;
-        struct {
-            float x;
-            float y;
-        } orbit_vector;
+        Vector_2D orbit_vector;
 
         float orig_pos[3], orig_top[3];
         float cur_pos[3], cur_top[3];

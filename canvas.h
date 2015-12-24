@@ -12,7 +12,7 @@
 #include "camera.h"
 #include "rgba_win.h"
 
-/************************** Canvas **********************************/
+/********************************** Canvas **********************************/
 class Canvas : public wxGLCanvas {
 	public:
 		Canvas(wxWindow *parent);

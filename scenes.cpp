@@ -83,7 +83,7 @@ void Animated_Scene::Increment_Animation_Angle() {
 Controllable_Scene::Controllable_Scene() {
     camera = new Camera();
 
-    Set_Control_Coords(0, 0, 0, 0);
+    //Set_Control_Coords(0, 0, 0, 0);
 }
 
 Controllable_Scene::~Controllable_Scene() {
@@ -95,25 +95,17 @@ void Controllable_Scene::Set_Viewport(int width, int height) {
     camera->Set_Viewport(width, height);
 }
 
-void Controllable_Scene::Set_Control_Coords(int start_x, int start_y, int end_x, int end_y, float control_scale) {
-    control_start.x = start_x;
-    control_start.y = start_y;
-    control_end.x = end_x;
-    control_end.y = end_y;
-    this->control_scale = control_scale;
-}
-
-bool Controllable_Scene::Set_Camera_Motion(Camera_Motion camera_motion) {
+bool Controllable_Scene::Set_Camera_Motion(int start_x, int start_y, int end_x, int end_y, float scale, Camera_Motion camera_motion) {
     this->camera_motion = camera_motion;
 
     if (camera_motion == Controllable_Scene::SPIN) {
-        float angle = -camera->Calc_Spin_Angle(control_start.x, control_start.y, control_end.x, control_end.y);
+        float angle = -camera->Calc_Spin_Angle(start_x, start_y, end_x, end_y);
         if (angle == 0) {
             return false;
         }
         camera->Set_Spin_Angle(angle);
     } else { // Controllable_Scene::ORBIT
-        camera->Set_Orbit_Vector((control_start.x - control_end.x) * control_scale, (control_end.y - control_start.y) * control_scale);
+        camera->Set_Orbit_Vector((start_x - end_x) * scale, (end_y - start_y) * scale);
     }
 
     return true;

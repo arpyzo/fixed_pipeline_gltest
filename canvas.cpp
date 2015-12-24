@@ -83,8 +83,7 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
         wxPoint mouse_end = wxGetMousePosition() - GetScreenPosition();
 
         if (abs(mouse_start.x - mouse_end.x) > 2 || abs(mouse_start.y - mouse_end.y) > 2) { // Has mouse moved enough to trigger animation?            
-            static_cast<Controllable_Scene*>(scene)->Set_Control_Coords(mouse_start.x, mouse_start.y, mouse_end.x, mouse_end.y, 0.2);
-            static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::ORBIT);
+            static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(mouse_start.x, mouse_start.y, mouse_end.x, mouse_end.y, 0.2, Controllable_Scene::ORBIT);
 
             animation_timer->Start(25);
         }
@@ -110,8 +109,7 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
         wxPoint mouse_end = wxGetMousePosition() - GetScreenPosition();
 
         if (abs(mouse_start.x - mouse_end.x) > 2 || abs(mouse_start.y - mouse_end.y) > 2) { // Has mouse moved enough to trigger animation?
-            static_cast<Controllable_Scene*>(scene)->Set_Control_Coords(mouse_start.x, mouse_start.y, mouse_end.x, mouse_end.y);
-            static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::SPIN);
+            static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(mouse_start.x, mouse_start.y, mouse_end.x, mouse_end.y, 0.2, Controllable_Scene::SPIN);
 
             animation_timer->Start(25);
         }
@@ -120,16 +118,14 @@ void Canvas::Event_Mouse(wxMouseEvent &event) {
 
     if (event.Dragging()) {
         if (left_drag) { // Reverse direction - Camera and scene movement are opposite each other
-            static_cast<Controllable_Scene*>(scene)->Set_Control_Coords(mouse_prev.x, mouse_prev.y, event.GetX(), event.GetY());
-            static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::ORBIT);
+            static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(mouse_prev.x, mouse_prev.y, event.GetX(), event.GetY(), 1, Controllable_Scene::ORBIT);
             static_cast<Controllable_Scene*>(scene)->Move_Camera();
 
             Refresh();
 
             mouse_prev = event.GetPosition();
         } else if (right_drag) {
-            static_cast<Controllable_Scene*>(scene)->Set_Control_Coords(mouse_prev.x, mouse_prev.y, event.GetX(), event.GetY());
-            static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(Controllable_Scene::SPIN);
+            static_cast<Controllable_Scene*>(scene)->Set_Camera_Motion(mouse_prev.x, mouse_prev.y, event.GetX(), event.GetY(), 1, Controllable_Scene::SPIN);
             static_cast<Controllable_Scene*>(scene)->Move_Camera();
 
             Refresh();

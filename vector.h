@@ -2,11 +2,22 @@
 #define __3D_H
 
 #include <wx/wx.h>
-#include <wx/glcanvas.h>
 
 #include "GLUT/glut.h"
 
 #define PI 3.1415926535
+
+struct Vector_2D {
+    float x;
+    float y;
+};
+
+struct Vector_3D {
+    float x;
+    float y;
+    float z;
+};
+
 
 void Debug_Angle(wxString angle_name, float angle);
 void Debug_Vec(wxString vec_name, float vec[3]);
