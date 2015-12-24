@@ -15,7 +15,20 @@ Camera::Camera() {
     viewcenter_x = 399;
     viewcenter_y = 299;
 
-    Reset();
+    for (int count = 0; count < 3; count++) {
+        cur_pos[count] = orig_pos[count];
+        cur_top[count] = orig_top[count];
+    }
+
+    cur_angle = 0;
+    cur_rot_vec[0] = 1;
+    cur_rot_vec[1] = 0;
+    cur_rot_vec[2] = 0;
+
+    cur_twist = 0;
+    cur_twist_vec[0] = 1;
+    cur_twist_vec[1] = 0;
+    cur_twist_vec[2] = 0;
 }
 
 float Camera::Get_Spin_Angle() {
@@ -37,26 +50,6 @@ float Camera::Get_Orbit_Vector_Y() {
 void Camera::Set_Orbit_Vector(float x, float y) {
     orbit_vector.x = x;
     orbit_vector.y = y;
-}
-
-/*********/
-/* Reset */
-/*********/
-void Camera::Reset() {
-    for (int count = 0; count < 3; count++) {
-        cur_pos[count] = orig_pos[count];
-        cur_top[count] = orig_top[count];
-    }
-
-    cur_angle = 0;
-    cur_rot_vec[0] = 1;
-    cur_rot_vec[1] = 0;
-    cur_rot_vec[2] = 0;
-
-    cur_twist = 0;
-    cur_twist_vec[0] = 1;
-    cur_twist_vec[1] = 0;
-    cur_twist_vec[2] = 0;
 }
 
 void Camera::Set_Viewport(int viewsize_x, int viewsize_y) {

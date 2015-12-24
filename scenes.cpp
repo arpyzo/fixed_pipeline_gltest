@@ -51,11 +51,9 @@ void Scene::Set_State_Blend() {
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void Scene::Init_Matrix() {
+void Scene::Init_Model_Matrix() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
-    scale_factor = 7;
 }
 
 void Scene::Change_Scale_Factor(int scale_factor_delta) {
@@ -82,8 +80,6 @@ void Animated_Scene::Increment_Animation_Angle() {
 /***************************** Controlable_Scene ******************************/
 Controllable_Scene::Controllable_Scene() {
     camera = new Camera();
-
-    //Set_Control_Coords(0, 0, 0, 0);
 }
 
 Controllable_Scene::~Controllable_Scene() {
@@ -125,7 +121,7 @@ Primitive_Vertices_Scene::Primitive_Vertices_Scene() {
 }
 
 void Primitive_Vertices_Scene::Create() {
-    Init_Matrix();
+    Init_Model_Matrix();
     glClear(GL_COLOR_BUFFER_BIT);
 
     Generate_Polygons();
@@ -134,7 +130,7 @@ void Primitive_Vertices_Scene::Create() {
 }
 
 void Primitive_Vertices_Scene::Generate_Polygons() {
-    Primitive_Vertices();
+    Draw_Primitive_Vertices();
 }
 
 /***************************** Points_Lines_Scene ******************************/
@@ -148,7 +144,7 @@ Points_Lines_Scene::~Points_Lines_Scene() {
 }
 
 void Points_Lines_Scene::Create() {
-    Init_Matrix();
+    Init_Model_Matrix();
     glClear(GL_COLOR_BUFFER_BIT);
 
     Generate_Polygons();
@@ -157,8 +153,8 @@ void Points_Lines_Scene::Create() {
 }
 
 void Points_Lines_Scene::Generate_Polygons() {
-    Various_Points();
-    Various_Lines();
+    Draw_Various_Points();
+    Draw_Various_Lines();
 }
 
 /***************************** Cube_Static_Scene ******************************/
@@ -167,7 +163,7 @@ Cube_Static_Scene::Cube_Static_Scene() {
 }
 
 void Cube_Static_Scene::Create() {
-    Init_Matrix();
+    Init_Model_Matrix();
     glTranslatef(0, 0, -300);
     glRotatef(45, 1, 0, 0);
     glRotatef(45, 0, -1, 0);
@@ -182,7 +178,7 @@ void Cube_Static_Scene::Create() {
 }
 
 void Cube_Static_Scene::Generate_Polygons() {
-    Primitive_Cube();
+    Draw_Primitive_Cube();
 }
 
 /***************************** Cube_Rotate_Scene ******************************/
@@ -191,7 +187,7 @@ Cube_Rotate_Scene::Cube_Rotate_Scene() {
 }
 
 void Cube_Rotate_Scene::Create() {
-    Init_Matrix();
+    Init_Model_Matrix();
     glTranslatef(0, 0, -300);
     glRotatef(animation_angle, 1, 1, 1);
 
@@ -203,7 +199,7 @@ void Cube_Rotate_Scene::Create() {
 }
 
 void Cube_Rotate_Scene::Generate_Polygons() {
-    Primitive_Cube();
+    Draw_Primitive_Cube();
 }
 
 /***************************** Pyramid_Rotate_Scene ******************************/
@@ -212,7 +208,7 @@ Pyramid_Rotate_Scene::Pyramid_Rotate_Scene() {
 }
 
 void Pyramid_Rotate_Scene::Create() {
-    Init_Matrix();
+    Init_Model_Matrix();
     glTranslatef(0, 0, -300);
     glRotatef(animation_angle, 1, 1, 1);
 
@@ -224,7 +220,7 @@ void Pyramid_Rotate_Scene::Create() {
 }
 
 void Pyramid_Rotate_Scene::Generate_Polygons() {
-    Interleaved_Pyramid();
+    Draw_Interleaved_Pyramid();
 }
 
 /***************************** Multi_Rotate_Scene ******************************/
@@ -233,7 +229,7 @@ Multi_Rotate_Scene::Multi_Rotate_Scene() {
 }
 
 void Multi_Rotate_Scene::Create() {
-    Init_Matrix();
+    Init_Model_Matrix();
     glTranslatef(0, 0, -300);
     glRotatef(animation_angle, 1, 1, 1);
 
@@ -247,11 +243,11 @@ void Multi_Rotate_Scene::Create() {
 void Multi_Rotate_Scene::Generate_Polygons() {
     glPushMatrix();
     glTranslatef(-150, 0, 0);
-    Interleaved_Cube(100);
+    Draw_Interleaved_Cube(100);
 
     glPopMatrix();
     glTranslatef(150, 0, 0);
-    Interleaved_Pyramid();
+    Draw_Interleaved_Pyramid();
 }
 
 /***************************** Cube_Control_Scene ******************************/
@@ -260,7 +256,7 @@ Cube_Control_Scene::Cube_Control_Scene() {
 }
 
 void Cube_Control_Scene::Create() {
-    Init_Matrix();
+    Init_Model_Matrix();
     glTranslatef(0, 0, -300);
 
     float pos[3], top[3];
@@ -275,7 +271,7 @@ void Cube_Control_Scene::Create() {
 }
 
 void Cube_Control_Scene::Generate_Polygons() {
-    Primitive_Cube();
+    Draw_Primitive_Cube();
 }
 
 /***************************** Ambient_Light_Rotate_Scene ******************************/
@@ -295,7 +291,7 @@ void Ambient_Light_Rotate_Scene::Set_Ambient_Light(float rgba[4]) {
 }
 
 void Ambient_Light_Rotate_Scene::Create() {
-    Init_Matrix();
+    Init_Model_Matrix();
     glTranslatef(0, 0, -300);
     glRotatef(animation_angle, 1, 1, 1);
 
@@ -320,7 +316,7 @@ Rotate_Light_Control_Scene::Rotate_Light_Control_Scene() {
     Set_State_3D();
     Set_State_Lit();
 
-    Prep_Spheres(&spheres_list);
+    Prep_Sphere_List(&spheres_list);
 }
 
 Rotate_Light_Control_Scene::~Rotate_Light_Control_Scene() {
@@ -329,7 +325,7 @@ Rotate_Light_Control_Scene::~Rotate_Light_Control_Scene() {
 }
 
 void Rotate_Light_Control_Scene::Create() {
-    Init_Matrix();
+    Init_Model_Matrix();
     glTranslatef(0, 0, -300);
 
     float pos[3], top[3];
@@ -355,7 +351,7 @@ Fixed_Light_Control_Scene::Fixed_Light_Control_Scene() {
     Set_State_3D();
     Set_State_Lit();
 
-    Prep_Spheres(&spheres_list);
+    Prep_Sphere_List(&spheres_list);
 }
 
 Fixed_Light_Control_Scene::~Fixed_Light_Control_Scene() {
@@ -364,7 +360,7 @@ Fixed_Light_Control_Scene::~Fixed_Light_Control_Scene() {
 }
 
 void Fixed_Light_Control_Scene::Create() {
-    Init_Matrix();
+    Init_Model_Matrix();
     glTranslatef(0, 0, -300);
 
     float pos[3], top[3];
@@ -390,7 +386,7 @@ Materials_Control_Scene::Materials_Control_Scene() {
     Set_State_3D();
     Set_State_Lit();
 
-    Prep_Spheres(&spheres_list);
+    Prep_Sphere_List(&spheres_list);
 }
 
 Materials_Control_Scene::~Materials_Control_Scene() {
@@ -399,7 +395,7 @@ Materials_Control_Scene::~Materials_Control_Scene() {
 }
 
 void Materials_Control_Scene::Create() {
-    Init_Matrix();
+    Init_Model_Matrix();
     glTranslatef(0, 0, -300);
 
     float pos[3], top[3];
@@ -427,7 +423,7 @@ Blend_Control_Scene::Blend_Control_Scene() {
     Set_State_3D();
     Set_State_Blend();
 
-    Prep_Spheres(&spheres_list);
+    Prep_Sphere_List(&spheres_list);
 }
 
 Blend_Control_Scene::~Blend_Control_Scene() {
@@ -435,7 +431,7 @@ Blend_Control_Scene::~Blend_Control_Scene() {
 }
 
 void Blend_Control_Scene::Create() {
-    Init_Matrix();
+    Init_Model_Matrix();
     glTranslatef(0, 0, -300);
 
     float pos[3], top[3];
@@ -450,51 +446,14 @@ void Blend_Control_Scene::Create() {
 }
 
 void Blend_Control_Scene::Generate_Polygons() {
-    Interleaved_Cube(200);
-
-    glDepthMask(GL_FALSE);
-
-    glPushMatrix();
-    glTranslatef(250, 0, 0);
-    glColor4f(1, 0, 0, 0.25);
-    glutSolidSphere(100, 30, 30);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(0, 250, 0);
-    glColor4f(0, 1, 0, 0.25);
-    glutSolidSphere(100, 30, 30);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(0, 0, 250);
-    glColor4f(0, 0, 1, 0.25);
-    glutSolidSphere(100, 30, 30);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(-250, 0, 0);
-    glColor4f(1, 1, 0, 0.25);
-    glutSolidSphere(100, 30, 30);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(0, -250, 0);
-    glColor4f(0, 1, 1, 0.25);
-    glutSolidSphere(100, 30, 30);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(0, 0, -250);
-    glColor4f(1, 0, 1, 0.25);
-    glutSolidSphere(100, 30, 30);
-    glPopMatrix();
-
-    glDepthMask(GL_TRUE);
+    Draw_Interleaved_Cube(200);
+    Draw_Spheres_For_Blending();
 }
 
-/***************************** Deprecated Code ******************************/
-void Primitive_Vertices() {
+/******************/
+/* Shape Creation */
+/******************/
+void Scene::Draw_Primitive_Vertices() {
     glColor3f(1, 1, 1);
 
     glBegin(GL_POINTS);
@@ -621,7 +580,7 @@ void Primitive_Vertices() {
     glDisable(GL_POLYGON_STIPPLE);
 }
 
-void Various_Points() {
+void Scene::Draw_Various_Points() {
     glBegin(GL_POINTS);
         glVertex2f(50, 550);
     glEnd();
@@ -630,7 +589,6 @@ void Various_Points() {
     glBegin(GL_POINTS);
         glVertex2f(100, 550);
     glEnd();
-
 
     glPointSize(10);
     glBegin(GL_POINTS);
@@ -655,7 +613,7 @@ void Various_Points() {
     glPointSize(1);
 }
 
-void Various_Lines() {
+void Scene::Draw_Various_Lines() {
     glBegin(GL_LINES);
         glVertex2f(50, 500);
         glVertex2f(750, 500);
@@ -721,7 +679,7 @@ void Various_Lines() {
     glLineStipple(1, 0xFFFF);
 }
 
-void Primitive_Cube() {
+void Scene::Draw_Primitive_Cube() {
     glBegin(GL_QUADS);
         // Red - Front
         glColor3f(1, 0, 0);
@@ -767,7 +725,7 @@ void Primitive_Cube() {
     glEnd();
 }
 
-void Array_Cube() {
+void Scene::Draw_Array_Cube() {
     static GLint vertices[] = {
         100,  100,  100,
        -100,  100,  100,
@@ -806,7 +764,7 @@ void Array_Cube() {
     glDrawElements(GL_QUADS, 24, GL_UNSIGNED_BYTE, faces);
 }
 
-void Interleaved_Cube(float side) {
+void Scene::Draw_Interleaved_Cube(float side) {
     float half_side = side / 2;
 
     GLfloat cube[] = {
@@ -857,7 +815,7 @@ void Interleaved_Cube(float side) {
     glDrawArrays(GL_QUADS, 0, 24);
 }
 
-void Interleaved_Pyramid() {
+void Scene::Draw_Interleaved_Pyramid() {
     static GLfloat pyramid[] = {
         // Red - Right
         1, 0, 0,  100,    0,  -58,
@@ -884,7 +842,49 @@ void Interleaved_Pyramid() {
     glDrawArrays(GL_TRIANGLES, 0, 12);
 }
 
-void Prep_Spheres(GLuint *spheres_list) {
+void Scene::Draw_Spheres_For_Blending() {
+    glDepthMask(GL_FALSE);
+
+    glPushMatrix();
+    glTranslatef(250, 0, 0);
+    glColor4f(1, 0, 0, 0.25);
+    glutSolidSphere(100, 30, 30);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0, 250, 0);
+    glColor4f(0, 1, 0, 0.25);
+    glutSolidSphere(100, 30, 30);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0, 0, 250);
+    glColor4f(0, 0, 1, 0.25);
+    glutSolidSphere(100, 30, 30);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-250, 0, 0);
+    glColor4f(1, 1, 0, 0.25);
+    glutSolidSphere(100, 30, 30);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0, -250, 0);
+    glColor4f(0, 1, 1, 0.25);
+    glutSolidSphere(100, 30, 30);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0, 0, -250);
+    glColor4f(1, 0, 1, 0.25);
+    glutSolidSphere(100, 30, 30);
+    glPopMatrix();
+
+    glDepthMask(GL_TRUE);
+}
+
+void Scene::Prep_Sphere_List(GLuint *spheres_list) {
     if (glIsList(*spheres_list)) {
         glDeleteLists(*spheres_list, 1);
     }
@@ -892,6 +892,7 @@ void Prep_Spheres(GLuint *spheres_list) {
     *spheres_list = glGenLists(1);
     glNewList(*spheres_list, GL_COMPILE);
     glPushMatrix();
+
     glTranslatef(-100, 0, 0);
     glutSolidSphere(50, 20, 20);
     glPopMatrix();

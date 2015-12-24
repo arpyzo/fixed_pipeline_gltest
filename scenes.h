@@ -7,16 +7,6 @@
 #include "camera.h"
 #include "vector.h"
 
-void Primitive_Vertices();
-void Various_Points();
-void Various_Lines();
-void Primitive_Cube();
-void Array_Cube();
-void Interleaved_Cube(float side);
-void Interleaved_Pyramid();
-
-void Prep_Spheres(GLuint *spheres_list);
-
 /***************************** Scene ******************************/
 class Scene {
     public:
@@ -49,15 +39,26 @@ class Scene {
         void Change_Scale_Factor(int scale_factor_delta);
 
     protected:
-        int scale_factor;
+        int scale_factor = 7;
 
-        void Init_Matrix();
+        void Init_Model_Matrix();
         virtual void Generate_Polygons() {}
         
         void Set_State_2D();
         void Set_State_3D();
         void Set_State_Lit();
         void Set_State_Blend();
+
+        void Draw_Primitive_Vertices();
+        void Draw_Various_Points();
+        void Draw_Various_Lines();
+        void Draw_Primitive_Cube();
+        void Draw_Array_Cube();
+        void Draw_Interleaved_Cube(float side);
+        void Draw_Interleaved_Pyramid();
+        void Draw_Spheres_For_Blending();
+
+        void Prep_Sphere_List(GLuint *spheres_list);
 };
 
 /***************************** Animated_Scene ******************************/
