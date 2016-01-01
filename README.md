@@ -2,9 +2,13 @@
 
 Demo application written to learn and experiment with fixed pipeline OpenGL features.
 
-## Warning!
+## Requirements
 
-This code is undergoing a major refactoring and will almost certainly give you a headache in its current state.
+This demo makes use of wxWidgets to provide basic GUI features including an OpenGL context. GLUT is used to provide access to OpenGL functions.
+
+## Refactoring
+
+This code has undergone a major refactoring and repair. The camera and vector functions have been cleaned up a little, but could use further refactoring.
 
 ## Demos
 
@@ -13,12 +17,6 @@ This code is undergoing a major refactoring and will almost certainly give you a
  * 3D shapes with rotation
  * Lighting effects
  * Blending
-
-## TODO
-
- * Reformatting
- * Refactoring
- * Memory leaks need fixing
 
 ## OUTDATED
 
