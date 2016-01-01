@@ -5,7 +5,6 @@
 #include <wx/minifram.h>
 #include <wx/spinctrl.h>
 
-
 /************************** RGBA_Win **********************************/
 class RGBA_Win: public wxMiniFrame {
     public:

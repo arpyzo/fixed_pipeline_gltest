@@ -120,7 +120,7 @@ Primitive_Vertices_Scene::Primitive_Vertices_Scene() {
     Set_State_2D();
 }
 
-void Primitive_Vertices_Scene::Create() {
+void Primitive_Vertices_Scene::Render() {
     Init_Model_Matrix();
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -143,7 +143,7 @@ Points_Lines_Scene::~Points_Lines_Scene() {
     glDisable(GL_LINE_STIPPLE);
 }
 
-void Points_Lines_Scene::Create() {
+void Points_Lines_Scene::Render() {
     Init_Model_Matrix();
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -162,7 +162,7 @@ Cube_Static_Scene::Cube_Static_Scene() {
     Set_State_3D();
 }
 
-void Cube_Static_Scene::Create() {
+void Cube_Static_Scene::Render() {
     Init_Model_Matrix();
     glTranslatef(0, 0, -300);
     glRotatef(45, 1, 0, 0);
@@ -186,7 +186,7 @@ Cube_Rotate_Scene::Cube_Rotate_Scene() {
     Set_State_3D();
 }
 
-void Cube_Rotate_Scene::Create() {
+void Cube_Rotate_Scene::Render() {
     Init_Model_Matrix();
     glTranslatef(0, 0, -300);
     glRotatef(animation_angle, 1, 1, 1);
@@ -207,7 +207,7 @@ Pyramid_Rotate_Scene::Pyramid_Rotate_Scene() {
     Set_State_3D();
 }
 
-void Pyramid_Rotate_Scene::Create() {
+void Pyramid_Rotate_Scene::Render() {
     Init_Model_Matrix();
     glTranslatef(0, 0, -300);
     glRotatef(animation_angle, 1, 1, 1);
@@ -228,7 +228,7 @@ Multi_Rotate_Scene::Multi_Rotate_Scene() {
     Set_State_3D();
 }
 
-void Multi_Rotate_Scene::Create() {
+void Multi_Rotate_Scene::Render() {
     Init_Model_Matrix();
     glTranslatef(0, 0, -300);
     glRotatef(animation_angle, 1, 1, 1);
@@ -255,7 +255,7 @@ Cube_Control_Scene::Cube_Control_Scene() {
     Set_State_3D();
 }
 
-void Cube_Control_Scene::Create() {
+void Cube_Control_Scene::Render() {
     Init_Model_Matrix();
     glTranslatef(0, 0, -300);
 
@@ -290,7 +290,7 @@ void Ambient_Light_Rotate_Scene::Set_Ambient_Light(float rgba[4]) {
     }
 }
 
-void Ambient_Light_Rotate_Scene::Create() {
+void Ambient_Light_Rotate_Scene::Render() {
     Init_Model_Matrix();
     glTranslatef(0, 0, -300);
     glRotatef(animation_angle, 1, 1, 1);
@@ -324,7 +324,7 @@ Rotate_Light_Control_Scene::~Rotate_Light_Control_Scene() {
     glDeleteLists(spheres_list, 1);
 }
 
-void Rotate_Light_Control_Scene::Create() {
+void Rotate_Light_Control_Scene::Render() {
     Init_Model_Matrix();
     glTranslatef(0, 0, -300);
 
@@ -359,7 +359,7 @@ Fixed_Light_Control_Scene::~Fixed_Light_Control_Scene() {
     glDeleteLists(spheres_list, 1);
 }
 
-void Fixed_Light_Control_Scene::Create() {
+void Fixed_Light_Control_Scene::Render() {
     Init_Model_Matrix();
     glTranslatef(0, 0, -300);
 
@@ -394,7 +394,7 @@ Materials_Control_Scene::~Materials_Control_Scene() {
     glDeleteLists(spheres_list, 1);
 }
 
-void Materials_Control_Scene::Create() {
+void Materials_Control_Scene::Render() {
     Init_Model_Matrix();
     glTranslatef(0, 0, -300);
 
@@ -430,7 +430,7 @@ Blend_Control_Scene::~Blend_Control_Scene() {
     glDisable(GL_BLEND);
 }
 
-void Blend_Control_Scene::Create() {
+void Blend_Control_Scene::Render() {
     Init_Model_Matrix();
     glTranslatef(0, 0, -300);
 

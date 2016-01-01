@@ -38,7 +38,7 @@ Canvas::~Canvas() {
 /*****************/
 void Canvas::Event_Paint(wxPaintEvent &WXUNUSED(event)) {
     if (scene) {
-        scene->Create();
+        scene->Render();
         SwapBuffers();
     }
 }

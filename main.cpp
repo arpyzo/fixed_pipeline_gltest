@@ -32,10 +32,6 @@ Frame::Frame()
     gl_canvas = new Canvas(this);
 }
 
-Frame::~Frame() {
-    //delete gl_canvas;
-}
-
 /****************/
 /* Menu Related */
 /****************/

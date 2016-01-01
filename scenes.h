@@ -34,7 +34,7 @@ class Scene {
 
         virtual void Set_Viewport(int width, int height);
 
-        virtual void Create() {}
+        virtual void Render() {}
 
         void Change_Scale_Factor(int scale_factor_delta);
 
@@ -97,7 +97,7 @@ class Primitive_Vertices_Scene : public Scene {
     public:
         Primitive_Vertices_Scene();
 
-        void Create();
+        void Render();
 
     protected:
         void Generate_Polygons();
@@ -109,7 +109,7 @@ class Points_Lines_Scene : public Scene {
         Points_Lines_Scene();
         ~Points_Lines_Scene();
 
-        void Create();
+        void Render();
 
     protected:
         void Generate_Polygons();
@@ -120,7 +120,7 @@ class Cube_Static_Scene : public Scene {
     public:
         Cube_Static_Scene();
 
-        void Create();
+        void Render();
 
     protected:
         void Generate_Polygons();
@@ -131,7 +131,7 @@ class Cube_Rotate_Scene : public Animated_Scene {
     public:
         Cube_Rotate_Scene();
 
-        void Create();
+        void Render();
 
     protected:
         void Generate_Polygons();
@@ -142,7 +142,7 @@ class Pyramid_Rotate_Scene : public Animated_Scene {
     public:
         Pyramid_Rotate_Scene();
 
-        void Create();
+        void Render();
 
     protected:
         void Generate_Polygons();
@@ -153,7 +153,7 @@ class Multi_Rotate_Scene : public Animated_Scene {
     public:
         Multi_Rotate_Scene();
 
-        void Create();
+        void Render();
 
     protected:
         void Generate_Polygons();
@@ -164,7 +164,7 @@ class Cube_Control_Scene : public Controllable_Scene {
     public:
         Cube_Control_Scene();
 
-        void Create();
+        void Render();
 
     protected:
         void Generate_Polygons();
@@ -179,7 +179,7 @@ class Ambient_Light_Rotate_Scene : public Animated_Scene {
         bool Needs_RGBA_Controls() { return true; }
         void Set_Ambient_Light(float rgba[4]);
 
-        void Create();
+        void Render();
 
     protected:
         void Generate_Polygons();
@@ -193,7 +193,7 @@ class Rotate_Light_Control_Scene : public Controllable_Scene {
         Rotate_Light_Control_Scene();
         ~Rotate_Light_Control_Scene();
 
-        void Create();
+        void Render();
 
     protected:
         void Generate_Polygons();
@@ -207,7 +207,7 @@ class Fixed_Light_Control_Scene : public Controllable_Scene {
         Fixed_Light_Control_Scene();
         ~Fixed_Light_Control_Scene();
 
-        void Create();
+        void Render();
 
     protected:
         void Generate_Polygons();
@@ -221,7 +221,7 @@ class Materials_Control_Scene : public Controllable_Scene {
         Materials_Control_Scene();
         ~Materials_Control_Scene();
 
-        void Create();
+        void Render();
 
     protected:
         void Generate_Polygons();
@@ -235,7 +235,7 @@ class Blend_Control_Scene : public Controllable_Scene {
         Blend_Control_Scene();
         ~Blend_Control_Scene();
 
-        void Create();
+        void Render();
 
     protected:
         void Generate_Polygons();

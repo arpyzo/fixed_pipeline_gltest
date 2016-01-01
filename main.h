@@ -9,7 +9,6 @@
 class Frame : public wxFrame {
 	public:
 		Frame();
-        ~Frame();
 
 	protected:
         enum {
