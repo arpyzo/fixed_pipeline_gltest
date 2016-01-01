@@ -1,4 +1,4 @@
-#include "rgba_win.h"
+#include "rgba.h"
 #include "debug.h"
 
 /***************************** RGBA_Win ******************************/

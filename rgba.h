@@ -1,5 +1,5 @@
-#ifndef __RGBA_WIN_H
-#define __RGBA_WIN_H
+#ifndef __RGBA_H
+#define __RGBA_H
 
 #include <wx/wx.h>
 #include <wx/minifram.h>

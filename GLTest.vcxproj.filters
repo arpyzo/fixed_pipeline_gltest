@@ -30,7 +30,7 @@
     <ClCompile Include="scenes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="rgba_win.cpp">
+    <ClCompile Include="rgba.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,10 +50,10 @@
     <ClInclude Include="scenes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="rgba_win.h">
+    <ClInclude Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\debug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Rob%27s Files\Development\wxWidgets\GLTest\debug.h">
+    <ClInclude Include="rgba.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

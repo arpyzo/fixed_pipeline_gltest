@@ -17,10 +17,7 @@ Canvas::Canvas(wxWindow *parent)
     SetCurrent(*gl_context);
 
     rgba_win = new RGBA_Win(this);
-
     animation_timer = new wxTimer(this, TIMER_ANIMATION);
-
-    glClearColor(0, 0, 0, 1);
 
     Switch_Scene(Scene::CUBE_STATIC);
 }
@@ -50,7 +47,7 @@ void Canvas::Event_Resize(wxSizeEvent &WXUNUSED(event)) {
         scene->Set_Viewport(width, height);
     }
 
-  // TODO: This needs further work
+    // TODO: This needs further work
 }
 
 void Canvas::Event_Erase_Background(wxEraseEvent &WXUNUSED(event)) { }

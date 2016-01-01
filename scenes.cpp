@@ -130,7 +130,130 @@ void Primitive_Vertices_Scene::Render() {
 }
 
 void Primitive_Vertices_Scene::Generate_Polygons() {
-    Draw_Primitive_Vertices();
+    glColor3f(1, 1, 1);
+
+    glBegin(GL_POINTS);
+    glVertex2f(20, 420);
+    glVertex2f(40, 440);
+    glVertex2f(80, 420);
+    glVertex2f(30, 500);
+    glVertex2f(70, 530);
+    glVertex2f(190, 590);
+    glEnd();
+
+    glBegin(GL_LINES);
+    glVertex2f(220, 420);
+    glVertex2f(240, 440);
+    glVertex2f(280, 420);
+    glVertex2f(230, 500);
+    glVertex2f(270, 530);
+    glVertex2f(390, 590);
+    glEnd();
+
+    glBegin(GL_LINE_STRIP);
+    glVertex2f(440, 580);
+    glVertex2f(480, 570);
+    glVertex2f(550, 590);
+    glVertex2f(560, 450);
+    glVertex2f(500, 420);
+    glVertex2f(450, 410);
+    glEnd();
+
+    glBegin(GL_LINE_LOOP);
+    glVertex2f(640, 580);
+    glVertex2f(680, 570);
+    glVertex2f(750, 590);
+    glVertex2f(760, 450);
+    glVertex2f(700, 420);
+    glVertex2f(650, 410);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glVertex2f(40, 240);
+    glVertex2f(50, 360);
+    glVertex2f(100, 340);
+    glVertex2f(140, 220);
+    glVertex2f(100, 230);
+    glVertex2f(150, 380);
+    glEnd();
+
+    glBegin(GL_TRIANGLE_STRIP);
+    glVertex2f(210, 210);
+    glVertex2f(210, 380);
+    glVertex2f(250, 230);
+    glVertex2f(250, 350);
+    glVertex2f(350, 210);
+    glVertex2f(380, 380);
+    glEnd();
+
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2f(440, 240);
+    glVertex2f(420, 380);
+    glVertex2f(460, 380);
+    glVertex2f(500, 360);
+    glVertex2f(520, 300);
+    glVertex2f(490, 230);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glVertex2f(620, 220);
+    glVertex2f(620, 290);
+    glVertex2f(680, 280);
+    glVertex2f(690, 220);
+    glVertex2f(710, 310);
+    glVertex2f(720, 330);
+    glVertex2f(790, 390);
+    glVertex2f(780, 360);
+    glEnd();
+
+    glBegin(GL_QUAD_STRIP);
+    glVertex2f(10, 10);
+    glVertex2f(20, 170);
+    glVertex2f(90, 20);
+    glVertex2f(100, 140);
+    glVertex2f(140, 30);
+    glVertex2f(150, 160);
+    glVertex2f(170, 40);
+    glVertex2f(180, 190);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glVertex2f(230, 20);
+    glVertex2f(250, 150);
+    glVertex2f(300, 170);
+    glVertex2f(360, 150);
+    glVertex2f(380, 40);
+    glEnd();
+
+    GLubyte halftone[] = {
+        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
+        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
+        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
+        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
+        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
+        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
+        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
+        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
+        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
+        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
+        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
+        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
+        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
+        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
+        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
+        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
+    };
+
+    glEnable(GL_POLYGON_STIPPLE);
+    glPolygonStipple(halftone);
+    glBegin(GL_POLYGON);
+    glVertex2f(430, 20);
+    glVertex2f(450, 150);
+    glVertex2f(500, 170);
+    glVertex2f(560, 150);
+    glVertex2f(580, 40);
+    glEnd();
+    glDisable(GL_POLYGON_STIPPLE);
 }
 
 /***************************** Points_Lines_Scene ******************************/
@@ -155,6 +278,105 @@ void Points_Lines_Scene::Render() {
 void Points_Lines_Scene::Generate_Polygons() {
     Draw_Various_Points();
     Draw_Various_Lines();
+}
+
+void Points_Lines_Scene::Draw_Various_Points() {
+    glBegin(GL_POINTS);
+    glVertex2f(50, 550);
+    glEnd();
+
+    glPointSize(2);
+    glBegin(GL_POINTS);
+    glVertex2f(100, 550);
+    glEnd();
+
+    glPointSize(10);
+    glBegin(GL_POINTS);
+    glVertex2f(150, 550);
+    glEnd();
+
+    glPointSize(12.5);
+    glBegin(GL_POINTS);
+    glVertex2f(200, 550);
+    glEnd();
+
+    glPointSize(15);
+    glBegin(GL_POINTS);
+    glVertex2f(250, 550);
+    glEnd();
+
+    glPointSize(17.5);
+    glBegin(GL_POINTS);
+    glVertex2f(300, 550);
+    glEnd();
+
+    glPointSize(1);
+}
+
+void Points_Lines_Scene::Draw_Various_Lines() {
+    glBegin(GL_LINES);
+    glVertex2f(50, 500);
+    glVertex2f(750, 500);
+    glEnd();
+
+    glLineWidth(2);
+    glBegin(GL_LINES);
+    glVertex2f(50, 450);
+    glVertex2f(750, 450);
+    glEnd();
+
+    glLineWidth(4.5);
+    glBegin(GL_LINES);
+    glVertex2f(50, 400);
+    glVertex2f(750, 400);
+    glEnd();
+
+    glLineWidth(1);
+    glLineStipple(1, 0x0101);
+    glBegin(GL_LINES);
+    glVertex2f(50, 350);
+    glVertex2f(750, 350);
+    glEnd();
+
+    glLineWidth(10);
+    glBegin(GL_LINES);
+    glVertex2f(50, 300);
+    glVertex2f(750, 300);
+    glEnd();
+
+    glLineWidth(1);
+    glLineStipple(1, 0x00FF);
+    glBegin(GL_LINES);
+    glVertex2f(50, 250);
+    glVertex2f(750, 250);
+    glEnd();
+
+    glLineWidth(10);
+    glBegin(GL_LINES);
+    glVertex2f(50, 200);
+    glVertex2f(750, 200);
+    glEnd();
+
+    glLineWidth(1);
+    glLineStipple(1, 0x1C47);
+    glBegin(GL_LINES);
+    glVertex2f(50, 150);
+    glVertex2f(750, 150);
+    glEnd();
+
+    glLineStipple(2, 0x1C47);
+    glBegin(GL_LINES);
+    glVertex2f(50, 100);
+    glVertex2f(750, 100);
+    glEnd();
+
+    glLineStipple(5, 0x1C47);
+    glBegin(GL_LINES);
+    glVertex2f(50, 50);
+    glVertex2f(750, 50);
+    glEnd();
+
+    glLineStipple(1, 0xFFFF);
 }
 
 /***************************** Cube_Static_Scene ******************************/
@@ -450,235 +672,51 @@ void Blend_Control_Scene::Generate_Polygons() {
     Draw_Spheres_For_Blending();
 }
 
+void Blend_Control_Scene::Draw_Spheres_For_Blending() {
+    glDepthMask(GL_FALSE);
+
+    glPushMatrix();
+    glTranslatef(250, 0, 0);
+    glColor4f(1, 0, 0, 0.25);
+    glutSolidSphere(100, 30, 30);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0, 250, 0);
+    glColor4f(0, 1, 0, 0.25);
+    glutSolidSphere(100, 30, 30);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0, 0, 250);
+    glColor4f(0, 0, 1, 0.25);
+    glutSolidSphere(100, 30, 30);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-250, 0, 0);
+    glColor4f(1, 1, 0, 0.25);
+    glutSolidSphere(100, 30, 30);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0, -250, 0);
+    glColor4f(0, 1, 1, 0.25);
+    glutSolidSphere(100, 30, 30);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0, 0, -250);
+    glColor4f(1, 0, 1, 0.25);
+    glutSolidSphere(100, 30, 30);
+    glPopMatrix();
+
+    glDepthMask(GL_TRUE);
+}
+
 /******************/
 /* Shape Creation */
 /******************/
-void Scene::Draw_Primitive_Vertices() {
-    glColor3f(1, 1, 1);
-
-    glBegin(GL_POINTS);
-        glVertex2f(20, 420);
-        glVertex2f(40, 440);
-        glVertex2f(80, 420);
-        glVertex2f(30, 500);
-        glVertex2f(70, 530);
-        glVertex2f(190, 590);   
-    glEnd();
-
-    glBegin(GL_LINES);
-        glVertex2f(220, 420);
-        glVertex2f(240, 440);
-        glVertex2f(280, 420);
-        glVertex2f(230, 500);
-        glVertex2f(270, 530);
-        glVertex2f(390, 590);
-    glEnd();
-
-    glBegin(GL_LINE_STRIP);
-        glVertex2f(440, 580);
-        glVertex2f(480, 570);
-        glVertex2f(550, 590);
-        glVertex2f(560, 450);
-        glVertex2f(500, 420);
-        glVertex2f(450, 410);
-    glEnd();
-
-    glBegin(GL_LINE_LOOP);
-        glVertex2f(640, 580);
-        glVertex2f(680, 570);
-        glVertex2f(750, 590);
-        glVertex2f(760, 450);
-        glVertex2f(700, 420);
-        glVertex2f(650, 410);
-    glEnd();
-
-    glBegin(GL_TRIANGLES);
-        glVertex2f(40, 240);
-        glVertex2f(50, 360);
-        glVertex2f(100, 340);
-        glVertex2f(140, 220);
-        glVertex2f(100, 230);
-        glVertex2f(150, 380);
-    glEnd();
-
-    glBegin(GL_TRIANGLE_STRIP);
-        glVertex2f(210, 210);
-        glVertex2f(210, 380);
-        glVertex2f(250, 230);
-        glVertex2f(250, 350);
-        glVertex2f(350, 210);
-        glVertex2f(380, 380);
-    glEnd();
-
-    glBegin(GL_TRIANGLE_FAN);
-        glVertex2f(440, 240);
-        glVertex2f(420, 380);
-        glVertex2f(460, 380);
-        glVertex2f(500, 360);
-        glVertex2f(520, 300);
-        glVertex2f(490, 230);
-    glEnd();
-
-    glBegin(GL_QUADS);
-        glVertex2f(620, 220);
-        glVertex2f(620, 290);
-        glVertex2f(680, 280);
-        glVertex2f(690, 220);
-        glVertex2f(710, 310);
-        glVertex2f(720, 330);
-        glVertex2f(790, 390);
-        glVertex2f(780, 360);
-    glEnd();
-
-    glBegin(GL_QUAD_STRIP);
-        glVertex2f(10, 10);
-        glVertex2f(20, 170);
-        glVertex2f(90, 20);
-        glVertex2f(100, 140);
-        glVertex2f(140, 30);
-        glVertex2f(150, 160);
-        glVertex2f(170, 40);
-        glVertex2f(180, 190);
-    glEnd();
-
-    glBegin(GL_POLYGON);
-        glVertex2f(230, 20);
-        glVertex2f(250, 150);
-        glVertex2f(300, 170);
-        glVertex2f(360, 150);
-        glVertex2f(380, 40);
-    glEnd();
-
-    GLubyte halftone[] = {
-        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-        0xAA, 0xAA, 0xAA, 0xAA, 0x55, 0x55, 0x55, 0x55,
-    };
- 
-    glEnable(GL_POLYGON_STIPPLE);
-    glPolygonStipple(halftone);
-    glBegin(GL_POLYGON);
-        glVertex2f(430, 20);
-        glVertex2f(450, 150);
-        glVertex2f(500, 170);
-        glVertex2f(560, 150);
-        glVertex2f(580, 40);
-    glEnd();
-    glDisable(GL_POLYGON_STIPPLE);
-}
-
-void Scene::Draw_Various_Points() {
-    glBegin(GL_POINTS);
-        glVertex2f(50, 550);
-    glEnd();
-
-    glPointSize(2);
-    glBegin(GL_POINTS);
-        glVertex2f(100, 550);
-    glEnd();
-
-    glPointSize(10);
-    glBegin(GL_POINTS);
-        glVertex2f(150, 550);
-    glEnd();
-
-    glPointSize(12.5);
-    glBegin(GL_POINTS);
-        glVertex2f(200, 550);
-    glEnd();
-
-    glPointSize(15);
-    glBegin(GL_POINTS);
-        glVertex2f(250, 550);
-    glEnd();
-
-    glPointSize(17.5);
-    glBegin(GL_POINTS);
-        glVertex2f(300, 550);
-    glEnd();
-
-    glPointSize(1);
-}
-
-void Scene::Draw_Various_Lines() {
-    glBegin(GL_LINES);
-        glVertex2f(50, 500);
-        glVertex2f(750, 500);
-    glEnd();
-
-    glLineWidth(2);
-    glBegin(GL_LINES);
-        glVertex2f(50, 450);
-        glVertex2f(750, 450);
-    glEnd();
-
-    glLineWidth(4.5);
-    glBegin(GL_LINES);
-        glVertex2f(50, 400);
-        glVertex2f(750, 400);
-    glEnd();
-
-    glLineWidth(1);
-    glLineStipple(1, 0x0101);
-    glBegin(GL_LINES);
-        glVertex2f(50, 350);
-        glVertex2f(750, 350);
-    glEnd();
-
-    glLineWidth(10);
-    glBegin(GL_LINES);
-        glVertex2f(50, 300);
-        glVertex2f(750, 300);
-    glEnd();
-
-    glLineWidth(1);
-    glLineStipple(1, 0x00FF);
-    glBegin(GL_LINES);
-        glVertex2f(50, 250);
-        glVertex2f(750, 250);
-    glEnd();
-
-    glLineWidth(10);
-    glBegin(GL_LINES);
-        glVertex2f(50, 200);
-        glVertex2f(750, 200);
-    glEnd();
-
-    glLineWidth(1);
-    glLineStipple(1, 0x1C47);
-    glBegin(GL_LINES);
-        glVertex2f(50, 150);
-        glVertex2f(750, 150);
-    glEnd();
-
-    glLineStipple(2, 0x1C47);
-    glBegin(GL_LINES);
-        glVertex2f(50, 100);
-        glVertex2f(750, 100);
-    glEnd();
-
-    glLineStipple(5, 0x1C47);
-    glBegin(GL_LINES);
-        glVertex2f(50, 50);
-        glVertex2f(750, 50);
-    glEnd();
-
-    glLineStipple(1, 0xFFFF);
-}
-
 void Scene::Draw_Primitive_Cube() {
     glBegin(GL_QUADS);
         // Red - Front
@@ -840,48 +878,6 @@ void Scene::Draw_Interleaved_Pyramid() {
 
     glInterleavedArrays(GL_C3F_V3F, 0, pyramid);
     glDrawArrays(GL_TRIANGLES, 0, 12);
-}
-
-void Scene::Draw_Spheres_For_Blending() {
-    glDepthMask(GL_FALSE);
-
-    glPushMatrix();
-    glTranslatef(250, 0, 0);
-    glColor4f(1, 0, 0, 0.25);
-    glutSolidSphere(100, 30, 30);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(0, 250, 0);
-    glColor4f(0, 1, 0, 0.25);
-    glutSolidSphere(100, 30, 30);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(0, 0, 250);
-    glColor4f(0, 0, 1, 0.25);
-    glutSolidSphere(100, 30, 30);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(-250, 0, 0);
-    glColor4f(1, 1, 0, 0.25);
-    glutSolidSphere(100, 30, 30);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(0, -250, 0);
-    glColor4f(0, 1, 1, 0.25);
-    glutSolidSphere(100, 30, 30);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(0, 0, -250);
-    glColor4f(1, 0, 1, 0.25);
-    glutSolidSphere(100, 30, 30);
-    glPopMatrix();
-
-    glDepthMask(GL_TRUE);
 }
 
 void Scene::Prep_Sphere_List(GLuint *spheres_list) {

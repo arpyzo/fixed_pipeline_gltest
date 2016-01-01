@@ -7,10 +7,9 @@
 
 #include "GLUT/glut.h"
 
-#include "vector.h"
 #include "scenes.h"
 #include "camera.h"
-#include "rgba_win.h"
+#include "rgba.h"
 
 /********************************** Canvas **********************************/
 class Canvas : public wxGLCanvas {
@@ -31,7 +30,6 @@ class Canvas : public wxGLCanvas {
         void Event_Erase_Background(wxEraseEvent &event);
         void Event_Mouse(wxMouseEvent &event);
         void Event_Animation_Timer(wxTimerEvent &event);
-        void Event_Control_Timer(wxTimerEvent &event);
 
         void Initialize_Scene(Scene::Scene_Type scene_type);
         void Cleanup_Scene();

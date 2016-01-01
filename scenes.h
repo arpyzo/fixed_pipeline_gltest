@@ -49,14 +49,10 @@ class Scene {
         void Set_State_Lit();
         void Set_State_Blend();
 
-        void Draw_Primitive_Vertices();
-        void Draw_Various_Points();
-        void Draw_Various_Lines();
         void Draw_Primitive_Cube();
         void Draw_Array_Cube();
         void Draw_Interleaved_Cube(float side);
         void Draw_Interleaved_Pyramid();
-        void Draw_Spheres_For_Blending();
 
         void Prep_Sphere_List(GLuint *spheres_list);
 };
@@ -113,6 +109,8 @@ class Points_Lines_Scene : public Scene {
 
     protected:
         void Generate_Polygons();
+        void Draw_Various_Points();
+        void Draw_Various_Lines();
 };
 
 /***************************** Cube_Static_Scene ******************************/
@@ -239,6 +237,7 @@ class Blend_Control_Scene : public Controllable_Scene {
 
     protected:
         void Generate_Polygons();
+        void Draw_Spheres_For_Blending();
 
         GLuint spheres_list;
 };
